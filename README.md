@@ -1,2 +1,2 @@
 # Bmig6201
-Main repository for the Machine Learning class 2021
+A repository for the Machine Learning class 2021
