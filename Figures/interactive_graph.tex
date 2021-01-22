@@ -1,0 +1,19 @@
+\documentclass[tikz,border=3.14mm]{standalone}
+\usetikzlibrary{decorations.markings}
+\tikzset{tangent/.style={postaction={decorate,decoration={markings,
+				mark=at position #1 with {
+					\draw[red] (0pt,0pt) coordinate (Tang) -- (200pt,0pt);)}}}}}
+
+\begin{document}
+	\foreach \X in {0.5,0.6,...,6} 
+	{\begin{tikzpicture}[declare function={f(\x)=5*sin(20*\x+2);}]
+			\draw[latex-latex] (0,5) -- (0,0) -- (8,0);
+			\begin{scope}
+				\clip (0,0) rectangle (7,5);
+				\draw plot[samples=100,domain=0:7] ({\x},{f(\x)});
+				\path[tangent=0] plot[samples=100,domain={\X}:7] ({\x},{f(\x)});
+			\end{scope}
+			\pgfmathsetmacro{\Y}{int(10*\X)}
+			\draw[dashed] (Tang) --(0,-0.1 -| Tang) node[below]{$x_0=\Y$};
+	\end{tikzpicture}}
+\end{document} 

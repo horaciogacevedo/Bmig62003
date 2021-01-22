@@ -1,0 +1,30 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+%opening
+\title{Homework: Math Background}
+%\author{}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+	\item Let $T$ be the rigid transformation $T(\mathbf{x})=W \cdot \mathbf{x}+ \mathbf{b}$, where $W=(w_{ij})$ is the matrix of size $2 \times 2$ 
+	\begin{equation}
+		W=
+		\begin{pmatrix}
+			1& 2 \\ 
+			0 & -1 
+		\end{pmatrix}
+	\end{equation}
+	and $\mathbf{b}=(-2,-2)^t$. 
+	Calculate the composition $T\circ T((2,0)^t)$.
+	\item 
+	Let $f(x_1,x_2)=x_1^4+x_2^2$. What is the gradient of $f$ at the point (-1,0)? {\sl Note: recall that if $g(x)=x^m$, $g'(x)=mx^{m-1}$}
+	\item 
+	Let $U$ and $V$ be tuples (of size $n$) of uniformly distributed random numbers in (0,1). Say, $U$ is generated using the random uniform method in the {\bf random}  module and $V$ using {\bf numpy}. Define a python function that returns a tuple performing element-wise the function $f(u,v)=\sqrt{-2 \log u} \cos (2 \pi v)$. What is the empirical mean and standard deviation of the tuple defined by $f$ for tuples of size $n=5000$.
+	\item Make a histogram of the tuple defined by the function $f$ from the previous problem. You can use the {\bf numpy} method np.histogram.
+	
+	
+\end{enumerate}
+\end{document}

@@ -1,0 +1,31 @@
+\documentclass[tikz,border=3mm]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16,width=14cm}
+\usepgfplotslibrary{colorbrewer}
+\begin{document}
+	\foreach \imin in {40,35,...,15}
+	{\begin{tikzpicture}[declare function={f(\x)=30+20*cos(\x*36);
+				finv(\x)=acos((\x-30)/20)/36;}]
+			\pgfmathsetmacro{\xmax}{finv(\imin+5)}  
+			\begin{axis}[axis lines=middle,
+				xmin=0,xmax=12.5,ymin=0,ymax=12.5,zmin=0,zmax=50,smooth,
+				colormap/PuBu,point meta=-z-x-y,point meta max=-20,point meta min=-70,
+				view={115}{20},
+				xtick=\emp+ty,ytick=\empty,ztick=\empty];
+				\pgfplotsinvokeforeach{45,40,...,20}{%
+					\ifnum##1>\imin
+					\draw[red] (7,7,0) circle[radius={finv(##1)}];
+					\draw[dashed] (7,{7-finv(##1)},0) --
+					(7,{7-finv(##1)},##1) (7,{7+finv(##1)},0) --
+					(7,{7+finv(##1)},##1);
+					\fi
+				}
+				%
+				\addplot3[domain=-5:5,color=gray,samples y=0]  ({7},{7+x},{f(x)});
+				%
+				\addplot3[surf,shader=interp,domain y=0:360,domain=0:\xmax,z buffer=sort,
+				opacity=0.8] 
+				({7+x*cos(y)},{7+x*sin(y)},{f(x)});
+			\end{axis}
+	\end{tikzpicture}}
+\end{document}

@@ -1,0 +1,51 @@
+\documentclass[tikz,border=3pt]{standalone}
+\usepackage{tikz}
+
+\usetikzlibrary{arrows,calc}
+
+\begin{document}
+	
+	% create figures with different placement of Q along the function curve
+	\foreach \i in {0.45,0.46,...,0.72,0.71,0.70,...,0.46}{% <-- specify step
+		
+		\begin{tikzpicture}[>=stealth',
+			dot/.style={circle,draw,fill=white,inner sep=0pt,minimum size=4pt}]
+			
+			% draw axis lines
+			\draw[->,thick] (-0.5,0) -- ++(11,0) node[below left]{$x$};
+			\draw[->,thick] (0,-0.5) -- ++(0,7) node[below right]{$f(x)$};
+			\coordinate (O) at (0,0);
+			
+			% create path for function curve
+			\path[thick,red] (-0.3,2) to[out=-25, in=200] coordinate[pos=0.2] (p) coordinate[pos=\i] (q) (9,5);
+			% fill area
+			\fill[blue, opacity=.1] (p) -| (q);
+			% draw the secant line with fixed length
+			\draw[shorten <=-1.5cm] (p) -- ($ (p)!7.5cm!(q) $) node[below right, pos=0.9]{Secant};
+			% draw function curve
+			\draw[thick,red] (-0.3,2) to[out=-25, in=200] (9,5);
+			
+			% draw all points
+			\node[dot,label={above:$P$}] (P) at (p) {};
+			\node[dot,label={above:$Q$}] (Q) at (q) {};
+			\node[dot] (p1) at (P |- O) {};
+			\node[dot] (p2) at (Q |- O) {};
+			\node[dot] (p3) at (P -| Q) {};
+			
+			% draw lines between nodes and place text
+			\draw (P) -- node[left]{$f(x_{0})$} (p1) node[dot,label={below:$x_{0}$}]{};
+			\draw (p2) node[dot,label={below:$x_{0} + \varepsilon$}]{} -- (p3);
+			\path (p1) -- node[below]{$\varepsilon$} (p2);
+			
+			% draw blue arrows between nodes
+			\draw[<->,blue,thick] (P) -- node[below]{$\varepsilon$} (p3);
+			\draw[<->,blue,thick] (Q) -- node[right]{$f(x_{0} + \varepsilon) - f(x_{0})$} (p3);
+			
+			% draw the explanation for the y-value of point Q
+			\draw[help lines] (Q) -- (Q -| {(9.5,0)}) ++(-0.5,0) coordinate (p4);
+			\draw[help lines, <->] (p4) -- node[fill=white,text=black]{$f(x_{0} + \varepsilon)$} (p4 |- O);
+			
+		\end{tikzpicture}
+	}
+	
+\end{document}
