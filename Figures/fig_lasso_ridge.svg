@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1335"
+   inkscape:version="1.0.2 (e86c8708, 2021-01-15)"
+   sodipodi:docname="fig_lasso_ridge.svg">
+  <defs
+     id="defs1329" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.8756036"
+     inkscape:cx="436.9622"
+     inkscape:cy="207.31748"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="true"
+     inkscape:window-width="1252"
+     inkscape:window-height="855"
+     inkscape:window-x="0"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid1337" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata1332">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.271456px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 37.041667,13.229168 V 66.145833"
+       id="path1339" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.304389px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 15.875,46.302083 h 59.53125 v 0"
+       id="path1341" />
+    <ellipse
+       style="fill:none;stroke:#ec0000;stroke-width:0.433776;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1343"
+       cx="-21.803709"
+       cy="-51.672859"
+       rx="15.976501"
+       ry="6.235167"
+       transform="matrix(-0.96505154,0.26206017,-0.7968819,-0.60413512,0,0)" />
+    <ellipse
+       style="fill:none;stroke:#ec0000;stroke-width:0.300138;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1343-5"
+       cx="-17.643644"
+       cy="-53.818092"
+       rx="11.28407"
+       ry="4.2264338"
+       transform="matrix(-0.97384091,0.2272309,-0.83789498,-0.54583148,0,0)" />
+    <ellipse
+       style="fill:none;stroke:#ec0000;stroke-width:0.658404;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1343-0"
+       cx="-17.555679"
+       cy="-54.610706"
+       rx="24.671661"
+       ry="9.3021908"
+       transform="matrix(-0.97247777,0.23299568,-0.83119455,-0.55598167,0,0)" />
+    <rect
+       style="fill:#9dac93;fill-opacity:1;stroke:none;stroke-width:0.558786;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1959"
+       width="22.981092"
+       height="22.981092"
+       x="47.638065"
+       y="-3.5909796"
+       transform="matrix(0.72305986,0.69078538,-0.72305986,0.69078538,0,0)" />
+    <ellipse
+       style="fill:none;stroke:#ec0000;stroke-width:0.658404;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="ellipse1961"
+       cx="-17.555679"
+       cy="-54.610706"
+       rx="24.671661"
+       ry="9.3021908"
+       transform="matrix(-0.97247777,0.23299568,-0.83119455,-0.55598167,0,0)" />
+    <ellipse
+       style="fill:none;stroke:#ec0000;stroke-width:0.658404;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="ellipse1963"
+       cx="-17.555679"
+       cy="-54.610706"
+       rx="24.671661"
+       ry="9.3021908"
+       transform="matrix(-0.97247777,0.23299568,-0.83119455,-0.55598167,0,0)" />
+    <circle
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.386001;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1965"
+       cx="62.481476"
+       cy="25.442789"
+       r="0.66145831" />
+    <circle
+       style="fill:#005500;fill-opacity:1;stroke:none;stroke-width:0.386001;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1965-7"
+       cx="37.109241"
+       cy="30.814388"
+       r="0.66145831" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.264583"
+       x="74.083336"
+       y="50.270832"
+       id="text2020"><tspan
+         sodipodi:role="line"
+         id="tspan2018"
+         x="74.083336"
+         y="50.270832"
+         style="stroke-width:0.264583">$\theta_1$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.264583"
+       x="30.016207"
+       y="15.412583"
+       id="text2020-0"><tspan
+         sodipodi:role="line"
+         id="tspan2018-2"
+         x="30.016207"
+         y="15.412583"
+         style="stroke-width:0.264583">$\theta_2$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.264583"
+       x="64.822914"
+       y="25.135416"
+       id="text2048"><tspan
+         sodipodi:role="line"
+         id="tspan2046"
+         x="64.822914"
+         y="25.135416"
+         style="stroke-width:0.264583">$\hat{\theta}$</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.271456px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 103.98126,13.493748 V 66.410416"
+       id="path1339-4" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.304389px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 82.814585,46.566666 h 59.531265 v 0"
+       id="path1341-9" />
+    <ellipse
+       style="fill:none;stroke:#ec0000;stroke-width:0.433776;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1343-2"
+       cx="-72.608269"
+       cy="-74.148674"
+       rx="15.976501"
+       ry="6.235167"
+       transform="matrix(-0.96505154,0.26206017,-0.7968819,-0.60413512,0,0)" />
+    <ellipse
+       style="fill:none;stroke:#ec0000;stroke-width:0.300138;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1343-5-6"
+       cx="-67.946442"
+       cy="-75.24398"
+       rx="11.28407"
+       ry="4.2264338"
+       transform="matrix(-0.97384091,0.2272309,-0.83789498,-0.54583148,0,0)" />
+    <ellipse
+       style="fill:none;stroke:#ec0000;stroke-width:0.658404;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1343-0-1"
+       cx="-67.937027"
+       cy="-76.199913"
+       rx="24.671661"
+       ry="9.3021908"
+       transform="matrix(-0.97247777,0.23299568,-0.83119455,-0.55598167,0,0)" />
+    <ellipse
+       style="fill:none;stroke:#ec0000;stroke-width:0.658404;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="ellipse1961-8"
+       cx="-67.937027"
+       cy="-76.199913"
+       rx="24.671661"
+       ry="9.3021908"
+       transform="matrix(-0.97247777,0.23299568,-0.83119455,-0.55598167,0,0)" />
+    <ellipse
+       style="fill:none;stroke:#ec0000;stroke-width:0.658404;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="ellipse1963-2"
+       cx="-67.937027"
+       cy="-76.199913"
+       rx="24.671661"
+       ry="9.3021908"
+       transform="matrix(-0.97247777,0.23299568,-0.83119455,-0.55598167,0,0)" />
+    <circle
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.386001;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1965-5"
+       cx="129.42104"
+       cy="25.707369"
+       r="0.66145831" />
+    <circle
+       style="fill:#006680;fill-opacity:1;stroke:none;stroke-width:0.386001;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path1965-7-9"
+       cx="108.42188"
+       cy="33.477081"
+       r="0.66145831" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.264583"
+       x="141.02289"
+       y="50.5354"
+       id="text2020-8"><tspan
+         sodipodi:role="line"
+         id="tspan2018-1"
+         x="141.02289"
+         y="50.5354"
+         style="stroke-width:0.264583">$\theta_1$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.264583"
+       x="96.955795"
+       y="15.677165"
+       id="text2020-0-6"><tspan
+         sodipodi:role="line"
+         id="tspan2018-2-3"
+         x="96.955795"
+         y="15.677165"
+         style="stroke-width:0.264583">$\theta_2$</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.23333px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;stroke-width:0.264583"
+       x="131.76247"
+       y="25.399996"
+       id="text2048-8"><tspan
+         sodipodi:role="line"
+         id="tspan2046-4"
+         x="131.76247"
+         y="25.399996"
+         style="stroke-width:0.264583">$\hat{\theta}$</tspan></text>
+    <ellipse
+       style="fill:#00ccff;fill-opacity:1;stroke:none;stroke-width:0.375263;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path2249"
+       cx="104.58881"
+       cy="47.065254"
+       rx="14.321368"
+       ry="13.975295" />
+    <circle
+       style="fill:#006680;fill-opacity:1;stroke:none;stroke-width:0.386001;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="circle2251"
+       cx="108.42188"
+       cy="33.477081"
+       r="0.66145831" />
+  </g>
+</svg>
