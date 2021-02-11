@@ -1,0 +1,105 @@
+\documentclass{beamer}
+\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
+\usetheme{default}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathbbol}
+\usepackage{xcolor} % before tikz or tkz-euclide if necessary
+\usepackage{tkz-euclide} % no need to load TikZ
+\usepackage{multirow}
+
+\title{Statistical Machine Learning\\ Part 4}
+\author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics}
+\begin{document}
+	\begin{frame}[plain]
+		\maketitle
+	\end{frame}
+\begin{frame}{Logistic Regression}
+	Consider that we have an experiment with covariate(s) $X$ and response $Y$ with either two possibilities {\it yes} or {\it no.}
+	For convenience, we use the binary codes for the response variable, say 1 for yes and 0 for no. We use {\bf logistic regression} to model the probability that $Y$ is 1 or 0. 
+	
+	We use the following notation to denote the probability that given 
+	\begin{equation*}
+		p(X=x)= Pr(Y=1 | X=x)
+	\end{equation*}
+ Thus, if $p(X=x)>0.5$ we can say that $X=x$ belongs to the class 1. 
+ Our first attempt may be to use linear regression as follows:
+ \begin{equation*}
+ 	p(X)= \theta_0+ \theta_1 X
+ \end{equation*}
+However, when we use such a model we may encounter negative probabilities!
+
+\end{frame}
+
+\begin{frame}{Logistic Function}
+	We apply the so-called {\bf logistic function}
+	\begin{equation*}
+		p(X)= \frac{\exp(\theta_0+ \theta_1 X)}{1+ \exp(\theta_0+\theta_1 X)} 
+	\end{equation*}
+	After some algebraic manipulation, we can show that
+	\begin{equation}
+		\log \left( \frac{p(X)}{1-p(X)} \right) = \theta_0 + \theta_1 X
+\label{eq:logit}	
+\end{equation}
+The left-hand of (\ref{eq:logit}) is called the {\bf log-odds} or {\bf logit}.
+
+For prediction, in the logistic regression model we use $\hat{p}(X)$ as follows 
+
+\begin{equation*}
+	\hat{Y}=
+	\begin{cases}
+		0 & \textrm{if } \hat{p}(X)  \le 0.5 \\
+		1 &  \textrm{if } \hat{p}(X) > 0.5
+	\end{cases}
+\end{equation*}
+\end{frame}
+
+\begin{frame}{Logistic Regression Coefficients Interpretation}
+	In the normal linear regression model $\theta_1$ give the average chance in $Y$ associated with a one-unit increase in $X$.  Say for instance we have a linear model
+	\begin{equation*}
+		{\textrm{sales}} = {\theta}_0+ {\theta}_1 \textrm{(TV units sold)}
+	\end{equation*}
+	Thus, the $E(\textrm{sales})$ when the TV units sold is increased by 1 unit is ${\theta}_1$.
+	
+	In a logistic regression model increasing $X$ by one unit changes the log odds by $\theta_1$, or equivalently it multiplies the odds by $\exp(\theta_1)$. 
+	
+\end{frame}
+
+\begin{frame}{Estimating the coefficients}
+	
+	Whereas we can use our training data to estimate the coefficients $\theta_0$ and $\theta_1$ using a least squares approach, this is not normally used. Instead the method of {\bf maximum likelihood} is preferred. 
+	
+	The likelihood function is defined by 
+	\begin{equation*}
+		\ell (\theta_0,\theta_1)= \prod_{i:y_i=0} p(x_i) \prod_{i':y_i'=1} (1-p(x_{i'}))
+	\end{equation*}
+The estimates $\hat{\theta}_0$ and $\hat{\theta}_1$  are chosen to {\it maximize} this likelihood function. 
+	
+\end{frame}
+
+\begin{frame}{Multiple Logistic Regression}
+	As with multi linear regression, we can expand the model to accommodate more predictors
+	\begin{equation*}
+		\log \left( \frac{p(X)}{1-p(X)} \right) = \theta_0 + \theta_1 X_1 + \cdots+ \theta_p X_p,
+	\end{equation*} 
+	
+	where $X=(X_1,\ldots,X_p)$ are $p$ predictors. And the corresponding logistic function is given by
+	\begin{equation*}
+		p(X)= \frac{\exp(\theta_0 + \theta_1 X_1 + \cdots+ \theta_p X_p)}{1 +exp(\theta_0 + \theta_1 X_1 + \cdots+ \theta_p X_p) }
+	\end{equation*}
+\end{frame}
+
+\begin{frame}{Maximal Margin Classifiers}
+	A hyperplane of dimension $p$ consists of the points (vectors) in $
+\mathbb{R}^p$ that satisfy the condition
+\begin{equation}
+	\beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p=0,
+	\label{eq:hyper}
+\end{equation}
+where $X= (X_1,\ldots, X_p)^t $ is an element of $\mathbb{R}^p$
+
+
+	
+\end{frame}
+
+\end{document}
