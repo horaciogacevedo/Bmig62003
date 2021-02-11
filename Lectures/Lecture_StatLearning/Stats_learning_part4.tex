@@ -31,6 +31,15 @@ However, when we use such a model we may encounter negative probabilities!
 
 \end{frame}
 
+\begin{frame}{Logistic Regression (cont)}
+	
+		\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.5]{../../Figures/fig_logreg.png}
+	\end{figure}
+\end{frame}
+
+
 \begin{frame}{Logistic Function}
 	We apply the so-called {\bf logistic function}
 	\begin{equation*}
@@ -109,6 +118,17 @@ The hyperplane gives us a natural separation of $\mathbb{R}^p$ into two regions
 
 \end{frame}
 
+\begin{frame}{Separating Hyperplanes (Visual Idea)}
+	The problem of separating by a hyperplane (line in $\mathbb{R}^2$, plane in $\mathbb{R}^3$, and hyperplane for higher dimensions)
+	
+		\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.4]{../../Figures/fig_separating_line.png}
+	\end{figure}
+	
+\end{frame}
+
+
 \begin{frame}{Classification by separating hyperplanes}
 	Suppose we have a $n\times p$ data matrix $\mathbf{X}$ that consists of $n$ training observations in the $p$-dimensional space
 	\begin{equation*}
@@ -159,6 +179,11 @@ Alternatively, a separating hyperplane satisfies the condition
 	
 	An important property is that the maximal margin hyperplane depends directly on only a small subset of the observations (the support vectors).
 	
+		\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.35]{../../Figures/fig_support_vectors.png}
+	\end{figure}
+	
 	
 \end{frame}
 
@@ -199,6 +224,15 @@ The hyperparameter $C$ limits the tolerance that we allow for the observations t
 
 
 Observation that lie directly on the margin, or on the wrong side of the margin for their class, are known as {\bf support vectors}.
+\end{frame}
+
+\begin{frame}{Variable $C$}
+	
+		\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.35]{../../Figures/fig_changing_c_svm.png}
+\end{figure}
+	
 \end{frame}
 
 \begin{frame}{Support Vector Machines}
@@ -258,6 +292,15 @@ K(x_i,x_{i'})= \exp \left( -\gamma \sum_{j=1}^p (x_{ij}-x_{i'j})^2 \right)
 \end{equation*}
 	\end{itemize}
 \end{frame}
+
+\begin{frame}{SVMs with different kernels}
+			\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.35]{../../Figures/fig_kernels_svm.png}
+	\end{figure}
+In the left, we have a polynomial kernel of degree 3, on the right we have a radial kernel.
+\end{frame}
+
 
 \begin{frame}{Rough Optimization Ideas}
 	
