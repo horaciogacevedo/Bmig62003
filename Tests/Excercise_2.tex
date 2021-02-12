@@ -1,0 +1,33 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+%opening
+\title{BMIG 6201\\
+Homework \# 2: Regression and SVMs}
+\author{Horacio G\'omez-Acevedo, PhD.}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+	\item Using the {\it Auto} dataset, provide a solution to the following questions
+	\begin{enumerate}
+		\item Create a binary variable, $mpg01$, that contains a 1 if $mpg$ contains a value above its median, and a 0 if $mpg$ containes a value below its median. 
+		\item Explore the data graphically in order to investigate the associate between $mpg01$ and the other features using scatterplots and boxplots. Describe your findings.
+		\item Split the data into a training set and a test set. 
+		\item Perform logistic regression on the training data in order to predict $mpg01$ using the variables that seemed most associated with $mpg01$. Calculate the test error of the model obtained
+		\item Fit a support vector classifier to the data with various values of $cost$, in order to predict whether a car gets high or low gas milage. Report the cross-validation error associated with different values of this parameter.
+		\item Repeat the previous item but this time using SVMs with radial and polynomial basis kernels with different values of $gamma$ and $degree$ and $costs$. 
+	
+	\end{enumerate}
+	\item Using the {\it College} data set, provide a solution for the following questions
+	\begin{enumerate}
+		\item Split the data set into a training set and a test set.
+		\item Fit a linear model using least squares on the training set and report the test error obtained.
+		\item Fit a ridge regression model on the training set, with $\lambda$ chosen by cross-validation. Report the test error obtained.
+		\item Fit a lasso model on the trainint set, with $\lambda$ chose by corss-validation. Report the test error obtained along with the number of non-zero coefficient estimates.
+		
+	\end{enumerate}
+\end{enumerate}
+
+\end{document}
