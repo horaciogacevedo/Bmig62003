@@ -1,0 +1,115 @@
+\documentclass{beamer}
+\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
+\usetheme{default}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathbbol}
+\usepackage{xcolor} % before tikz or tkz-euclide if necessary
+\usepackage{tkz-euclide} % no need to load TikZ
+\usepackage{multirow}
+
+\title{Statistical Machine Learning\\ Part 5}
+\author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics}
+\begin{document}
+	\begin{frame}[plain]
+		\maketitle
+	\end{frame}
+\begin{frame}{Probability refresher}
+	
+	{\bf Formal definition. } A probability space is a triplet $(A, \mathfrak{A},P )$, where $A$ is a (non-empty) set, $\mathfrak{A}$ contains subsets of $A$ called {\it events} (those events form a $\sigma$-algebra of $A$) and a function $P\colon \mathfrak{A}\to [0,1]$ (the so-called {\it probability function}).
+	
+	{\bf Example.}
+	Let's consider the experiment of rolling a die. $A$ will be the outcomes $A=\{ 1,2, \ldots, 6\}$ and $\mathfrak{A}$ will be the subsets of $A$. For instance, the event $E$ consisting of the even number output is $\{2,4,6\}$. The probability function will be defined as 
+	\begin{equation*}
+		P(E) = \frac{ \textrm{number of elements of }E}{\textrm{number of elements in }A}= \frac{3}{6}
+	\end{equation*}
+	
+\end{frame}
+
+\begin{frame}{Complete system of events}
+	We called a {\it complete system of events} a collection  $\{ A_\alpha \}_{\alpha \in I}$ that satisfy:
+	\begin{itemize}
+		\item $A_\alpha \cap A_\beta = \emptyset$
+		\item $\cup_{\alpha \in I} A_\alpha= A$.
+	\end{itemize}
+ A jigsaw puzzle is a simple visualization of this. $A$ is the whole rectangle and each piece is one of the $A_\alpha$. 
+ \begin{figure}[h]
+ 	\centering
+ 	\includegraphics[scale=0.35]{../../Figures/fig_jigsaw.png}
+ \end{figure}
+\end{frame}
+
+\begin{frame}{Conditional Probabilities}
+	If $B$ and $C$ are events and $P(C)>0$, we say that the probability that the event $B$ has occurred given that $C$ has occurred is given by 
+	\begin{equation*}
+		P(B|C) = \frac{P(B\cap C)}{P(C)}		
+	\end{equation*}	
+
+{\bf Total Probability Theorem}. 
+If we have a complete system of events $\{A_\alpha\}_\alpha\in I$ with $P(A_\alpha)>0$ for each $\alpha \in I$, then for an arbitrary event $E$ it holds
+\begin{equation*}
+	P(E) = \sum_{\alpha} P(E|A_\alpha)P(A_\alpha)
+\end{equation*}
+It is clear that every term $P(E|A_\alpha)P(A_\alpha)=P(A_\alpha \cap E)$. Thus, the probability of $E$ is the sum of every part of $E$ in each $A_\alpha$.
+\end{frame}
+\begin{frame}{Total Probability Theorem}
+Suppose our space is again the jigsaw puzzle rectangle and each piece is $A_\alpha$ as before. The probability measure will be the area cover by an event. In this case our "event" represents the blue letters. Visually the probability of the whole event will be the sum of the blue area in each of the pieces, thus the name "total probability"
+
+ \begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{../../Figures/fig_ml_is_fun.png}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}{Bayes Theorem}
+	Following the same framework as before, we have one of the most useful results in probability
+	
+	{\bf Bayes theorem.} If $E$ is an event with $P(E)>0$, then
+	\begin{equation}
+		P(A_\beta |E )= \frac{P(E|A_\beta)P(A_\beta)}{\sum_{\alpha\in I}^{}P(E|A_\alpha)P(A_\alpha)}
+		\label{eq:bayes}
+	\end{equation}
+Note that the numerator of (\ref{eq:bayes}) is $P(E \cap A_\beta)$ whereas the denominator is $P(E)$ according to the total probability theorem!
+\end{frame}
+
+\begin{frame}{Bayesian Perspective}
+	Unlike the traditional (frequentist) inference, the Bayesian approach tries to determine conclusions about a parameter $\theta$ or unobserved data $\overline{y}$ as probability statements.  For example, given the observed data $y$,  Bayesian statements are based on the conditionals such as  $P(\overline{y}|y)$ for {\it new data} $\overline{y}$, or $P(\theta|y)$ for a parameter $\theta$. So following our Bayes theorem,
+	
+	\begin{equation}
+		{\color{blue}P(\theta| y)}=\frac{{\color{red} P(\theta)} {\color{green}P(y|\theta)}}{\color{green}P(y)}
+		\label{eq:bayes2}
+	\end{equation}
+where $P(y)= \sum_{\theta} P(\theta) P(y|\theta)$ (or in the continuous case $P(y)= \int P(\theta) P(y|\theta) d\theta$). 
+
+The expression  $\color{red} P(\theta)$ is called the {\bf prior}, whereas  $\color{blue} P(\theta|y)$  is called {\bf posterior}, and $\color{green}P(y|\theta)/P(y)$ is called {\bf likelihood}. 
+
+Note that in (\ref{eq:bayes2}) the denominator does not depend on $\theta$.  So, the unnormalized posterior 
+
+\begin{equation*}
+	P(\theta|y) \propto P(\theta) \cdot P(y|\theta)
+\end{equation*}
+
+ 
+\end{frame}
+
+\begin{frame}{Density functions}
+	When we have a continuous random variable $X$, the probability is calculated by integrals instead of sums. The {\bf probability density function} $f(x)$ describes the probability of an event. 
+	
+	For instance, let's suppose we have a random variable $X$ distributed as a $N(0,1)$. The density function in this case is defined as
+	\begin{equation*}
+		f(x)= \frac{1}{\sqrt{2\pi}} \exp(-x^2/2)
+	\end{equation*}
+Then, the probability that our random variable lies in the interval  $[a,b]$ is given by
+\begin{equation*}
+		P(a \le X \le b)= \int_a^b f(x)dx = \int_a^b  \frac{1}{\sqrt{2\pi}} \exp(-x^2/2) dx
+\end{equation*}
+ \begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{../../Figures/fig_density.png}
+\end{figure}
+
+\end{frame}
+
+
+\end{document}

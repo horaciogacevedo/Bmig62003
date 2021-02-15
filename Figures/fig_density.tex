@@ -1,0 +1,49 @@
+\documentclass[border=2cm]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.8}
+\begin{document}
+	
+	\pgfmathdeclarefunction{gauss}{3}{%
+		\pgfmathparse{1/(#3*sqrt(2*pi))*exp(-((#1-#2)^2)/(2*#3^2))}%
+	}
+	
+	\begin{tikzpicture}
+		\begin{axis}[
+			no markers, 
+			domain=0:6, 
+			samples=100,
+			ymin=0,
+			axis lines*=left, 
+			every axis y label/.style={at=(current axis.above origin),anchor=south},
+			every axis x label/.style={at=(current axis.right of origin),anchor=west},
+			height=5cm, 
+			width=12cm,
+			xtick=\empty, 
+			ytick=\empty,
+			enlargelimits=false, 
+			clip=false, 
+			axis on top,
+			grid = major,
+			hide y axis
+			]
+			
+			\begin{scope}[yshift=-\pgflinewidth]
+				\clip (axis cs:1,0) rectangle (axis cs:2,0.24);
+				\addplot [draw=none,fill=blue] {gauss(x, 3, 1)};
+			\end{scope}
+			
+			\addplot [very thick,cyan!50!black] {gauss(x, 3, 1)};
+			\pgfmathsetmacro\valueB{gauss(1,1,7)}
+			\pgfmathsetmacro\valueA{gauss(1,1,1.65)}
+			\pgfmathsetmacro\valueC{gauss(1,1,1)}
+			
+			\draw [very thick, red]  (axis cs:1,0) -- (axis cs:1,\valueB);
+			\draw [very thick, red]  (axis cs:2,0) -- (axis cs:2,\valueA);
+			\draw [very thick, red]  (axis cs:3,0) -- (axis cs:3,\valueC);
+			
+			\node[below] at (axis cs:3,0)  {$\mu=0$}; 
+			\node[below] at (axis cs:2,0) {$x=b$};
+			\node[below] at (axis cs:1,0) {$x=a$};
+		\end{axis}
+	\end{tikzpicture}
+\end{document}
