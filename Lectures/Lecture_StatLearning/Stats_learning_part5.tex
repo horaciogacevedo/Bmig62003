@@ -111,5 +111,18 @@ Then, the probability that our random variable lies in the interval  $[a,b]$ is 
 
 \end{frame}
 
+\begin{frame}{Linear Discriminant Analysis}
+	We need to classify an observation into one of $K$ distinct classes ($K\ge 2$). The response variable $Y$ can take on $K$ possibilities. Let $\pi_k$ denote the {\it prior} probability that a randomly chose observation comes from the $k$th class. Let $f_k(X)= P(X=x|Y=k)$ denote the {\it density function} of $X$ for an observation that comes from the $k$th class. We know by the Bayes' theorem
+	\begin{equation*}
+		P(Y=k| X=x)= \frac{\pi_k f_k(x)}{\sum_{i=1}^K \pi_i f_i(x)}
+	\end{equation*}
+ 	Let's simplify  {\it posterior probability} , so $p_k(X)=P(Y=k|X)$ 
+	
+	What have we achieved thus far?
+	\begin{itemize}
+		\item We have a potential classifier 
+	\end{itemize}
+
+\end{frame}
 
 \end{document}
