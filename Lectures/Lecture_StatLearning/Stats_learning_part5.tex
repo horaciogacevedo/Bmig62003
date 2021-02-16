@@ -7,6 +7,8 @@
 \usepackage{xcolor} % before tikz or tkz-euclide if necessary
 \usepackage{tkz-euclide} % no need to load TikZ
 \usepackage{multirow}
+\usepackage{lmodern}
+\usepackage{bm}
 
 \title{Statistical Machine Learning\\ Part 5}
 \author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics}
@@ -178,10 +180,79 @@ Then, the probability that our random variable lies in the interval  $[a,b]$ is 
 	\begin{equation*}
 		\begin{split}
 			\hat{\mu}_k&= \frac{1}{n_K} \sum_{i:y_i  \textrm{ in class }k} x_i\\
-		\hat{\sigma}^2 &= \frac{1}{n-K} \sum_{i=1}^{K} \sum_{i:y_i  \textrm{ in class } k}	 (x_i -\hat{\mu}_k)^2\\
+		\hat{\sigma}^2 &= \frac{1}{n-K} \sum_{k=1}^{K} \sum_{i:y_i  \textrm{ in class } k}	 (x_i -\hat{\mu}_k)^2\\
 		\hat{\pi}_k &= \frac{n_k}{n}
 	\end{split}
 	\end{equation*}
 \end{frame}
+
+\begin{frame}{Linear Discriminant Analysis (Case 2)}
+	Once we have found our discriminant function for the case $p=1$, now we will move to higher dimensions ($p\ge 2$).  Let's assume that $\mathbf{X}=(X_1,\ldots, X_p)$ are drawn from a multivariate Gaussian with a class-specific mean vector $E(\bm{X})=\bm{\mu}=(\mu_1,\ldots,\mu_p)$,and a common variance-covariance matrix $\bm\Sigma$. 
+	The general multivariate normal density is written as
+	\begin{equation}
+		f(\bm{x})= \frac{1}{(2 \pi)^{p/2} | \bm{\Sigma} |^{1/2}}\exp\left( - \frac{1}{2} (\bm{x} - \bm{\mu})^T \bm{\Sigma}^{-1} (\bm{x}-\bm{\mu}) \right)
+	\end{equation}	
+where $|\bm{\Sigma}|$ is represents the determinant of the matrix $\bm{\Sigma}$. So, the LDA for higher dimensions assumes that observations in the $k$th class are drawn from a multivariate distributions $N(\bm{\mu}_k, \bm{\Sigma})$ 
+
+\end{frame}
+
+\begin{frame}{Linear Discriminant Analysis (Case 2)}
+	 \begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.35]{../../Figures/fig_multiv_gauss.png}
+	\end{figure}
+	
+	
+	As for the discriminant function for higher dimensions
+	
+	\begin{equation*}
+		\delta_k(\bm{x})= \bm{x}^T \bm{\Sigma}^{-1} \bm{\mu}_k - \frac{1}{2} \bm{\mu}_k^T \bm{\Sigma}^{-1}\bm{\mu}_k + \log(\pi_k)
+	\end{equation*}
+\end{frame}
+
+\begin{frame}{Linear Discriminant Analysis (Case 2)}
+	The Bayes decision boundaries will be calculated by pairs of indexes. Namely, if $\bm{x}$ is in the decision boundary of $k$ and $l$ then
+	\begin{equation*}
+		\bm{x}^T \bm{\Sigma}^{-1} \bm{\mu}_k - \frac{1}{2} \bm{\mu}_k \bm{\Sigma}^{-1} \bm{\mu}_k= 	\bm{x}^T \bm{\Sigma}^{-1} \bm{\mu}_l - \frac{1}{2} \bm{\mu}_l \bm{\Sigma}^{-1} \bm{\mu}_l
+	\end{equation*}
+Solving this equation reduces to something like this
+\begin{equation*}
+	\bm{x}^T \cdot \bm{v}= r
+\end{equation*}
+Thus, we need to calculate the vector $\bm{v}=(v_1,\ldots,v_p)$ such that 
+\begin{equation*}
+	v_1 x_1 + \cdots + v_p x_p = r
+\end{equation*} 
+In $\mathbb{R}^2$ this equation represents a line. 
+\end{frame}
+\begin{frame}{Linear Discriminant Analysis (Case 2)}
+	Thus, when we have multiple classes there will be lines dividing the plane as shown below
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.35]{../../Figures/fig_lda_2d.png}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}{Linear Discriminant Analysis}
+	If we use LDA for binary classification we observe
+	\begin{itemize}
+		\item LDA has very low classification errors, which is due to the fact that approximates the Bayes classification.
+		\item LDA will be off when the confusion matrix is "unbalanced". One remedy for this situation is to lower the threshold of 50\% in the classifier to say 25\%. 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{References}
+	
+	Materials and some of the pictures are from (1),(2), and (3).
+	\begin{enumerate}
+		\item Gareth James et al. {\it An Introduction to Statistical Learning with applications in R}. Springer (2015)
+		\item Richard O. Duda et al. {\it Pattern Classification} John Wiley (2001). 
+		\item Aur\'elien G\'eron. {\it Hands-on Machine Learning with Scikit-Learn \& TensorFlow} O'Relly (2017)
+		\item Wiebe R. Pestman {\it Mathematical Statistics} de Gruyter (1998)
+	\end{enumerate}	
+	
+	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
+\end{frame}	
 
 \end{document}
