@@ -242,6 +242,37 @@ In $\mathbb{R}^2$ this equation represents a line.
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Quadratic Discriminant Analysis}
+	We extend one of our main assumptions from the LDA as follows
+	
+	\begin{itemize}
+		\item The $k$-th class has its own a variance-covariance matrix $\bm{\Sigma}_k$ (not the common one $\bm{\Sigma}$ as in LDA)
+	\end{itemize}
+	This apparently minimal changes has an impact on the discriminant equation
+	
+	\begin{equation}
+	\delta_k(\bm{x})= {\color{red} -\frac{1}{2}\bm{x}^T \bm{\Sigma}_k^{-1} \bm{x}}+       
+	\bm{x}^T \bm{\Sigma}_k^{-1} \bm{\mu}_k - \frac{1}{2} \bm{\mu}_k^T \bm{\Sigma}^{-1}\bm{\mu}_k - \frac{1}{2} \log |\bm{\Sigma}_k| 
+	+ \log(\pi_k)
+	\end{equation}
+Note that the part on red makes the discriminant function quadratic! 
+So a new observation 
+\begin{equation*}
+		\textrm{Class of } \bm{x}=  \textrm{argmax}_k \delta_k(\bm{x})
+\end{equation*}
+
+\end{frame}
+
+\begin{frame}{QDA or LDA}
+	
+	The estimation of the variance-covariance matrix in $\mathbb{R}^p$ requires $p (p+1)/2$ (essentially all the off diagonal terms), the calculation of the $K$ variance-covariance matrices requires $Kp(p+1)/2$. 
+	\begin{itemize}
+		\item LDA is much less flexible classifier than QDA. Thus it has lower variance.
+		\item In LDA the assumption of a shared variance-covariance matrix can be terribly wrong. In this case, QDA is in order.
+		\item For "small" sample sizes LDA is preferred as it reduces the variance. But as the sample size increases QDA should be used.
+\end{itemize}
+\end{frame}
+
 \begin{frame}{References}
 	
 	Materials and some of the pictures are from (1),(2), and (3).
