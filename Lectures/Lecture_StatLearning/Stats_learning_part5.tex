@@ -113,16 +113,75 @@ Then, the probability that our random variable lies in the interval  $[a,b]$ is 
 
 \begin{frame}{Linear Discriminant Analysis}
 	We need to classify an observation into one of $K$ distinct classes ($K\ge 2$). The response variable $Y$ can take on $K$ possibilities. Let $\pi_k$ denote the {\it prior} probability that a randomly chose observation comes from the $k$th class. Let $f_k(X)= P(X=x|Y=k)$ denote the {\it density function} of $X$ for an observation that comes from the $k$th class. We know by the Bayes' theorem
-	\begin{equation*}
+	\begin{equation}
 		P(Y=k| X=x)= \frac{\pi_k f_k(x)}{\sum_{i=1}^K \pi_i f_i(x)}
-	\end{equation*}
+		\label{eq:lda1}
+	\end{equation}
  	Let's simplify  {\it posterior probability} , so $p_k(X)=P(Y=k|X)$ 
 	
 	What have we achieved thus far?
 	\begin{itemize}
-		\item We have a potential classifier 
+		\item We have a classifier based on posterior probabilities (\ref{eq:lda1}) by selecting the class with the highest probability. 
+		\item The prior information can easily be achieved
+		\item The terms $f_k$ are hard to calculate.
 	\end{itemize}
+\end{frame}
 
+
+\begin{frame}{Linear Discriminant Analysis $p=1$}
+	Let's consider the case that we have $K$ classes and all our observations are in the real line $\mathbb{R}$.
+	
+	\noindent {\bf Case 1. $f_k(x)$ are normal densities with common variance $\sigma^2$.}
+	
+	In this case
+	\begin{equation*}
+		f_k(x)= \frac{1}{\sqrt{2\pi}\sigma} \exp\left( 
+		-\frac{1}{2\sigma^2} (x-\mu_k)^2,
+		\right)
+	\end{equation*}
+	where $\mu_k$ are the (estimates) of the mean for each class. Note that the priors $\pi_k$ are estimated based on the proportion of samples in class $k$ from the training set. Thus,
+	
+	\begin{equation*}
+		p_k(x) = \frac{\pi_k \frac{1}{\sqrt{2\pi}\sigma} \exp\left( 
+			-\frac{1}{2\sigma^2} (x-\mu_k)^2
+			\right)}{\sum_{i=1}^K \frac{1}{\sqrt{2\pi}\sigma} \exp\left( 
+			-\frac{1}{2\sigma^2} (x-\mu_i)^2
+			\right)}
+	\end{equation*}
+	The classification rule for $X=x$ states that we will select the class with the largest posterior probability.
+	
+	
+\end{frame}
+
+\begin{frame}{Discriminant Function for Case 1.}
+	It can be shown that 
+	\begin{equation}
+		\begin{split}
+			\textrm{Class of }x=& \textrm{argmax}_k \{p_k(x) \}= \textrm{argmax}_k \delta_k(x)\\
+			&=\textrm{argmax}_k x \frac{\mu_k}{\sigma^2}- \frac{\mu_k^2}{2\sigma^2} + \log(\pi_k)
+		\end{split}
+	\label{eq:discriminant}
+		\end{equation}
+	where $\mathrm{argmax}$ returns the index of the largest value of $p_k(x)$.
+ Thus, the discriminant  (\ref{eq:discriminant}) is linear ($ax+b$) and there are $K-1$ points that split the line into $K$ classes.
+ 
+  \begin{figure}[h]
+ 	\centering
+ 	\includegraphics[scale=0.35]{../../Figures/fig_lda.png}
+ \end{figure}
+\end{frame}
+
+\begin{frame}{Linear Discriminant Analysis (Case 1)}
+	Even if we assume that each class has a normal distribution, we need to estimate $\mu_1, \ldots , \mu_K$, $\pi_1,\ldots,\pi_K$ and $\sigma$. 
+	
+	Formula (\ref{eq:discriminant}) will still be valid if we plug in the following estimates
+	\begin{equation*}
+		\begin{split}
+			\hat{\mu}_k&= \frac{1}{n_K} \sum_{i:y_i  \textrm{ in class }k} x_i\\
+		\hat{\sigma}^2 &= \frac{1}{n-K} \sum_{i=1}^{K} \sum_{i:y_i  \textrm{ in class } k}	 (x_i -\hat{\mu}_k)^2\\
+		\hat{\pi}_k &= \frac{n_k}{n}
+	\end{split}
+	\end{equation*}
 \end{frame}
 
 \end{document}
