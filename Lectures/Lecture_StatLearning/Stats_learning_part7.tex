@@ -99,12 +99,14 @@ where $\hat{y}_{R_j}$ is the mean response for the training observations within 
 
 \begin{frame}{Recursive Binary Splitting}
 	We begin by selecting a predictor $X_j$ and the cutpoint $s$ sucha that splitting the predictor space into the regions $\{ X| X_j <s \}$ and $\{ X | X_j \ge s\}$ leads to the greates possible reduction in RSS. Thus, for any $j$ and $s$, we define a pair of half-planes
-	\begin{equation*}
+	\begin{equation}
 		R_1(j,s)= \{ X | X_j <s\} \quad \textrm{and } R_2(j,s)= \{X| X_j\ge s\}
-	\end{equation*}
+		\label{eq:rbs1}
+	\end{equation}
 and we look for the value $j$ and $s$ that minimize the equation
 \begin{equation}
 	\sum_{i: x_i \in R_1(j,s)} (y_i - \hat{y}_{R_1})^2 + 	\sum_{i: x_i \in R_2(j,s)} (y_i - \hat{y}_{R_2})^2 ,
+	\label{eq:rbs2}
 \end{equation}
 We repeat the process looking for the best predictor and best cutpoint in order to split the data further so as to minimize the RSS within each of the resulting regions but this time we we don't split the entire space but each of the two regions found. This process continues until a certain criteria is reach (e.g., until no region contains fewer than a certain number of elements within). 
 
@@ -215,6 +217,22 @@ Note the leave {\tt RestECG<1} . The response is Yes so why do we need to partit
 	
 \end{frame}
 
+\begin{frame}{CART Algorithm}
+	G\'eron's book describes the {\it Classification and Regression Tree}  algorithm. Originally described in the book by Breiman et al. (1984) the idea is similar to (\ref{eq:rbs1}) and (\ref{eq:rbs2}), and the cost function that we want to minimize (for classification)
+	
+	\begin{equation}
+		J(s,t_s) = \frac{m_{left}}{m} G_{left}+ \frac{m_{right}}{m} G_{right},
+	\end{equation}
+where $G_{left}$ is the measure of impurity for the {\it left} subset. 
+
+The same algorithm has the following cost function for regression 
+
+\begin{equation*}
+	J(s,t_s)= \frac{m_{left}}{m} RSS_{left}+ \frac{m_{right}}{m} RSS_{right},
+\end{equation*}
+
+\end{frame}
+
 \begin{frame}{Trees vs. Linear Models}
 	The classical linear regression assumes a relationship of the form
 	\begin{equation*}
@@ -227,6 +245,27 @@ whereas the regression trees assume that the model has the form
 where $R_1,\ldots,R_M$ represent a partition of feature space and $1_A$ represents the indicator function (1 if $x\in A$ and 0 elsewhere)
 \end{frame}
 
+\begin{frame}{Trees vs. Linear Models (cont)}
+	As we know, there is not a single model that will work all the time for any dataset. 
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{../../Figures/fig_trees_vs_ols.png}
+\end{figure}	
+\end{frame}
+
+\begin{frame}{Trees vs. Linear Models}
+	Advantages of trees are:
+	\begin{itemize}
+		\item They are very easy to explain even for non-expert people.
+		\item Trees can easily handle a mix of predictors (quantitative, continuous) without the need of {\it dummy} variables.
+	\end{itemize}
+But 
+\begin{itemize}
+	\item Trees do not have the same level of predictive accuracy.
+	\item Trees are unstable, small changes in data can cause significant chances in the final model.
+\end{itemize}
+\end{frame}
+
 \begin{frame}{References}
 
 Materials and some of the pictures are from (1),(2), and (3).
@@ -235,6 +274,7 @@ Materials and some of the pictures are from (1),(2), and (3).
 	\item Brian D. Ripley {\it Pattern Recognition and Neural Networks}. Cambridge University Press (1996). 
 	\item Aur\'elien G\'eron. {\it Hands-on Machine Learning with Scikit-Learn \& TensorFlow} O'Relly (2017)
 	\item Wiebe R. Pestman {\it Mathematical Statistics} de Gruyter (1998)
+	\item L. Brieman et al. {\it Classification and Regression Trees}. Wadworth and Brooks/Coke (1994)
 	
 \end{enumerate}	
 

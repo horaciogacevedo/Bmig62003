@@ -79,12 +79,12 @@ Note that the numerator of (\ref{eq:bayes}) is $P(E \cap A_\beta)$ whereas the d
 	Unlike the traditional (frequentist) inference, the Bayesian approach tries to determine conclusions about a parameter $\theta$ or unobserved data $\overline{y}$ as probability statements.  For example, given the observed data $y$,  Bayesian statements are based on the conditionals such as  $P(\overline{y}|y)$ for {\it new data} $\overline{y}$, or $P(\theta|y)$ for a parameter $\theta$. So following our Bayes theorem,
 	
 	\begin{equation}
-		{\color{blue}P(\theta| y)}=\frac{{\color{red} P(\theta)} {\color{green}P(y|\theta)}}{\color{green}P(y)}
+		{\color{blue}P(\theta| y)}=\frac{{\color{red} P(\theta)} {\color{green}P(y|\theta)}}{\color{purple}P(y)}
 		\label{eq:bayes2}
 	\end{equation}
 where $P(y)= \sum_{\theta} P(\theta) P(y|\theta)$ (or in the continuous case $P(y)= \int P(\theta) P(y|\theta) d\theta$). 
 
-The expression  $\color{red} P(\theta)$ is called the {\bf prior}, whereas  $\color{blue} P(\theta|y)$  is called {\bf posterior}, and $\color{green}P(y|\theta)/P(y)$ is called {\bf likelihood}. 
+The expression  $\color{red} P(\theta)$ is called the {\bf prior}, whereas  $\color{blue} P(\theta|y)$  is called {\bf posterior}, and $\color{green}P(y|\theta)$ is called {\bf likelihood}, and $\color{purple}P(y)$ is called {\bf evidence}. 
 
 Note that in (\ref{eq:bayes2}) the denominator does not depend on $\theta$.  So, the unnormalized posterior 
 
