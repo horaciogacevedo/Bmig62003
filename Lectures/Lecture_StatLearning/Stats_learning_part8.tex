@@ -1,0 +1,108 @@
+\documentclass{beamer}
+\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
+\usetheme{default}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathbbol}
+\usepackage{xcolor} % before tikz or tkz-euclide if necessary
+\usepackage{tkz-euclide} % no need to load TikZ
+\usepackage{multirow}
+\usepackage{lmodern}
+\usepackage{bm}
+
+\titlegraphic{\includegraphics[width=2cm]{../../Figures/UAMS_RGB.png}
+}
+
+
+\title{Statistical Machine Learning\\ Part 8\\ Random Forest}
+\author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics\\
+University of Arkansas for Medical Sciences}
+\begin{document}
+	\begin{frame}[plain]
+		\maketitle
+	\end{frame}
+	\begin{frame}{Bagging}
+		
+		We have seen that regression (or classification) trees are very useful but particularly unstable. That is, they suffer from high variance when presented with new data. 
+		
+		Fortunately, there is a general purpose procedures to reduce variance called {\it Bootstrap aggregation} or {\it bagging}. 
+		
+		{\bf Key Idea:} Given a set of $m$ independent (and identically distributed)  observations $X_1,\ldots, X_m$ each with variance $\sigma^2$, the variance of the mean $\overline{X}$ is given by 
+		\begin{equation*}
+			\hat{\sigma}^2(\overline{X})= \frac{1}{m} \sigma^2
+		\end{equation*}
+		{\bf Averaging a set of observations reduces variance}
+		
+	\end{frame}
+
+\begin{frame}{Bagging (cont)}
+	
+	It seems reasonable that for a given model $Y=f(X)+\varepsilon$ to get an estimate response at the point $X=x$ by averaging $\hat{f}^1(x), \ldots, \hat{f}^B(x)$ using $B$ separate training sets, that is 
+	\begin{equation*}
+		\hat{f}_{\textrm{avg}}(x)= \frac{1}{B} \sum_{b=1}^B \hat{f}^b (x)
+	\end{equation*}
+Since we don't have multiple training sets, then we exploit {\bf bootstrap!}.  More precisely, for a bootstrapped training set $b$, we obtain the estimate $\hat{f}^{*b}(x)$, and the corresponding {\bf bagging estimate}
+
+	\begin{equation*}
+	\hat{f}_{\textrm{bag}}(x)= \frac{1}{B} \sum_{b=1}^B \hat{f}^{*b} (x)
+\end{equation*}
+
+\end{frame}
+	
+	
+	
+
+
+
+\begin{frame}{Bagging for Regression Trees}
+	
+	There are few steps that we need to take for regression trees
+	\begin{itemize}
+		\item Construct $B$ regression trees using $B$ bootstrapped training sets (without pruning)
+		\item Average the resulting predictions
+	\end{itemize}
+Keep in mind that each (bootstrapped) tree has low bias but high variance. The bagging procedure will reduce the variance at the expense of a "modest" increase in bias. 
+\end{frame}
+
+\begin{frame}{Bagging for Classification Trees}
+	
+	The steps are similar for classification trees
+	\begin{itemize}
+		\item Construct $B$ regression trees using $B$ bootstrapped training sets (without pruning)
+		\item The prediction will be based on the majority vote. That is, the class most commonly occurring will be selected.
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Out-of-Bag Observations}
+	
+	The main idea of the bootstrap is that from $m$ observations, we select a sample with replacement $m$ observations.
+	
+	What is the probability of {\bf not} selecting sample 1 ?
+	
+	The probability of picking sample different from 1 would be 
+	$(1 - \frac{1}{m})$. Since we are repeating the experiment with replacement, the probability that a bootstrap sample does not contain sample 1 is 
+	\begin{equation*}
+		\left(1 - \frac{1}{m}\right) \cdot \left(1 - \frac{1}{m}\right) \cdots \left(1 - \frac{1}{m}\right) = \left(1 - \frac{1}{m}\right)^m
+	\end{equation*}
+	 A little bit of calculus shows that 
+	 \begin{equation*}
+	 \lim_{m\to\infty}\left(1-\frac{1}{m}\right)^m= \exp(-1) \approx 36.79\%
+	 \end{equation*}
+Thus, bootstrapping will not touch about 1/3 of the observations!
+and those observations are referred to as {\bf Out-of-Bag (OOB)}.  
+\end{frame}
+
+\begin{frame}{OOB Error Estimation}
+	We can exploit the OOB observations to estimate the test error in the bagging process without the need of cross-validation or even a split of the data in training and testing.
+	
+	$\hat{f}_{j}^{oob(i)}$ represents the prediction from the $B/3$ in which $i$th observation was OOB.
+	
+	
+	\begin{equation*}
+		\hat{f}_{OOB}(x)= \frac{1}{B_0}\sum_{j=1}^{B_0} \hat{f}^{*ob}(x)
+	\end{equation*}
+where 
+\end{frame}
+
+\end{document}
