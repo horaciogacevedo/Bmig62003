@@ -23,12 +23,21 @@
 	\begin{frame}[plain]
 		\maketitle
 	\end{frame}
+\begin{frame}{Paper?}
+	Today's session is lossely based on this paper
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.25]{../../Figures/Paper.png}
+	\caption{\href{https://github.com/theislab/single-cell-tutorial}{Paper}}
+\end{figure}	
+\end{frame}
+
 	\begin{frame}{sc-RNA seq}
 		
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.25]{../../Figures/scrnaseq_overview.png}
-	\caption{\href{https://github.com/theislab/single-cell-tutorial}{Overview}}
+	\caption{\href{https://www.embopress.org/doi/full/10.15252/msb.20188746}{Overview}}
 \end{figure}
 \end{frame}
 
@@ -244,7 +253,7 @@ closeness (RC).
 \end{frame}
 
 \begin{frame}{Cluster Annotation}
-	Once we have done the clustering, we are ready to give {\bf annotation} . The so-called {\sl marker genes} characterize the clusters.
+	Once we have done the clustering, we are ready to give {\bf annotation} . 
 	 
 				\begin{figure}[h]
 	\centering
@@ -253,6 +262,18 @@ closeness (RC).
 \end{figure}		
 	
 \end{frame}
+	
+\begin{frame}{Cluster Annotation(cont)}
+	"Clustered data are analysed by finding the gene signatures of each cluster. These so-called {\it marker genes} characterize the cluster and are used to annotate it with a meaningful biological label. "
+	
+	One of the bigest warnings for using this approach is that the cluster do not represent cell types. 
+That is why they are referred to as {\bf cell identities} and not {\bf cell types}.
+
+External data should be used try to identify the expected expression profiles of individual cell identities.
+
+From the statistical standpoint, one should use some permutation test (bootstrap) to determine the fidelity of the clustering step. 
+
+\end{frame}	
 	
 	\begin{frame}{References}
 		
@@ -266,6 +287,6 @@ closeness (RC).
 		
 		I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
 	\end{frame}	
-	
+
 	
 \end{document}
