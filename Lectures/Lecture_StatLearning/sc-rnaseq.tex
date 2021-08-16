@@ -44,48 +44,145 @@
 \end{figure}
 	
 \end{frame}
+
 	
 	\begin{frame}{Space: the final frontier}
 		
-		It seems reasonable that for a given model $Y=f(X)+\varepsilon$ to get an estimate response at the point $X=x$ by averaging $\hat{f}^1(x), \ldots, \hat{f}^B(x)$ using $B$ separate training sets, that is 
-		\begin{equation*}
-			\hat{f}_{\textrm{avg}}(x)= \frac{1}{B} \sum_{b=1}^B \hat{f}^b (x)
-		\end{equation*}
-		
-		where $\hat{f}^k$ is a tree regression estimate (without pruning) based on the observations $\{x_{k1},\ldots,x_{kB}\}$.
-		
-		Since we don't have multiple training sets, then we exploit {\bf bootstrap!}.  More precisely, for a bootstrapped training set $b$, we obtain the estimate $\hat{f}^{*b}(x)$, and the corresponding {\bf bagging estimate}
-		
-		\begin{equation*}
-			\hat{f}_{\textrm{bag}}(x)= \frac{1}{B} \sum_{b=1}^B \hat{f}^{*b} (x)
-		\end{equation*}
+The mathematical representation of the data is given by placing the readings (RPKM) of each individual gene in an "axis" of an $n$ dimensional space.
+ In this case $n$ represents a large number of genes.
+ 
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.45]{../../Figures/sc_space.png}
+	\caption{Spatial representation of scRNAseq data}
+\end{figure}
 		
 	\end{frame}
 	
+\begin{frame}{PCA interlude}
+
+Principal Component Analysis is one of the most commonly used methodologies to "inspect" high dimensional data. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.45]{../../Figures/sc_space1.png}
+	\caption{Plane projection of data}
+\end{figure}	
 	
+\end{frame}	
+
+\begin{frame}{PCA projection}
+	The main goal of PCA  is to find the representation of our data in a lower dimensional space (mostly a plane). But the selection of such plane should preserve original data variability. 
 	
+	Formally, the two directions represent the directions of the maximal variability of our data. 
+
+\end{frame}	
+
+\begin{frame}{RGB example}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.45]{../../Figures/pca_rgb.png}
+	\caption{Plane projection of RGB data}
+\end{figure}		
+
+
+\end{frame}	
+
+\begin{frame}{Clustering}
+	Clustering refers to a set of computational techniques for finding subsets or {\sl clusters} in a data set.  Clustering is among the so-called {\bf unsupervised learning methodologies } .\\
 	
+	\begin{center}
+		Unsupervised $\ne$ Automatic
+	\end{center}
 	
-	
-	\begin{frame}{Bagging for Regression Trees}
+	Thus, the main goal of clustering is to find homogeneous subgroups among the data. 
 		
-		There are few steps that we need to take for regression trees
-		\begin{itemize}
-			\item Construct $B$ regression trees using $B$ bootstrapped training sets (without pruning)
-			\item Average the resulting predictions
-		\end{itemize}
-		Keep in mind that each (bootstrapped) tree has low bias but high variance. The bagging procedure will reduce the variance at the expense of a "modest" increase in bias. 
-	\end{frame}
+\end{frame}
 	
-	\begin{frame}{Bagging for Classification Trees}
-		
-		The steps are similar for classification trees
-		\begin{itemize}
-			\item Construct $B$ regression trees using $B$ bootstrapped training sets (without pruning)
-			\item The prediction will be based on the majority vote. That is, the class most commonly occurring will be selected.
-		\end{itemize}
-		
-	\end{frame}
+\begin{frame}{Clustering terminology}
+	
+
+
+Let's define a distance between two points (in a plane), say $d$. Also, the {\sl centroid } of a cluster is the mean of their observations.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.65]{../../Figures/centroid.png}
+	\caption{Distance and Centroid of a cluster}
+\end{figure}	
+\end{frame}
+
+\begin{frame}{K-means clustering}
+One of the simplest methods for clustering is $K$-means clustering. 
+
+We begin with a data set and a value $K$ fixed by a human (say $K=3$). 
+
+\begin{enumerate}
+	\item Assign randomly a value between 1 and K to each data point.
+	\item Iterate the following procedure until the clusters assignments stop changing 
+	\begin{enumerate}
+		\item Find the centroid for each of the $K$ clusters.
+		\item Each point will be assigned to the cluster $K$ whose distance is the smallest. If two or more are equidistant, select randomly the cluster among the equidistant clusters.
+	\end{enumerate}	
+\end{enumerate}
+
+
+\end{frame}
+
+\begin{frame}{K-means clustering picture}
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.55]{../../Figures/kmeans_clustering.png}
+		%\caption{Distance and Centroid of a cluster}
+	\end{figure}	
+	\href{https://www.statlearning.com/}{An Introduction to Statistical Learning (Chapter 10)}
+\end{frame}
+
+\begin{frame}{Problems with K-means clustering}
+	\begin{itemize}
+
+		\item Selection of the distance function $d$ (Euclidean, Pearson correlation, arccos, etc.) 
+		\item Selection of $K$.
+	\end{itemize}
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.55]{../../Figures/kmeans_K.png}
+	%\caption{Distance and Centroid of a cluster}
+\end{figure}	
+\href{https://www.statlearning.com/}{An Introduction to Statistical Learning (Chapter 10)}	
+	
+\end{frame}
+	
+\begin{frame}{t Stochastic Neighbor Embedding}
+
+$t$-SNE maps a set of high-dimensional points to a plane, such that ideally, close neighbors remain close and distant points remain distant.
+
+ Informally, the algorithm places all
+points on the 2D plane, initially at random positions, and lets them
+interact as if they were physical particles. 
+
+The interaction is governed
+by two laws: 
+\begin{itemize} 
+	\item all points are repelled from each other
+\item each point is attracted to its nearest neighbors
+\end{itemize}
+This methodology is governed by a parameter called {\bf perplexity}.
+
+\end{frame}	
+
+\begin{frame}{tSNE vs PCA}
+	A visual comparison of PCA vs tSNE
+	
+		\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.55]{../../Figures/pca_vs_tsne.png}
+		%\caption{Distance and Centroid of a cluster}
+	\end{figure}	
+	
+	
+\end{frame}
 	
 	\begin{frame}{Out-of-Bag Observations}
 		
