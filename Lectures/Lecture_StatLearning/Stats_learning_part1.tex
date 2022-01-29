@@ -5,7 +5,21 @@
 \usepackage{tkz-euclide} % no need to load TikZ
 \usepackage{multirow}
 
-\title{Statistical Machine Learning\\ Part 1}
+\usepackage[
+backend=biber,
+style=authoryear-icomp,
+sortlocale=de_DE,
+natbib=true,
+url=false, 
+doi=true,
+eprint=false
+]{biblatex}
+\addbibresource{../../Bibliography/main_ML.bib}
+
+\titlegraphic{\includegraphics[width=2cm]{../../Figures/UAMS_RGB.png}
+}
+
+\title{Statistical Machine Learning\\ Lecture 1 \\ Statistical Setup}
 \author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics}
 \begin{document}
 \begin{frame}[plain]
@@ -13,9 +27,9 @@
 \end{frame}
 \begin{frame}{Introduction}
 	
-	We will follow the Chapter 2 from G\'eron's book. 
+	We will fill the technical gaps of the Chapter 2 from G\'eron's book. 
 	
-	The objective is:  Your model should learn from the provided data and be able to predict the median housing price in any district, given all the other metrics. 
+	The objective of that chapter is:  Your model should learn from the provided data and be able to predict the median housing price in any district, given all the other metrics. 
 	
 	Rough methodology:
 	\begin{itemize}
@@ -369,16 +383,27 @@ where $\mu=E(X)$ and $\sigma=\sigma(X)$.
 	\end{figure}	
 \end{frame}
 
+\begin{frame}{What have we learned?}
+	\begin{itemize}
+		\item Measures of performance commonly used in statistical models (RSE, RSS, RMSE).
+		\item Common practices for preparing datasets for ML.
+		\item Revisiting Expectation, Variance, Correlations and Variance-Covariance matrices.
+		\item Best practices for data imputation.
+		\item Data transformation.
+		\item Cross validation as an estimate of test error. 
+		
+	\end{itemize}
+\end{frame}
+
+
 \begin{frame}{References}
 	
-Materials and some of the pictures are from (1).
-	\begin{enumerate}
-\item Gareth James et al. {\it An Introduction to Statistical Learning with applications in R}. Springer (2015)
-\item Wiebe R. Pestman {\it Mathematical Statistics} de Gruyter (1998)
-\item Frank E. Harrell Jr {\it Regression Modeling Strategies} Springer (2001)
-\item David G. Kleinbaum et al. {\it Applied Regression Analysis and other multivariable methods} Duxbury (2008)
-\item Trevor Hastie et al. {\it The Elements of Statistical Learning} Springer (2001)	
-\end{enumerate}	
+\nocite{*}	
+Materials and some of the pictures are from \citep{James2015}.
+    \printbibliography 
+
+
+
 
 I have used some of the graphs by hacking TiKz code from StakExchange and other old tricks of \TeX
 \end{frame}		
