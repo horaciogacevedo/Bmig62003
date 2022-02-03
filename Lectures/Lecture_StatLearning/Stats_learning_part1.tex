@@ -7,7 +7,7 @@
 
 \usepackage[
 backend=biber,
-style=authoryear-icomp,
+style=numeric,
 sortlocale=de_DE,
 natbib=true,
 url=false, 
@@ -183,7 +183,7 @@ If the variance of $Z$ also exists, we define the {\bf covariance} of $W$ and $Z
 \begin{frame}{Variance and Covariance Properties}
 	\begin{itemize}
 		\item Since $\textrm{Var}(W) \ge 0$, we define the {\bf standard deviation} of $W$ as $\sigma(W)=\sqrt{\textrm{Var}(W)}$
-		\item $\textrm{Var}(W+Z)= \textrm{Var}(W)+ \textrm{Var}(Z)$
+		\item $\textrm{Var}(W+Z)= \textrm{Var}(W)+ \textrm{Var}(Z)+2 \textrm{Cov}(W,Z)$
 		\item $\textrm{Var}(aW)= a^2 \textrm{Var}(W)$ for $a \in \mathbb{R}$
 		\item If $W$ and $Z$ are (statistically) independent $\textrm{Cov}(W,Z)= 0$.
 		\item $\textrm{Cov}(W+a,Z+b)= \textrm{Cov}(W,Z)$
@@ -398,9 +398,10 @@ where $\mu=E(X)$ and $\sigma=\sigma(X)$.
 
 \begin{frame}{References}
 	
-\nocite{*}	
-Materials and some of the pictures are from \citep{James2015}.
-    \printbibliography 
+
+Materials and some of the pictures are from \citep{James2015}, \citep{hastie01}, \citep{harrell}, \citep{kleinbaum}, and \citep{pestman}
+
+\printbibliography 
 
 
 
