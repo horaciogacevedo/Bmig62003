@@ -8,13 +8,28 @@
 \usepackage{tkz-euclide} % no need to load TikZ
 \usepackage{multirow}
 
-\title{Statistical Machine Learning\\ Part 3}
+\usepackage[
+backend=biber,
+style=authoryear-icomp,
+sortlocale=de_DE,
+natbib=true,
+url=false, 
+doi=true,
+eprint=false
+]{biblatex}
+\addbibresource{../../Bibliography/main_ML.bib}
+
+\titlegraphic{\includegraphics[width=2cm]{../../Figures/UAMS_RGB.png}
+}
+
+\title{Statistical Machine Learning\\ Multilinear Regression and Variants }
 \author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics}
+
 \begin{document}
-	\begin{frame}[plain]
-		\maketitle
-	\end{frame}
-	\begin{frame}{(Multi)Linear Regression }
+\begin{frame}[plain]
+		\maketitle	
+\end{frame}
+\begin{frame}{(Multi)Linear Regression }
 		It is very insightful to check the ordinary linear regression as a
 		linear algebra problem.
 		%
@@ -168,11 +183,11 @@ where $\lambda \ge 0$ is a tuning parameter (hyperparameter) to be determined se
 \end{frame}
 
 \begin{frame}{Lasso}
-	The {\bf Lasso} alternative calculates the coeffcients $\hat{\theta}_\lambda^L$ by minimizing a slightly different formula
+	The {\bf Lasso} alternative calculates the coefficients $\hat{\theta}_\lambda^L$ by minimizing a slightly different formula
 \begin{equation*}
 	\sum_{i=1}^n \left( y_i - \theta_0 - \sum_{j=1}^p \theta_j x_{ij} \right)^2 + \lambda \sum_{j=1}^p |\theta_j|,
 \end{equation*} 	
-	The advantage of lasso is that it forces some of the coefficien estimates to be exactly equal to zero when the tuning parameter $\lambda$ is sufficiently large. Thus, we say that lasso yields {\it sparse} models.
+	The advantage of lasso is that it forces some of the coefficient estimates to be exactly equal to zero when the tuning parameter $\lambda$ is sufficiently large. Thus, we say that lasso yields {\it sparse} models.
 \end{frame}
 
 \begin{frame}{Optimization perspective}
@@ -233,18 +248,21 @@ This model is a (convex) combination between Ridge Regression and Lasso Regressi
 
 \end{frame}
 
+\begin{frame}{What have we learned?}
+	\begin{itemize}
+		\item Multi-linear regression as an optimization problem.
+		\item The gradient descent is a good strategy for finding a solution for multi-linear regression.
+		\item Expansion of the multi-linear regression models using hyperparameters. 
+		\item LASSO and Ridge regression use shrinking methods to reduce some coefficients to zero.	
+	\end{itemize}
+\end{frame}
+
 
 \begin{frame}{References}
-	
-	Materials and some of the pictures are from (1),(2), and (3).
-	\begin{enumerate}
-		\item Gareth James et al. {\it An Introduction to Statistical Learning with applications in R}. Springer (2015)
-		\item Richard O. Duda et al. {\it Pattern Classification} John Wiley (2001). 
-		\item Aur\'elien G\'eron. {\it Hands-on Machine Learning with Scikit-Learn \& TensorFlow} O'Relly (2017)
-		\item Wiebe R. Pestman {\it Mathematical Statistics} de Gruyter (1998)
-	\end{enumerate}	
-	
-	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
+Materials and some of the pictures are from \citep{James2015}, \citep{duda}, \citep{geron2}, and \citep{pestman}.
+\printbibliography 	
+
+I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
 \end{frame}		
 \end{document}
 
