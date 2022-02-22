@@ -125,6 +125,18 @@ The procedure is as follows.
 \end{enumerate}
 \end{frame}
 
+\begin{frame}{Manifold Learning Main Ideas}
+	Suppose that we are given data points $\{x_1, \ldots, x_m\}$ in $\mathbb{R}^n$. We will assume that there is a function (embedding) $\gamma \colon {\cal M} \to \mathbb{R}^n$. 
+	
+	Keep in mind that \textit{distances} in manifolds can be different
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=3cm]{../../Figures/fig_geodesic.jpg}
+\end{figure}
+	The manifold structure can be reconstructed by considering the "short distances" as reliable indicators of the local (intrinsic) distances and ignoring the "long distances".
+	
+
+\end{frame}
 
 \begin{frame}{What we have learned?	}
 	\begin{itemize}
@@ -135,6 +147,20 @@ The procedure is as follows.
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Isomap}
+	Isomap applies MDS to an empirical approximation of the intrinsic metric.
+	The procedure goes as follows. We fix a scale parameter $\varepsilon$ and a target dimension parameter $k$.
+	
+	\begin{enumerate}
+		\item Form the weighted graph $G$ with
+		\begin{itemize}
+			\item vertices the points $\{x_i\}$, and
+			\item edges $(i,j)$ with weights given by $w_{ij}=\| x_i -x_j\|$ when $\|x_i -x_j\| \le \varepsilon$.
+		\end{itemize}
+		\item We form a new space $X'$ with points $\{x_i\}$ but distances given by the graph metric on $G$.  Meaning that the distances between two edges is given by the shortest path in the graph.
+		\item Use MDS to embed this space into $\mathbb{R}^k$ producing points $y_i = \theta(x_i)$
+	\end{enumerate}
+\end{frame}
 
 
 \begin{frame}{References}
