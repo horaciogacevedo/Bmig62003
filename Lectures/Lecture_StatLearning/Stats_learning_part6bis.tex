@@ -138,14 +138,6 @@ The procedure is as follows.
 
 \end{frame}
 
-\begin{frame}{What we have learned?	}
-	\begin{itemize}
-		\item The power of resampling methods for estimation of parameters.
-		\item Bootstrap is considered one of the most powerful statistical techniques for estimation. 
-		\item Methods for subset selection of covariates in a regression setting.
-		\item We explore the forward and backward selection.
-	\end{itemize}
-\end{frame}
 
 \begin{frame}{Isomap}
 	Isomap applies MDS to an empirical approximation of the intrinsic metric.
@@ -161,6 +153,140 @@ The procedure is as follows.
 		\item Use MDS to embed this space into $\mathbb{R}^k$ producing points $y_i = \theta(x_i)$
 	\end{enumerate}
 \end{frame}
+
+\begin{frame}{Isomap}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=10cm]{../../Figures/fig_manifolde_4_7.jpg}
+	\end{figure}	
+\end{frame}
+
+\begin{frame}{Isomap cont.}
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=10cm]{../../Figures/fig_manifolde_4_8.jpg}
+	\end{figure}	
+\end{frame}
+
+\begin{frame}{Local Linear Embedding LLE}
+	We fix a target dimension parameter $k$ and a neighborhood size $K$. The algorithm goes as follows:
+	\begin{enumerate}
+		\item For each point $x_i$, we solve for weight $w_{ij}$ which minimize the expression
+		\begin{equation*}
+			{\cal E}(x_i)= \sum_i \left( x_i - \sum_j w_{ij} x_j \right)^2, 
+		\end{equation*}
+		subject to the constrains
+		\begin{equation*}
+			\begin{cases}
+				w_{ij}=0 & \text{$x_j$ not a $K$ nearest neighbor of $x_i$}.\\
+				\sum_j w_{ij}=1 & \\
+			\end{cases}
+		\end{equation*}
+	We are solving for weights that optimally reconstruct each point $x_i$ from its $K$ nearest neighbors. The weights can efficiently computed via least squares.
+	\item Embedding points $\{ y_i = \theta(x_i)\} \subset \mathbb{R}^k$ are computed so that
+
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{LLE cont.}
+		\begin{equation*}
+		{\cal E}= \sum_i \left( y_i - \sum_j w_{ij}y_j \right)^2
+	\end{equation*}
+
+		is minimized. To solve this problem we can calculate the top $k$ eigenvectors of the corresponding matrix. 
+	\begin{figure}[h]
+	\centering
+	\includegraphics[width=8cm]{../../Figures/fig_manifolde_4_10.jpg}
+\end{figure}			
+		
+\end{frame}
+
+\begin{frame}{LEE cont}
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=8cm]{../../Figures/fig_manifolde_4_11.jpg}
+	\end{figure}			
+\end{frame}
+
+
+\begin{frame}{Neighbor Embedding Algorithms}
+	These algorithms aim to address the problem when data points have non-uniform density. The \textbf{stochastic neighbor embedding (SNE)} and the \textbf{$t$-distributed stochastic neighbor embedding (t-SNE)} aim to address that issue.
+	
+	We begin with our traditional setup for data where $\{x_i\} \subset \mathbb{R}^n$ and $\{y_i\} \subset \mathbb{R}^k$, where $k \le n$ (hopefully considerably smaller). Then we define
+	\begin{equation*}
+		p_{j|i}= \frac{ \exp( \frac{- \|x_i -x_j\|^2}{2\sigma_i^2})}{ \sum_{k\ne i}\exp( \frac{- \|x_i -x_j\|^2}{2\sigma_i^2})}
+	\end{equation*}
+	and
+	\begin{equation*}
+		q_{j|i}= \frac{ \exp( - \|y_i -y_j\|^2)}{ \sum_{k\ne i}\exp( - \|y_i -y_j\|^2)}
+	\end{equation*}
+		where the variances $\sigma_i$ are obtained by an optimization process, and in the second equation we are fixing all of the variances to be identically $\sqrt{2}/2$. 
+\end{frame}
+\begin{frame}{SNE cont.}
+	The idea behind SNE is that good image points $\{y_i\}$ have the property that the difference between $p_{j|i}$ and $q_{j|i}$ is minimized in the sense of the so-called summed Kullback-Leibler divergences cost function
+	\begin{equation*}
+		C= \sum_i \sum_j p_{j|i} \log \frac{p_{j|i}}{q_{j|i}}
+	\end{equation*} 
+	This equation ensures that the local distributions have similar means. 
+	
+	
+
+\end{frame}
+
+\begin{frame}{SNE cont}
+	
+	In practice, SNE algorithm proceeds by solving the minimizing point $\{y_i\}$ via a gradient descent in order to find a good local minimum for $C$.  Convergence is often slow and depends critically on good choices of the variances $\sigma_i$. In principle, differing choices of $\sigma_i$amount to enforcing variable numbers of neighbors used to do the local estimation of the coordinates; this is expressed here via the use of the \textbf{perplexity} which is computed as
+	\begin{equation*}
+		P= 2^{- \sum_j p_{j|i}\log_2 p_{j|i}}
+	\end{equation*}
+	The desired perplexity is typically between 10 and 100 is a parameter and we solve for values $\sigma_i$ that achieve the perplexity.
+
+\end{frame}
+
+\begin{frame}{$t$-SNE}
+	One problem with the original SNE is that the gradient descent optimization is slow and difficult to achieve convergence. The proposed solution goes as follows
+	\begin{enumerate}
+		\item We symmetrize $p_{j|i}$ as 
+		\begin{equation*}
+			p_{ij}= \frac{p_{j|i}+p_{i|j}}{2}
+		\end{equation*}
+	\item We define a symmetrize variant of $q_{j|i}$ as follows
+	\begin{equation*}
+		q_{ij}= \frac{(1+\|y_i-y_j\|^2)^{-1}}{\sum_{k\ne l}(1+\|y_k-y_l\|^2)^{-1}}
+	\end{equation*}
+	In the original definition, the $q_{j|i}$ was defined using a Gaussian; this expression replaces that with the Student $t$-distribution with one degree of freedom, which has more weight in the tails.
+	\item Finally, the cost function is replaces with the expression
+	\begin{equation*}
+		C= \sum_i \sum_j p_{ij} \log \frac{p_{ij}}{q_{ij}}
+	\end{equation*}
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{$t$-SNE advantages over SNE}
+	Why do we complicate things this way?
+	\begin{enumerate}
+		\item The use of a heavier tailed distribution means that outliers have less impact on the overall results and the compression effects around the center of mass are alleviated (to some degree)
+		\item The adjusted formula for $q_{ij}$ also has the effect of substantially improving the efficiency and quality of the gradient descend procedure.
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{$t$-SNE cont}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=8cm]{../../Figures/fig_manifolde_4_17.jpg}
+	\end{figure}				
+	
+\end{frame}
+
+
+\begin{frame}{What we have learned?	}
+	\begin{itemize}
+		\item Manifold learning and dimensionality reduction are similar concepts.
+		\item The idea is to reduce dimensionality taking advantage of the manifold structure of our data. 
+		\item Most of these methods imply that we can understand the local behavior of our data and classical methodologies are applied based on this assumption.
+	\end{itemize}
+\end{frame}
+
 
 
 \begin{frame}{References}
