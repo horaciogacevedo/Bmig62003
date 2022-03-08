@@ -310,6 +310,73 @@ In \citep{cartbook} is proven that there is a strictly increasing sequence of pa
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{CART details}
+	The choice of the optimal tree can be made directly by minimized the error obtained by cross-validation or by applying the "1 standard error rule".  This rule aims at selecting in the sequence a more compact tree reaching statistically the same error. Thus, it chooses the most compact tree reaching an error lower than the value of the previous minimum augmented by the estimated standard error of this error. 
+	
+ 	Decision Trees have  more robust libraries in R.  Namely, \textbf{rpart} package is particularly useful.
+	
+\end{frame}
+
+\begin{frame}{Cross-validation in CART}
+	The cross-validation (V-fold cross-validation) in \textbf{rpart} goes as follows:
+	Denote the whole data set by ${\cal L}_n$ ($n$ is the number of samples). We obtain the sequences $(T_k)_{k=1}^K$ and $(\alpha_k)_{k =1}^K$ as before.  
+	As usual in CV, we divide ${\cal L}_n= E_1 \cup E_2 \cup \cdots \cup E_V$. For each $v \in 1,\ldots, V$, we buidl the sequence of subtrees $(T_k^v)_{k=1}^K$ with ${\cal L}_n - E_v$ as a learning sample. We calculate the validation errors of the sequence as
+	\begin{equation*}
+		R^{cv}(T_k)= \frac{1}{V} \sum_{v=1}^V \sum_{(x_i,y_i)\in E_v} (y_i - T_k^v(x_i))^2,
+	\end{equation*}
+	where $T_k^v$ minimizes the penalized criterion $\text{crit}_{\alpha'_k}= \sqrt{\alpha_k \alpha_{k+1}}$. 
+	Finally, we chose the model $T_{\hat{k}}$ where $\hat{k}= \text{argmin}_{1\le k \le K}R^{cv}(T_k)$
+\end{frame}
+
+\begin{frame}{Normalized Penalty CP parameter}
+	For the \textbf{rpart} library the so-called CP (normalized complexity-penalty parameter), the value by default is $cp=0.01$, the tree provided corresponds to the one obtained by slecting the one corresponding to $\alpha=0.01* \overline{\text{err}}(T_n)$
+\end{frame}
+
+\begin{frame}{Surrogate Splits CART}
+	For any given node $t$, let $s^*$ be the best split of the node into $t_L$ (left node) and $t_R$ (right node), for instance the best univariate split.
+	
+	Take any variable $x_m$ and let $S_m$ be the set of all splits on $x_m$, and $\overline{S}^m$ the set of splits complementary to $S_m$.  For a given split $s_m\in S_m \cup \overline{S}_m$, let  $p(s^*,s_m)$ the probability that $s_m$ predicts $s^*$ correctly.
+	
+	A split $\tilde{s}_m   \in S_m \cup \overline{S}_m$ is called a \textbf{surrogate split} on $x_m$ for $s^*$ if 
+	\begin{equation*}
+		p(s^*,\tilde{s}_m)= \max_{s_m} p(s^*,s_m) \quad s_m \in S_m \cup \overline{S}_m
+	\end{equation*}
+	The intuitive idea of a surrogate split $\tilde{s}_m$ on $x_m$ is the most accurate split that predicts the action of $s^*$. 
+\end{frame}
+
+\begin{frame}{Surrogate Splits CART (cont)}
+	Suppose $s^*$ sends the cases in $t$ left with relative probability $p_L$ and right with relative probability $p_R$ ($p_R+p_L=1$).
+	
+	The \textbf{predictive measure of association} 
+	\begin{equation*}
+		\lambda(s^*| \tilde{s}_m)= \frac{\min(p_L,p_R)-(1-p(s^*,\tilde{s}_m))}{\min(p_L,p_R)}
+	\end{equation*}
+	This measure is the relative reduction in error gotten by using $\tilde{s}_m$ to predict $s^*$ as compared with the $\max (p_L,p_R)$. If $\lambda(s^*| \tilde{s}_m)\le 0$, $\tilde{s}_m$ is no help in predicting $s^*$ and is discarded as a surrogate split. 
+	
+	Why do we need surrogate splits? For missing data and to determine the variables of importance!
+	
+
+\end{frame}
+
+\begin{frame}{Missing Data Algorithm}
+	Suppose that we have the best split $s^*$ on a node is being found. If there are missing values, the best split $s^*_m$ on $x_m$ is computed using all cases containing a valid of $x_m$ and then $s^*$ selected as that split $s^*m$ which maximizes decrease on impurity.
+	
+	If a case has missing values so that $s^*$ is not defined for that case. Among all non-missing variables in the case, find that one, say $x_m$ with $\tilde{s}_m$ having the highest measure of predictive association with $s^*$. The split the case using $\tilde{s}_m$.
+	
+	This procedure is similar to replacing a missing value in a linear model by regression on the non-missing value most highly correlated with it. 
+	
+\end{frame}
+
+\begin{frame}{Variable Ranking CART}
+	Let $T$ be an optimal subtree selected by the cross-validation or test sample procedure. If the Gini splitting rule has been used, then at each node compute $\Delta(\tilde{s}_m,t)= I(t)-I(t_L)-I(t_R)$.
+	
+	The \textbf{measure of importance of variable} $x_m$ is defined as
+	\begin{equation*}
+		M(x_m)= \sum_{t\in T} \Delta I (\tilde{s}_m, t)
+	\end{equation*}
+
+	The measure of important is the sum over all nodes of the decrease in impurity produced by the best split on $x_m$ at each node. Since only the relative magnitudes of the $M(x_m)$ are the interesting, the actual measures of importance we use are the normalizes quantities $100 M(x_m)/\max_m M(x_m)$. The most important variable has measure 100, and the other range 0 to 100.
+\end{frame}
 
 \begin{frame}{Trees vs. Linear Models}
 	The classical linear regression assumes a relationship of the form
