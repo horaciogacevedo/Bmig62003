@@ -3,6 +3,7 @@
 \usetheme{default}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+%\usepackage{amstex}
 \usepackage{mathbbol}
 \usepackage{xcolor} % before tikz or tkz-euclide if necessary
 \usepackage{tkz-euclide} % no need to load TikZ
@@ -10,7 +11,22 @@
 \usepackage{lmodern}
 \usepackage{bm}
 
-\title{Statistical Machine Learning\\ Part 7\\
+\usepackage[
+backend=biber,
+style=authoryear-icomp,
+sortlocale=de_DE,
+natbib=true,
+url=false, 
+doi=true,
+eprint=false
+]{biblatex}
+\addbibresource{../../Bibliography/main_ML.bib}
+
+
+\titlegraphic{\includegraphics[width=2cm]{../../Figures/UAMS_RGB.png}
+}
+
+\title{Statistical Machine Learning\\ 
 Tree-Based Methods}
 \author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics\\
 University of Arkansas for Medical Sciences}
@@ -42,7 +58,7 @@ We will use the {\bf Hitters} data set as an example for  regression.  After run
 
 \begin{frame}{Regression Trees (cont)}
 	How to read this information?
-	The main feature for this set is {\it years}, from which the total samples are split into two depending on whether their time spent in the baseball league has been less than 4.5 years. The case on the left (True) is already given a value of $5.107$, which means that the average salary is $\exp(5.107)\approx 165.17$ thousand dollars a year. Players with more than 4.5 years will be further divided into the variable ${\it hits} $, and someone above 117.5 will earn on average $\exp(6.74)=845.56$ thousand dollars!
+	The first feature for this set is {\it years}, from which the total samples are split into two depending on whether their time spent in the baseball league has been less than 4.5 years. The case on the left (True) is already given a value of $5.107$, which means that the average salary is $\exp(5.107)\approx 165.17$ thousand dollars a year. Players with more than 4.5 years will be further divided into the variable ${\it hits} $, and someone above 117.5 will earn on average $\exp(6.74)=845.56$ thousand dollars!
 \end{frame}
 
 \begin{frame}{Regression Trees (cont)}
@@ -94,11 +110,11 @@ where $(x,y) \in R_j$.
 	\begin{equation*}
 		\sum_{j=1}^J \sum_{i\in R_j} (y_i - \hat{y}_{R_j})^2
 	\end{equation*}
-where $\hat{y}_{R_j}$ is the mean response for the training observations within the $j$th box. Since it is not computationally feasible to test every single box combination, we use a {\it greedy} approach that is known as {\it recursive binary splitting}. This process is top down since we start with the whole reagion and after a number of successive splits into two branches further down on the tree. At each step we select the {\it best} split at the given time without looking at other alternatives further down. 
+where $\hat{y}_{R_j}$ is the mean response for the training observations within the $j$th box. Since it is not computationally feasible to test every single box combination, we use a {\it greedy} approach that is known as {\it recursive binary splitting}. This process is top down since we start with the whole region and after a number of successive splits into two branches further down on the tree. At each step we select the {\it best} split at the given time without looking at other alternatives further down. 
 \end{frame}
 
 \begin{frame}{Recursive Binary Splitting}
-	We begin by selecting a predictor $X_j$ and the cutpoint $s$ sucha that splitting the predictor space into the regions $\{ X| X_j <s \}$ and $\{ X | X_j \ge s\}$ leads to the greates possible reduction in RSS. Thus, for any $j$ and $s$, we define a pair of half-planes
+	We begin by selecting a predictor $X_j$ and the cut point $s$ such a that splitting the predictor space into the regions $\{ X| X_j <s \}$ and $\{ X | X_j \ge s\}$ leads to the creates possible reduction in RSS. Thus, for any $j$ and $s$, we define a pair of half-planes
 	\begin{equation}
 		R_1(j,s)= \{ X | X_j <s\} \quad \textrm{and } R_2(j,s)= \{X| X_j\ge s\}
 		\label{eq:rbs1}
@@ -108,7 +124,7 @@ and we look for the value $j$ and $s$ that minimize the equation
 	\sum_{i: x_i \in R_1(j,s)} (y_i - \hat{y}_{R_1})^2 + 	\sum_{i: x_i \in R_2(j,s)} (y_i - \hat{y}_{R_2})^2 ,
 	\label{eq:rbs2}
 \end{equation}
-We repeat the process looking for the best predictor and best cutpoint in order to split the data further so as to minimize the RSS within each of the resulting regions but this time we we don't split the entire space but each of the two regions found. This process continues until a certain criteria is reach (e.g., until no region contains fewer than a certain number of elements within). 
+We repeat the process looking for the best predictor and best cut point in order to split the data further so as to minimize the RSS within each of the resulting regions but this time we we don't split the entire space but each of the two regions found. This process continues until a certain criteria is reach (e.g., until no region contains fewer than a certain number of elements within). 
 
 
 \end{frame}
@@ -152,7 +168,7 @@ The recursive binary splitting may produce good predictions on the training set,
 \end{frame}
 
 \begin{frame}{Example. }
-	The unpruned tree that results from greedy splitting on the training data from the {\bf Hitters} dataset is depicted below
+	The unpruned tree that results from greedy splitting on the training data from the {\bf Hitters} data set is depicted below
 
 \begin{figure}[h]
 	\centering
@@ -233,6 +249,68 @@ The same algorithm has the following cost function for regression
 
 \end{frame}
 
+\begin{frame}{CART algorithm pruning}
+
+This process consists in searching for the best pruned sub-tree of the maximal tree.  It should be a good intermediate tree between the two extremes
+
+\begin{itemize}
+	\item The maximal tree that has a high variance and low bias, and
+	\item The tree containing only the root (stump) that has low variance but high bias.
+\end{itemize}
+
+Despite the fact that there are a finite number of sub trees, it is computationally expensive to calculate all. Instead, we looks from a sequence of nested sub-trees $T_1,\ldots, T_K$ all pruned from $T_{max}$, where $T_k$ minimizes a penalized criterion where the penalty is proportional to the number of leaves of the tree. 
+
+\end{frame} 
+
+\begin{frame}{CART algorithm pruning (cont)}
+Let's consider the regression setup, $t$ denotes a node, and data is represented as pairs $(x_i,y_i)_{i=1}^n$ of explanatory and response variables, respectively.  
+\begin{equation*}
+\overline{\text{err}}(T)= \frac{1}{n}\sum_{t \text{ leaf of } T} \sum_{(x_i,y_i) \in t} (y_i- \overline{y}_t)^2
+\end{equation*}
+
+and the penalized least squares criterion:
+\begin{equation*}
+	\text{crit}_\alpha= \overline{\text{err}}(T) + \alpha |T|
+\end{equation*}
+where $|T|$ represents the number of leaves of the tree $T$. 
+
+In \citep{cartbook} is proven that there is a strictly increasing sequence of parameters $(\alpha_i)_{i=1}^K$ such that $\alpha_1=0$ and an associated sequence $T_1 \succ T_2 \succ \cdots \succ T_K$ of nested trees with $T_1=T_{max}$ and 
+\begin{equation*}
+	\forall \alpha \in [\alpha_k, \alpha_{k+1}[ , \, T_k= \underset{ T \text{ subtree of }T_{max}  }{\textrm{argmin}}
+	 \text{crit}_{\alpha} (T) = \underset{ T \text{ subtree of }T_{max}  }{\textrm{argmin}}
+	 \text{crit}_{\alpha_k} (T). 
+\end{equation*}
+\end{frame}
+
+\begin{frame}{CART algorithm pruning (cont)}
+	\begin{itemize}
+		\item Input: Maximal tree $T_{max}$.
+		\item Initialize:
+		\begin{enumerate}
+			\item $\alpha_1=0$, $T_1 = \underset{ T \text{ pruned from }T_{max}  }{\textrm{argmin}}
+			\overline{\text{err}} (T)$; 
+			\item $T \leftarrow T_1$; $k\leftarrow1$. 
+		\end{enumerate}
+	\item Loop while $|T|>1$
+	\begin{enumerate}
+		\item Calculate $\alpha_{k+1}= \underset{ t \text{ node of }T  }{\min}
+		\frac{\overline{\text{err}} (t)- \overline{\text{err}}(T)}{|T_t| -1}$
+		\item Prune all $T_t$ branches of $T$ such that
+		\begin{equation*}
+			\overline{\text{err}}(T_t)+ \alpha_{k+1}|T_t|= \overline{\text{err}}(t)+ \alpha_{k+1}
+		\end{equation*}
+	\item $T_k$ will be the pruned tree obtained. 
+	\item $T\leftarrow T_k$; $k\leftarrow k+1$.
+	\end{enumerate}
+	\item Output: 
+	\begin{enumerate}
+		\item Trees: $T_1 \succ T_2 \succ \cdots \succ T_K=\{t_1\}$
+		\item Parameters: $\alpha_1=0, \alpha_2, \ldots, \alpha_K$.
+	\end{enumerate}
+	\end{itemize}
+\end{frame}
+
+
 \begin{frame}{Trees vs. Linear Models}
 	The classical linear regression assumes a relationship of the form
 	\begin{equation*}
@@ -246,7 +324,7 @@ where $R_1,\ldots,R_M$ represent a partition of feature space and $1_A$ represen
 \end{frame}
 
 \begin{frame}{Trees vs. Linear Models (cont)}
-	As we know, there is not a single model that will work all the time for any dataset. 
+	As we know, there is not a single model that will work all the time for any data set. 
 	\begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.4]{../../Figures/fig_trees_vs_ols.png}
@@ -267,19 +345,12 @@ But
 \end{frame}
 
 \begin{frame}{References}
-
-Materials and some of the pictures are from (1),(2), and (3).
-\begin{enumerate}
-	\item Gareth James et al. {\it An Introduction to Statistical Learning with applications in R}. Springer (2015)
-	\item Brian D. Ripley {\it Pattern Recognition and Neural Networks}. Cambridge University Press (1996). 
-	\item Aur\'elien G\'eron. {\it Hands-on Machine Learning with Scikit-Learn \& TensorFlow} O'Relly (2017)
-	\item Wiebe R. Pestman {\it Mathematical Statistics} de Gruyter (1998)
-	\item L. Brieman et al. {\it Classification and Regression Trees}. Wadworth and Brooks/Coke (1994)
+	Materials and some of the pictures are from \citep{James2015}, \citep{genuer}, \citep{cartbook},and \citep{geron2}.
+	\printbibliography 	
 	
-\end{enumerate}	
-
-I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
-\end{frame}	
+	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
+	
+\end{frame}
 
 
 \end{document}
