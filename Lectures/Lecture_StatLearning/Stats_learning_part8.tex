@@ -10,17 +10,51 @@
 \usepackage{lmodern}
 \usepackage{bm}
 
+\usepackage[
+backend=biber,
+style=authoryear-icomp,
+sortlocale=de_DE,
+natbib=true,
+url=false, 
+doi=true,
+eprint=false
+]{biblatex}
+\addbibresource{../../Bibliography/main_ML.bib}
+
+
+
 \titlegraphic{\includegraphics[width=2cm]{../../Figures/UAMS_RGB.png}
 }
 
 
-\title{Statistical Machine Learning\\ Part 8\\ Random Forest}
+\title{Statistical Machine Learning\\ Ensemble Methods and Random Forest}
 \author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics\\
 University of Arkansas for Medical Sciences}
 \begin{document}
 	\begin{frame}[plain]
 		\maketitle
 	\end{frame}
+
+\begin{frame}{No Free Lunch Theorem}
+	To the general questions
+	\begin{itemize}
+		\item If we are interested solely in the generalization performance, are there any reasons to prefer one classifier or learning algorithm over another?
+		\item If we make no prior assumptions about the nature of the classification task, can we expect any classification method to be superior or inferior overall?
+		\item Can we even find an algorithm that is overall superior to random guessing?
+	\end{itemize}
+The answer to these questions is NO. The so-called \textbf{No free lunch theorem} proves that there are no context-independent or usage-independent reasons to favor one learning or classification method over another. 
+
+\citep{duda} describes the theorem in more detail. 
+\end{frame}
+
+\begin{frame}{Ensemble Learning}
+	We know that different learning algorithms can have different accuracies. There is no "ideal" one but we can combine them to attain better accuracy. 
+	
+	\textbf{Ensemble learning} techniques build a number of different predictors (base learners), then combine them to form the compsite preditor to classify the test set. This phenomenon is known as \textit{diversity} Tow classifiers are said to be diverse if they make different incorrect predictions on new data points. 
+	
+	Ensemble learning is often called a \textbf{committee machine}. And each of the classifiers composing the ensemble can be constructed either independently (e.g., bagging) or sequentially (boosting)
+\end{frame}
+
 	\begin{frame}{Bagging}
 		
 		We have seen that regression (or classification) trees are very useful but particularly unstable. That is, they suffer from high variance when presented with new data. 
