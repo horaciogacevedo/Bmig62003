@@ -161,23 +161,6 @@ A similar expression is valid for classification, but instead of the average we 
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Variable Importance Measures}
-	
-	We know that bagging improves the accuracy in our predictions, at the expense of making our models harder to interpret. 
-	
-	For bagging regression trees, we use the {\bf Variable Importance Measure (VIM)} that is defined as the total amount that the RSS is decreased due to splits over the given predictor, averaged over all $B$ trees.  The larger the VIM, the more "relevant" is that predictor.
-	
-	For bagging classification trees, we can define VIM as the total amount that the Gini index (or cross-entropy) is decreased by splits over a given predictor, averaged over all $B$ trees. 
-\end{frame}
-
-\begin{frame}{VIM example}
-	The {\tt Heart} data set VIM plot with a mean decrease of GIni index and normalized VIM is shown below.
-	 \begin{figure}[h]
-		\centering
-		\includegraphics[scale=0.35]{../../Figures/fig_vim.png}
-	\end{figure}
-	
-\end{frame}
 
 \begin{frame}{Random Forest (with Random Inputs)}
 	It follows similar rationale as in bagging but with an interesting random twist.
@@ -190,6 +173,16 @@ A similar expression is valid for classification, but instead of the average we 
 
 \end{frame}
 
+\begin{frame}{Random Forest (with Random Inputs)}
+			 \begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.4]{../../Figures/fig_random_forest_ri.png}
+	\end{figure}
+	
+
+\end{frame}
+
+
 \begin{frame}{Random Forest vs Bagging}
 	The test errors from the {\tt Heart} data are depicted below
 	 \begin{figure}[h]
@@ -198,10 +191,57 @@ A similar expression is valid for classification, but instead of the average we 
 	\end{figure}
 \end{frame}
 
+\begin{frame}{Variable Importance Measures}
+	
+	We know that bagging improves the accuracy in our predictions, at the expense of making our models harder to interpret. 
+	
+	For bagging regression trees, we use the {\bf Variable Importance Measure (VIM)} that is defined as the total amount that the RSS is decreased due to splits over the given predictor, averaged over all $B$ trees.  The larger the VIM, the more "relevant" is that predictor.
+	
+	For bagging classification trees, we can define VIM as the total amount that the Gini index (or cross-entropy) is decreased by splits over a given predictor, averaged over all $B$ trees. 
+\end{frame}
+
+\begin{frame}{VIM example}
+	The {\tt Heart} data set VIM plot with a mean decrease of Gini index and normalized VIM is shown below.
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.35]{../../Figures/fig_vim.png}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}{Variable of Importance (Details)}
+	One implementation of the variable of importance based on OOB calculation is as follows:
+	\begin{itemize}
+		\item Suppose you have $\{X_1, \ldots, X_p\}$ variables and fix $X_j$. 
+		\item Consider the bootstrap of the sample ${\cal L}_n^{\Theta_s}$ and the associated $OOB_s$ sample (i.e., all the observations that do not belong to ${\cal L}_n^{\Theta_s}$ )
+		\item Calculate $\text{err}OOB_s$ the error made on $OOB_s$ by the tree build on ${\cal L}_n^{\Theta_s}$. For instance MSE or misclassification rate.
+		\item Randomly permute the values of the variable $X_j$ in the $OOB_s$ sample. This gives a permuted samples, noted as $\widetilde{OOB}_s^j$.
+		\item Calculate the $\text{err}\widetilde{OOB}_s^j$, the error made on $\widetilde{OOB}_s^j$ by the tree build on ${\cal L}_n^{\Theta_s}$.
+		\item Repeat these operations for all bootstrap samples. 
+\end{itemize}
+		
+\end{frame}
+
+\begin{frame}{Variable of Importance (Details cont.)}
+	\begin{equation*}
+		VI(X_j)= \frac{1}{q} \sum_{s=1}^q (\text{err}\widetilde{OOB}_s^j- \text{err}OOB_s)
+	\end{equation*}	
+
+Thus, the error increase originating from the random permutations of the variable suggests the importance of such variable. 
+
+Note that there are several representations of the VI expression (at least in R). For instance, we can have the normalized version, but there are other methodologies based on the Mean Decreased impurity (MDI). Just verify what method are you plotting and what is the valid range. 
+
+\end{frame}
+	
+
 \begin{frame}{Boosting}
 	
-	{\bf Boosting} is another general methodology to improve the predictions from a decision tree. 
-	In this case trees are grown sequentially as they gather information from previously generated trees. 
+	{\bf Boosting} (also known as ARCing (adaptive resampling and combining) is another general methodology to improve the predictions from a decision tree.
+	
+	Boosting algorithms belong to a class of voting methods that produce a classifier as a linear combination of weak classifiers.
+	 
+	For tree-based methods, boosting makes trees grown sequentially as they gather information from previously generated trees. 
+	
 	
  Boosting does not require bootstrap sampling as each tree is fit on a modified version of the original data set.
  
@@ -209,7 +249,58 @@ A similar expression is valid for classification, but instead of the average we 
 	
 \end{frame}
 
-\begin{frame}{Boosting Algorithm}
+\begin{frame}{Boosting Idea}
+	We will describe a method referred to as AdaBoost.M1. Consider the two class problem with the output variable coded as $Y\in \{-1,1\}$. Given a vector of predictor variables $X$, a classifier $G(X)$ produces a prediction taken oe of the two values $\{-1,1\}$. The error rate on the training samples is
+	
+	\begin{equation*}
+		\overline{\text{err}}= \frac{1}{N} \sum_{j=1}^N I(y_j\ne G(x_j)) \quad ,I(x) \text{ is the indicator function}
+	\end{equation*}
+
+\end{frame}
+
+\begin{frame}{Boosting Idea (cont)}
+The purpose of boosting is to sequentially apply the weak classification algorithm to repeatedly modified version of the data, thereby producing a sequence of weak classifiers $G_m(x)$, $m=1,\ldots, M$. The predictions from all of them are then combined through a weighted majority vote to produce the final prediction:
+\begin{equation*}
+	G(x)= \text{sign}\left( \sum_{m=1}^M \alpha_m G_m (x) \right)
+\end{equation*}
+The $\alpha_j$ are computed by the boosting algorithm and weight the contribution of each respective $G_m(x)$. Their effect is to give higher influence to the more accurate classifiers in the sequence. 
+
+\end{frame}
+
+\begin{frame}{Adaboost}
+	
+	The data modification at each boosting step consists of applying weights $w_1,\ldots, w_N$ to each of the training observations $(x_i,y_i)$, $i=1,\ldots, N$. Initially all of the weights are set to $w_i = 1/N$, so that the first step simply trains the classifier on the data in the usual manner. For each successive iteration $m=2,3, \ldots, M$ the observation weights are individually modified and the classification algorithm is reapplied to the weighted observations. At step $m$, those observations that were misclassified by the classifier $G_{m-1}(x)$ induced at the previous step have their weights increase, whereas the weights are decreased for those that were classified correctly. Thus, as iterations proceed, observations that are difficult to correctly classify receive ever-increasing influence. Each successive classifier is thereby forced to concentrate on those training observations that are missed by previous ones in the sequence. 
+	
+\end{frame}
+\begin{frame}{Adaboost Algorithm)}
+	\begin{itemize}
+		\item Initialize the observation weights $w_i=1/N$ for $i=1,\ldots, N$.
+		\item For $m=1$ to $M$ do:
+		\begin{enumerate}
+			\item Fit a classifier $G_m(x)$ to the training data using weights $w_i$.
+			\item Compute
+			\begin{equation*}
+				\text{err}_m = \frac{\sum_{i=1}^N w_i I(y_i\ne Gm(x_i)}{\sum_{i=1}^{N}w_i}
+			\end{equation*}
+			\item Compute $\alpha_m = \log((1- \text{err}_m)/\text{err}_m)$
+			\item $w_i \leftarrow w_i \exp( \alpha_m \cdot I (y_i \ne Gm(xi))$ for $i=1, \ldots, N$.
+		\end{enumerate}
+	\item Output $G(x)= \text{sign} \left(\sum_{m=1}^M\alpha_m G_m(x)\right)$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Boosting for Regression Trees}
+	Given a current model, we fit a decision tree to the residuals from the model rather than the outcome $Y$ as the response. And we add these residuals to a new decision tree and update again the residuals. 
+	
+	Boosting has the following tuning parameters:
+	
+	\begin{itemize}
+		\item $B$ that represents the number of trees. Do not take very large values of $B$ as boosting tends to overfit. We can use cross-validation to determine a good candidate for $B$.
+		\item The shrinkage parameter $\lambda$ controls the learning rate. 
+		\item The number of splits $d$ controls the complexity of the boosted ensemble. Sometimes $d=1$ works well. 
+\end{itemize} \end{frame}
+
+\begin{frame}{Boosting Algorithm for Regression Trees}
 	\begin{enumerate}
 		\item Set $\hat{f}(x)=0$ and $r_i=y_i$ for all $i$ in the training set. 
 		\item for $b=1,\ldots, B$ repeat:
@@ -231,16 +322,7 @@ A similar expression is valid for classification, but instead of the average we 
 	\end{enumerate}
 \end{frame}
 
-\begin{frame}{Boosting}
-	Given a current model, we fit a decision tree to the residuals from the model rather than the outcome $Y$ as the response. And we add these residuals to a new decision tree and update again the residuals. 
-	
-	Boosting has the following tuning parameters:
-	
-	\begin{itemize}
-		\item $B$ that represents the number of trees. Do not take very large values of $B$ as boosting tends to overfit. We can use cross-validation to determine a good candidate for $B$.
-		\item The shrinkage parameter $\lambda$ controls the learning rate. 
-		\item The number of splits $d$ controls the complexity of the boosted ensemble. Sometimes $d=1$ works well. 
-	\end{itemize} \end{frame}
+
 
 
 \begin{frame}{Boosting}
@@ -261,7 +343,7 @@ A similar expression is valid for classification, but instead of the average we 
 \end{frame}
 
 \begin{frame}{References}
-	Materials and some of the pictures are from \citep{James2015}, \citep{genuer}, \citep{cartbook},and \citep{geron2}.
+	Materials and some of the pictures are from \citep{James2015}, \citep{genuer}, \citep{dubook}, and \citep{hastie01}.
 	\printbibliography 	
 	
 	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
