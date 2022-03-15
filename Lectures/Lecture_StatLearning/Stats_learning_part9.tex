@@ -206,7 +206,53 @@ These types of activation functions have that advantage that they are smooth and
 		z_1=\phi(x_1), z_2=\phi(x_2), \ldots, z_n= \phi(x_n)
 	\end{equation*}
 	then this cost function becomes the square of the Euclidean distance in $\mathbb{R}^n$ between $f_{w,b}$ and $z$
+	\begin{equation*}
+		C(w,b)=\sum_{i=1}^n (f_{w,b}(x_i)- z_i)^n= \| f_{w,b}(\textbf{x})-\textbf{z}\|^2
+	\end{equation*}
+\end{frame}
+
+\begin{frame}{Mean Square Error Cost Function}
+	Consider a neural network whose input is a random variable $X$, and its output is the random variable $Y=f_{w,b}(X)$. Assume that the network is used to approximate the target random variable $Z$. The cost function will measure the proximity between the output and the target random variables $Y$ and $Z$.  A good candidate is given by the expectation of their squared difference
+	\begin{equation*}
+		C(w,b)= \mathbb{E}[(Y-Z)^2]= \mathbb{E}[(f_{w,b}(X)-Z)^2]
+	\end{equation*}
+	Let's consider the so-called \textbf{training set} consisting of $n$ measurements of random variables $(X,Z)$, which are given by $(x_i,z_i)$. Then the cost function becomes the \textbf{empirical mean of the square difference of Y and Z}. 
+	\begin{equation*}
+		\hat{C}(w,b)=\frac{1}{n} \sum_{j=1}^n (f_{w,b}(x_j)- z_j)^2
+	\end{equation*} 
+\end{frame}
+
+\begin{frame}{Cross-entropy}
+	Let $p$ and $q$ be two densities in $\mathbb{R}$ (loosely speaking, this means that the these functions can describe a random variable).
+	
+	The negative likelihood function $-\ln(q(x))$ measures the information given by $q(x)$. 
+	The \textbf{cross-entropy} of $p$ with respect to $q$ is defined as
+	\begin{equation*}
+		S(p,q)= - \int_{-\infty}^{\infty} p(x) \ln q(x) dx
+	\end{equation*}
+	This represents the information given by $q(x)$ assessed from the point of view of the distribution $p(x)$.
+	The \textbf{Shannon entropy} is defined by 
+	\begin{equation*}
+		H(p)= - \int_{-\infty}^{\infty} p(x) \ln p(x) dx
+	\end{equation*}
+\end{frame}
+
+\begin{frame}{Kullback-Leibler Divergence}
+	The difference between the cross entropy and the Shannon entropy is the \textbf{Kullback-Leibler divergence}
+	\begin{equation*}
+		D_{KL}(p,q)= S(p,q)- H(p)= \int_{-\infty}^{\infty} p(x) \ln \frac{q(x)}{p(x)} dx
+	\end{equation*}
+
+	Note that KL-divergence is not a distance, but both cross-entropy and KL-divergence can be used as cost functions for neural networks.
+\end{frame}
+
+\begin{frame}{References}
+	Materials and some of the pictures are from \citep{calin}.
+	\printbibliography 	
+	
+	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
 	
 \end{frame}
+
 
 \end{document}
