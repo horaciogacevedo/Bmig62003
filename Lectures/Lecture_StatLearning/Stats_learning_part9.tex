@@ -53,6 +53,12 @@ Recall that in the threshold logic,  once we receive the input, a decision must 
 	\end{equation*}
 
 Pros: It is continuous and differentiable.	
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{../../Figures/fig_activation_21.png}
+\end{figure}
+
 	
 \end{frame}
 
@@ -70,6 +76,11 @@ Pros: It is continuous and differentiable.
 		\end{equation*}
 	
 	\end{enumerate}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{../../Figures/fig_activation_22}
+\end{figure}
+
 This function is differentiable except in $x=0$.  Informally, people refers to the Dirac delta function as its \textit{derivative}. 
 \begin{equation*}
 	H'(x)= \delta(x) =\begin{cases}
@@ -80,6 +91,8 @@ This function is differentiable except in $x=0$.  Informally, people refers to t
 
 
 \end{frame}
+
+
 
 \begin{frame}{Step Functions (cont)}
 	\begin{enumerate}
@@ -92,6 +105,10 @@ This function is differentiable except in $x=0$.  Informally, people refers to t
 			\end{cases}
 		\end{equation*}
 	\end{enumerate}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{../../Figures/fig_activation_22b}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Hockey stick functions}
@@ -113,6 +130,10 @@ Pros:
 \end{frame}
 
 \begin{frame}{Hockey stick functions}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.5]{../../Figures/fig_activation_23a}
+	\end{figure}
 	\begin{enumerate}
 				\setcounter{enumi}{1}
 		\item Parametric Rectified Linear Unit (PReLUI). In this case the activation is piecewise linear, having different firing rates for $x<0$ and $x>0$
@@ -124,6 +145,10 @@ Pros:
 \end{equation*}		
 	
 	\end{enumerate}
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{../../Figures/fig_activation_23b}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Sigmoid functions}
@@ -135,6 +160,10 @@ These types of activation functions have that advantage that they are smooth and
 		\end{equation*}
 		The parameter $c>0$ controls the firing rate of the neuron. Large values of $c $ correspond to a fast change of values from 0 to 1. 
 	\end{enumerate}
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{../../Figures/fig_activation_27b}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Sigmoid Functions}
@@ -144,6 +173,10 @@ These types of activation functions have that advantage that they are smooth and
 			\tanh (x)= \frac{\exp(x)- \exp(-x)}{\exp(x)+ \exp(-x)}
 		\end{equation*}
 	\end{enumerate}
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{../../Figures/fig_activation_28b}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Sigmoid Functions}
@@ -153,6 +186,11 @@ These types of activation functions have that advantage that they are smooth and
 			h(x)=\frac{2}{\pi}\arctan(x)
 		\end{equation*}
 	\end{enumerate}
+
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{../../Figures/fig_activation_29a}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Cost Functions}
