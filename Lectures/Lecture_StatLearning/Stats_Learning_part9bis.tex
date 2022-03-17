@@ -27,7 +27,7 @@ eprint=false
 }
 
 
-\title{Statistical Machine Learning\\ Multiple Testing}
+\title{Statistical Machine Learning\\ $p$-values and Multiple Testing}
 \author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics\\
 	University of Arkansas for Medical Sciences}
 \begin{document}
@@ -162,12 +162,121 @@ If we choose the following critical region
 	\end{equation*}
 \end{frame}
 
+\begin{frame}{Power function example}
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{../../Figures/fig_power_function.png}
+\end{figure}	
+\end{frame}
+
+\begin{frame}{Normally Distributed Case}
+	Suppose we are dealing with a $N(\mu,\sigma^2)$-distributed population where both $\mu$ and $\sigma$ are unknown. If we wish to test the hypothesis
+	\begin{equation*}
+		H_0 \colon \mu=\mu_0 \quad \text{against} H_1 \colon \mu\ne \mu_0
+	\end{equation*}
+	Critical regions based on the likelihood ratio are of type
+	\begin{equation*}
+		G= \{(x_1,\ldots, x_n)\in \mathbb{R}^n : \left| \frac{\overline{x}-\mu_0}{s/\sqrt{n}} \right| \ge c\}
+	\end{equation*}
+	where $s^2= \frac{1}{n-1}\sum (x_i -\overline{x})^2$
+
+	The outcome of the variable 
+	\begin{equation*}
+		T= \frac{\overline{X}-\mu_0}{S/\sqrt{n}}
+	\end{equation*}
+	is decisive in the choice to reject $H_0$ or not. This is called the \textit{Test statistic} for this hypothesis test. Under the $H_0$ the test statistics is $t$-distributed with $n-1$ degrees of freedom.
+\end{frame}
+
+\begin{frame}{Normally distributed case}
+	The decision becomes
+	\begin{equation*}
+		\begin{split}
+		\text{if }& |\frac{\overline{X}-\mu_0}{S/\sqrt{n}}| \ge c \text{, then assume }H_1\\
+		\text{if }& |\frac{\overline{X}-\mu_0}{S/\sqrt{n}}| < c \text{, then assume }H_0
+		\end{split}
+	\end{equation*}
+	And we have the following equivalence
+	\begin{equation*}
+		P(|\frac{\overline{X}-\mu_0}{S/\sqrt{n}}|\ge u)\le \alpha \iff u \ge c
+	\end{equation*}
+	If the outcome $u$ of $|\frac{\overline{X}-\mu_0}{S/\sqrt{n}}|$ satisfies 
+	\begin{equation*}
+		P(|\frac{\overline{X}-\mu_0}{S/\sqrt{n}}|\ge |u|)\le \alpha 
+	\end{equation*}
+	then, we accept $H_1$.
+\end{frame}
+\begin{frame}{$p$-values}
+	The expression 
+	\begin{equation*}
+			P(|\frac{\overline{X}-\mu_0}{S/\sqrt{n}}|\ge |u|)
+	\end{equation*}
+	is called the $p$-value associated with the outcome $u$ of the test statistic.
+	
+	Therefore, we normally represent the decision rule
+		\begin{equation*}
+		\begin{split}
+			\text{if }& P\text{-value} \le \alpha \text{, then assume }H_1\\
+			\text{if }& P\text{-value} > \alpha \text{, then assume }H_0
+		\end{split}
+	\end{equation*}
+\end{frame}
+
 \begin{frame}{Multiple Testing}
-	When we are facing testing hypotheses of possibly thousands of significance tests. 
+	
+	Consider the problem of simultaneously testing $m$ null hypotheses $H_j$, $j=1,\ldots, m$ and denote by $R$ the
+	number of rejected hypothesis. In the frequentist setting, the situation can be summarized as 
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.8]{../../Figures/fig_fdr_table.png}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Multiple Testing (cont)}	
+	The $m$ hypotheses are assumed to be known in advance, while the number $m_0$ and $m_1$ of true and false null hypothesis are unknown parameter, $R$ is an observable random variable, and $S$, $T$, $U$, and $V$ are unobservable random variables. 
+	
+	In general, we want to minimize the number $V$ of false positives, or type I errors, and the number $T$ of false negative or type II errors. The standard approach is to prespecify an acceptable type I error rate $\alpha$ that seek tests that minimize the type II error rate, within the class of tests with type I error rate $\alpha$. 
+	
+
+\end{frame}
+
+\begin{frame}{Test for multiple comparisons}
+	In terms of these random variables, we can define the main rates used in the present context.
+When we are facing testing hypotheses of possibly thousands of significance tests, there are a 
+number of alternatives dealing  	
+\begin{itemize}
+	\item The per-comparison error rate (PCER). The expected value of the number of type I error over the number of hypotheses
+	\begin{equation*}
+		PCER= \mathbb{E}(V)/m
+	\end{equation*}
+	\item The family-wise error rate (FWER). The probability of at least one type I error
+	\begin{equation*}
+		P(V\ge 1)
+	\end{equation*}
+	\item The false discovery rate (FDR) is the expected proportion of type I error among rejected hypotheses
+	\begin{equation*}
+		FDR=\mathbb{E}(V/R; R>0)=\mathbb{E}(V/R|R>0) P(R>0)
+	\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Ajusted $p$-values}
+	To account for multiple hypothesis testing, one may calculate the adjusted $p$-values. Given a test procedure, the adjusted $p$-value correspoinding to the test of a single hypothesis $H_j$ can be defined as the level of the entire test procedure at which $H_j$ would just be rejected, given the values of all test statistics involved.
+	
+	Control of the FWER at level $\alpha$, the Bonferroni procedure rejects any hypothesis $H_j$ with $p$-value less than or equal to $\alpha/m$. 
+\end{frame}
+
+\begin{frame}{FDR control}
+	The adjusted $p$-value goes according to this formula
+	\begin{equation*}
+		\tilde{p}_{r_i}= \min_{k=i,\ldots,m} \{ \min(mp_{r_k},1)\}
+	\end{equation*}
+	This adjustment leads to strong control of the FDR under the additional assumption of independence of the test statistics.
 \end{frame}
 
 \begin{frame}{References}
-	Materials and some of the pictures are from \citep{pestman}.
+	Materials and some of the pictures are from \citep{pestman}, and \citep{speed}.
 	\printbibliography 	
 	
 	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
