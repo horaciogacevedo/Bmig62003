@@ -1,0 +1,178 @@
+\documentclass{beamer}
+\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
+\usetheme{default}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathbbol}
+\usepackage{xcolor} % before tikz or tkz-euclide if necessary
+\usepackage{tkz-euclide} % no need to load TikZ
+\usepackage{multirow}
+\usepackage{lmodern}
+\usepackage{bm}
+
+\usepackage[
+backend=biber,
+style=authoryear-icomp,
+sortlocale=de_DE,
+natbib=true,
+url=false, 
+doi=true,
+eprint=false
+]{biblatex}
+\addbibresource{../../Bibliography/main_ML.bib}
+
+
+
+\titlegraphic{\includegraphics[width=2cm]{../../Figures/UAMS_RGB.png}
+}
+
+
+\title{Statistical Machine Learning\\ Multiple Testing}
+\author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics\\
+	University of Arkansas for Medical Sciences}
+\begin{document}
+	\begin{frame}[plain]
+		\maketitle
+	\end{frame}
+	
+	\begin{frame}{Hypothesis test}
+		\begin{itemize}
+			\item A \textit{statistical hypothesis} $H$ ia a conjecture about the probability distribution of a population.
+			\item A hypothesis $H$ is said to be \textit{simple} if the distribution of the population is completely specified by $H$. If not, then $H$ is called a \textit{composite} hypothesis.
+			\item $H_0$ is called the \textit{null hypothesis} and $H_1$ the \textit{alternative hypothesis}.
+			\item  We say that we commit a  \textit{type I error} if we decide to accept $H_1$, whereas in reality $H_0$ is true.
+			\item  The probability of committing a type I error will be denoted by $\alpha$.
+			\item Acceptance of $H_0$ whereas $H_1$ is true is called a \textit{type II error}. 
+			\item  The probability of committing a type II error will be denoted by $\beta$.  
+		\end{itemize}		
+
+	\end{frame}
+
+\begin{frame}{Example}
+	A factory has packets of coffee with and adjusted weight of 500 grams. We assume that the weight of the packages is $N(500,50)$-distributed. A container with coffee packages contains packages wrongly processed with weight $N(490,50)$-distributed. To determine the container that has incorrectly weight the packages, we draw a sample (package) of each of two containers $X_1$, $X_2$ . Based on the outcome of the 2-vector $(X_1,X_2)$ we will make a conjecture about the distribution of the population. Namely
+	\begin{equation*}
+		\begin{split}
+			H_0 & \text{: the population is } N(500,50)-\text{distributed}\\
+			H_1 & \text{: the population is } N(490,50)-\text{distributed}
+		\end{split}
+	\end{equation*}
+	Let's suppose our decision as\\
+	\textit{If both $X_1$ and $X_2 \le 496$ then we accept $H_1$, otherwise we accept $H_0$. }
+\end{frame}
+
+\begin{frame}{Example (cont)}
+	Let's define our \textit{critical region} $G$ as 
+	\begin{equation*}
+		G=\{(x_1,x_2)\in \mathbb{R}^2: x_1,x_2 \le 496\}
+	\end{equation*}
+	Then, we can formulate our decision as
+	\begin{equation*}
+		=
+		\begin{cases}
+			\text{if }(X_1,X_2) \in G & \text{then we choose $H_1$ as our conjecture}.\\
+			\text{if }(X_1,X_2) \notin G & \text{then we choose $H_0$ as our conjecture}.\\
+		\end{cases}	
+		\end{equation*}
+	We can calculate $\alpha$ and $\beta$ as follows
+	\begin{equation*}
+		\begin{split}
+			\alpha& = P(\text{acceptance of }H_1 | H_0\text{ is true}) \\ 
+			& = P((X_1,X_2)\in G| \mu=500, \sigma^2=50) \\
+			&=  P(X_1\le 496| \mu=500, \sigma^2=50) \cdot  P(X_2\le 496| \mu=500, \sigma^2=50)\\
+			&= 0.081
+		\end{split}
+	\end{equation*}
+\end{frame}
+
+\begin{frame}{Example (cont)}
+	\begin{equation*}
+		\begin{split}
+			\beta& = P(\text{acceptance of }H_0 | H_1\text{ is true}) \\ 
+			& = P((X_1,X_2)\notin G| \mu=490, \sigma^2=50) \\
+			&= 1-P((X_1,X_2)\in G| \mu=490, \sigma^2=50) \\
+			&=  1-P(X_1\le 496| \mu=490, \sigma^2=50) \cdot  P(X_2\le 496| \mu=490, \sigma^2=50)\\
+			&= 0.356
+		\end{split}
+	\end{equation*}
+\end{frame}
+
+\begin{frame}{Hypothesis test}
+	A \textit{Hypothesis test} is a collection
+	\begin{equation*}
+		(X_1,\ldots, X_n; H_0; H_1: G)
+	\end{equation*}
+ where $X_1,\ldots, X_n$ is a sample, $H_0$ and $H_1$ hypotheses concerning the probability distribution of the population and $G\subset \mathbb{R}^n$ a Borel set (meaning a collection of open sets)
+ 
+ If $H_0$ is a simple statistical hypothesis. The \textit{level of significance} of the hypothesis test $(X_1,\ldots, X_n; H_0;H_1;G)$ is understood to be the number
+ \begin{equation*}
+ 	\alpha = P_{X_1,\ldots, X_n}^{H_0}(G)
+ \end{equation*}
+Thus, we say that $\alpha$ represents the probability of committing a type I error.
+\end{frame}
+
+\begin{frame}{The power function}
+	With our previous setup the $\beta$ could not be used for composite hypothesis. Thus, we have to define something more general. 
+	\begin{itemize}
+		\item Let $f(\cdot, \theta))_{\theta \in \Theta}$ be a family of probability densities 
+		\item Let's assume that the population $X_1,\ldots, X_n$  has a probability density $f(\cdot,\theta)$ where $\theta \in \Theta$.  
+		\item Let's assume that $H_0$ and $H_1$ are statements of the type
+		\begin{equation*}
+			H_0 \colon \theta \in \Theta_0 \quad \text{and} \quad H_1\colon \theta \in \Theta_1
+		\end{equation*}
+	where $\Theta_0 \cup \Theta_1= \Theta$ and $\Theta_1 \cap \Theta_1= \emptyset$.
+	
+	\end{itemize}
+	For a fixed $\theta \in \Theta$, the probability distribution of the population is completely specified. Then, we define for every $\theta \in \Theta_1$
+	\begin{equation*}
+		\beta(\theta)= P_{X_1,\ldots, X_n}^\theta (G^c)
+	\end{equation*}
+	The expression $1-\beta(\theta)$ is called the \textit{power function} for $\theta \in \Theta_1$.
+\end{frame}
+
+\begin{frame}{Example (cont)}
+	From our previous example, given is a $N(\mu, 50)$-distributed population, where $\mu \le 500$. 
+	The family of probability densities $f(\colon, \mu)$ where $\mu\le 500$ and 
+	\begin{equation*}
+		f(x,\mu)= \frac{1}{\sqrt{100 \pi}} \exp(\frac{-(x-\mu)^2}{100})
+	\end{equation*}
+	The parameter space is defined by $\Theta=(-\infty, 500]$. \\
+	If we draw a sample $X_1$, $X_2$ of size 2 from this population. We can define $\Theta_0=\{500\}$ and $\Theta_1= (-\infty, 500)$. This corresponds to the following hypotheses
+	\begin{equation*}
+		H_0 \colon \mu = 500 \quad \text{against} \quad H_1 \colon \mu< 500
+	\end{equation*}
+If we choose the following critical region 
+\begin{equation*}
+	G= \{ (x_1,x_2)\in \mathbb{R}^2: x_1, x_2 \le 494.63 \}
+\end{equation*}
+
+	
+\end{frame}
+
+\begin{frame}{Example (cont)}
+	Then, our 5-tuple $(X_1,X_2;H_0;H_1;G)$ constitutes a hypothesis test. 
+	
+	The size $\alpha$ of the critical region $G$ is $\alpha=0.05$, and the power function
+	\begin{equation*}
+		\begin{split}
+			1-\beta(\mu)&= 1-P^\mu_{X_1,X_2}(G^c)= P^\mu_{X_1,X_2}(G)= P((X_1,X_2)\in G)\\
+			&=P(X_1 \le 494.63 \text{ and } X_2 \le 494.63| \mu=\mu, \sigma^2=50) \\
+			&=P(X_1 \le 494.63 | \mu=\mu, \sigma^2=50)\\
+			&\quad  \cdot P(X_2\le 494.63 | \mu=\mu, \sigma^2=50) 
+		\end{split}
+	\end{equation*}
+\end{frame}
+
+\begin{frame}{Multiple Testing}
+	When we are facing testing hypotheses of possibly thousands of significance tests. 
+\end{frame}
+
+\begin{frame}{References}
+	Materials and some of the pictures are from \citep{pestman}.
+	\printbibliography 	
+	
+	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
+	
+\end{frame}
+
+
+\end{document}
