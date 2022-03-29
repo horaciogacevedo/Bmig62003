@@ -9,6 +9,7 @@
 \usepackage{multirow}
 \usepackage{lmodern}
 \usepackage{bm}
+\usepackage{subcaption}
 
 \usepackage[
 backend=biber,
@@ -116,7 +117,18 @@ The algorithm build iteratively a sequence $(x^n)$ of vectors that will approach
 \end{frame}
 
 \begin{frame}{Changing the learning rate}
-	Figure ***
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+			\includegraphics[scale=0.4]{../../Figures/fig_const_learning.png}
+	\end{subfigure}
+	\begin{subfigure}{0.4\textwidth}
+		\centering
+		\includegraphics[scale=0.4]{../../Figures/fig_variable_learning.png}
+	\end{subfigure}
+\end{figure}
+
 \end{frame}
 
 \begin{frame}{AdaGrad}
