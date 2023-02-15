@@ -183,7 +183,7 @@ Alternatively, a separating hyperplane satisfies the condition
 	\begin{itemize}
 		\item Compute the (perpendicular) distance from each training point to the given separating hyperplane.
 		\item The minimum distance from the hyperplane defines the {\bf margin}.
-		\item Select the hyperplane with the maximal margin.
+		\item Select the hyperplane with the maximal margin $M$.
 	\end{itemize}
 	The classification is carried out in test data by using the {\bf maximal margin classifier}. That is the sign of $f(x^*)= \beta_0 + \beta_1 x_1^* + \cdots + \beta_p x_p^*$. 
 	
@@ -264,7 +264,7 @@ In this case, the optimization process becomes
 	\begin{split}
 		&\textrm{maximize }_{\beta_0,\beta_{11},\beta_{12},\ldots,\beta_{1p} \beta_{2p},\epsilon_1,\ldots,\epsilon_n} M \\
 		&\textrm{subject to } y_i (\beta_0 + \sum_{j=1}^p \beta_{j1} x_{ij} + \sum_{j=1}^n \beta_{j2}x_{ij}^2)\ge M (1-\epsilon_i) \\
-		&\sum_{j=1}^p \sum_{j=1}^2 \beta_{j2}x_{ij}j^2 =1 ,  \epsilon_i \ge 0, \sum_{i=1}^n \epsilon_i \le C 
+		&\sum_{j=1}^p \sum_{j=1}^2 \beta_{ij}^2 =1 ,  \epsilon_i \ge 0, \sum_{i=1}^n \epsilon_i \le C 
 	\end{split}
 \end{equation*}
 \end{frame}
@@ -362,7 +362,7 @@ which is minimized with respect to $\beta, \beta_0$ and $\epsilon_i$. Using calc
 	
 	\begin{equation}
 		\begin{split}
-			\beta&= \sum_{i=1}^N \alpha_i y_i x_i \\
+			\beta_j&= \sum_{i=1}^N \alpha_i y_i x_{ij} \\
 			0 &= \sum_{i=1}^N \alpha_i y_i,\\
 			\alpha_i & \gamma - \mu_i \quad \forall i
 		\end{split}
