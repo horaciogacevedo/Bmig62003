@@ -112,19 +112,47 @@ Intuitively, we cannot cover the whole sphere (in a unique way) with only one sh
 \end{frame}
 
 \begin{frame}{Multidimensional scaling (MDS)}
+	
+From Lapedes and Farber (2001)
+\begin{quote}
+	``Multidimensional scaling'' algorithms are a class of algorithms
+	initially developed in the computational psychology literature (Shepherd, 1963, 1964) which reconstruct the true dimension of the space, and the
+	relative coordinates of points, given only distances, or more generally monotonic transformations of distances, between the points. ``Relative''
+	means that coordinates are reconstructed from
+	the distance data up to global translation, reflection, scale and rotation which leave the relative
+	relation of points invariant. Since interest centers
+	on relative relationships, such global transformations are irrelevant.
+\end{quote}
+	
+\end{frame}
+
+\begin{frame}{MDS formally}
 
 In this methodology, we search for a mapping $\theta \colon \mathbb{R}^n \to \mathbb{R}^k$ that minimizes
 \begin{equation*}
-	{\cal E}= \sum_{x_i,x_j} ( \|x_i -x_j \| - \|\theta(x_i)-\theta(x_j)\|)^2
+	{\cal E}= \sum_{x_i,x_j} ( d(x_i,x_j) - \|\theta(x_i)-\theta(x_j)\|)^2,
 \end{equation*}
+where $d$ is an (intrinsic) distance. 
 The procedure is as follows. 
 \begin{enumerate}
-	\item Consider the matrix of the original distances $D=(D_{ij})$ where $D_{ij}= \|x_i -x_j\|$. 
+	\item Consider the matrix of the original distances $D=(D_{ij})$ where $D_{ij}= d(x_i,x_j)$. 
 	\item Set $H= I_n - \frac{1}{n} \mathbb{1} \cdot \mathbb{1}^t$, where $\mathbb{1}= (1,1, \ldots, 1)$. Set $Z= -\frac{1}{2} H D H$.
 	\item The function that minimizes $\cal E$ is then given by finding the eigenvectors $v_j$ of $Z$. The $\theta(x_j)$ is specified by normalizing so that $\|v_j\|^2=\lambda_j$.
 \end{enumerate}
 \end{frame}
 
+\begin{frame}{MDS (cont)}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=7cm]{../../Figures/fig_mds_manifold.png}
+\end{figure}
+
+\begin{theorem}
+	Given $\{x_1, \ldots, x_l\}\subset \mathbb{R}^n$ and $k<$, the results of metric MDS and PCA embedding $\{x_i\}$ into $\mathbb{R}^k$ are isometric.
+\end{theorem}
+
+\end{frame}
 \begin{frame}{Manifold Learning Main Ideas}
 	Suppose that we are given data points $\{x_1, \ldots, x_m\}$ in $\mathbb{R}^n$. We will assume that there is a function (embedding) $\gamma \colon {\cal M} \to \mathbb{R}^n$. 
 	
@@ -193,7 +221,7 @@ The procedure is as follows.
 		{\cal E}= \sum_i \left( y_i - \sum_j w_{ij}y_j \right)^2
 	\end{equation*}
 
-		is minimized. To solve this problem we can calculate the top $k$ eigenvectors of the corresponding matrix. 
+		is minimized. To solve this problem we can calculate the top $k$ eigenvectors of the corresponding matrix of the quadratic form. 
 	\begin{figure}[h]
 	\centering
 	\includegraphics[width=8cm]{../../Figures/fig_manifolde_4_10.jpg}
