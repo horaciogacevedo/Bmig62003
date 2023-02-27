@@ -201,12 +201,12 @@ The recursive binary splitting may produce good predictions on the training set,
 		\item {\bf Gini index.} Defined by
 		
 		\begin{equation*}
-			G= \sum_{i=1}^K \hat{p}_{mk} (1 - \hat{p}_{mk}),
+			G_m= \sum_{k=1}^K \hat{p}_{mk} (1 - \hat{p}_{mk}),
 		\end{equation*}
 		is a measure of total variance across the $K$ classes. 
 	\item {\bf Cross-entropy. } Defined by
 	\begin{equation*}
-		D = - \sum_{k=1}^K \hat{p}_{mk}\log \hat{p}_{mk}.
+		D_m = - \sum_{k=1}^K \hat{p}_{mk}\log \hat{p}_{mk}.
 	\end{equation*}	
 	Note that both metrics will take on a small value if the $m$th node is pure. Both the Gini index and the cross-entropy are quite similar numerically. 
 \end{itemize}
@@ -320,7 +320,7 @@ In \citep{cartbook} is proven that there is a strictly increasing sequence of pa
 \begin{frame}{Cross-validation in CART}
 	The cross-validation (V-fold cross-validation) in \textbf{rpart} goes as follows:
 	Denote the whole data set by ${\cal L}_n$ ($n$ is the number of samples). We obtain the sequences $(T_k)_{k=1}^K$ and $(\alpha_k)_{k =1}^K$ as before.  
-	As usual in CV, we divide ${\cal L}_n= E_1 \cup E_2 \cup \cdots \cup E_V$. For each $v \in 1,\ldots, V$, we buidl the sequence of subtrees $(T_k^v)_{k=1}^K$ with ${\cal L}_n - E_v$ as a learning sample. We calculate the validation errors of the sequence as
+	As usual in CV, we divide ${\cal L}_n= E_1 \cup E_2 \cup \cdots \cup E_V$. For each $v \in 1,\ldots, V$, we build the sequence of subtrees $(T_k^v)_{k=1}^K$ with ${\cal L}_n - E_v$ as a learning sample. We calculate the validation errors of the sequence as
 	\begin{equation*}
 		R^{cv}(T_k)= \frac{1}{V} \sum_{v=1}^V \sum_{(x_i,y_i)\in E_v} (y_i - T_k^v(x_i))^2,
 	\end{equation*}
@@ -403,6 +403,7 @@ where $R_1,\ldots,R_M$ represent a partition of feature space and $1_A$ represen
 	\begin{itemize}
 		\item They are very easy to explain even for non-expert people.
 		\item Trees can easily handle a mix of predictors (quantitative, continuous) without the need of {\it dummy} variables.
+		\item Trees are extremely robust with respect to outliers and misclassified points.
 	\end{itemize}
 But 
 \begin{itemize}
