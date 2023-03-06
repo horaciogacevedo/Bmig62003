@@ -1,0 +1,22 @@
+\documentclass[border=12pt]{standalone}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\begin{document}
+
+\begin{tabular}{|c|c|c|}
+	\hline
+	&\multicolumn{2}{c|}{True State of Nature}\\
+	\hline
+	Decision & $H_0$ is TRUE & $H_1$ is TRUE\\
+	\hline
+	{\color{blue} Reject $H_0$}& TYPE I  & Correct  \\
+	{\color{red} Accept $H_1$} & Error & Decision\\
+	\hline
+	{\color{blue} Accept $H_0$}& Correct  & TYPE II  \\
+	{\color{red} Reject $H_1$} & Decision &  Error\\
+	\hline
+\end{tabular}
+
+\end{document}

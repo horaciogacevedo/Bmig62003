@@ -48,6 +48,23 @@ eprint=false
 
 	\end{frame}
 
+\begin{frame}{Error types}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		&\multicolumn{2}{c|}{True State of Nature}\\
+		\hline
+		Decision & $H_0$ is TRUE & $H_1$ is TRUE\\
+		\hline
+		{\color{blue} Reject $H_0$}& TYPE I  & Correct  \\
+		{\color{red} Accept $H_1$} & Error & Decision\\
+		\hline
+		{\color{blue} Accept $H_0$}& Correct  & TYPE II  \\
+		{\color{red} Reject $H_1$} & Decision &  Error\\
+		\hline
+	\end{tabular}
+\end{frame}
+
 \begin{frame}{Example}
 	A factory has packets of coffee with and adjusted weight of 500 grams. We assume that the weight of the packages is $N(500,50)$-distributed. A container with coffee packages contains packages wrongly processed with weight $N(490,50)$-distributed. To determine the container that has incorrectly weight the packages, we draw a sample (package) of each of two containers $X_1$, $X_2$ . Based on the outcome of the 2-vector $(X_1,X_2)$ we will make a conjecture about the distribution of the population. Namely
 	\begin{equation*}
@@ -63,7 +80,7 @@ eprint=false
 \begin{frame}{Example (cont)}
 	Let's define our \textit{critical region} $G$ as 
 	\begin{equation*}
-		G=\{(x_1,x_2)\in \mathbb{R}^2: x_1,x_2 \le 496\}
+		G=\{(x_1,x_2)\in \mathbb{R}^2_+: x_1,x_2 \le 496\}
 	\end{equation*}
 	Then, we can formulate our decision as
 	\begin{equation*}
@@ -73,7 +90,15 @@ eprint=false
 			\text{if }(X_1,X_2) \notin G & \text{then we choose $H_0$ as our conjecture}.\\
 		\end{cases}	
 		\end{equation*}
-	We can calculate $\alpha$ and $\beta$ as follows
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{../../Figures/fig_hypo_test_region.png}
+\end{figure}		
+	
+	
+\end{frame}
+
+\begin{frame}{Calculating $\alpha$ and $\beta$}
 	\begin{equation*}
 		\begin{split}
 			\alpha& = P(\text{acceptance of }H_1 | H_0\text{ is true}) \\ 
@@ -82,9 +107,7 @@ eprint=false
 			&= 0.081
 		\end{split}
 	\end{equation*}
-\end{frame}
-
-\begin{frame}{Example (cont)}
+	
 	\begin{equation*}
 		\begin{split}
 			\beta& = P(\text{acceptance of }H_0 | H_1\text{ is true}) \\ 
@@ -131,7 +154,7 @@ Thus, we say that $\alpha$ represents the probability of committing a type I err
 
 \begin{frame}{Example (cont)}
 	From our previous example, given is a $N(\mu, 50)$-distributed population, where $\mu \le 500$. 
-	The family of probability densities $f(\colon, \mu)$ where $\mu\le 500$ and 
+	The family of probability densities $f(\cdot, \mu)$ where $\mu\le 500$ and 
 	\begin{equation*}
 		f(x,\mu)= \frac{1}{\sqrt{100 \pi}} \exp(\frac{-(x-\mu)^2}{100})
 	\end{equation*}
@@ -172,7 +195,7 @@ If we choose the following critical region
 \begin{frame}{Normally Distributed Case}
 	Suppose we are dealing with a $N(\mu,\sigma^2)$-distributed population where both $\mu$ and $\sigma$ are unknown. If we wish to test the hypothesis
 	\begin{equation*}
-		H_0 \colon \mu=\mu_0 \quad \text{against} H_1 \colon \mu\ne \mu_0
+		H_0 \colon \mu=\mu_0 \text{ against } H_1 \colon \mu\ne \mu_0
 	\end{equation*}
 	Critical regions based on the likelihood ratio are of type
 	\begin{equation*}
@@ -221,6 +244,38 @@ If we choose the following critical region
 	\end{equation*}
 \end{frame}
 
+\begin{frame}{Cherry Picking Problem}
+	Let's suppose we use the same data set and apply different test statistics at the $\alpha$ level of significance:
+	\begin{itemize}
+		\item $W_\alpha$ a Wilcoxon test,
+		\item $P_\alpha$ a permutation test, and
+		\item $T_\alpha$ a $t$-test.
+	\end{itemize}
+In this scenario, it may be possible that $W_\alpha$ may be true when $P_\alpha$ and $T_\alpha$ are not. 
+\begin{equation*}
+	P(W_\alpha \text{ or } T_\alpha \text{ or }P_\alpha| H) \ge P(W_\alpha|H) = \alpha
+\end{equation*}
+we will have an {\bf inflated} type I error by picking and choosing after the fact which test to report. 
+\end{frame}
+
+
+\begin{frame}{Cherry Picking Problem}
+Similarly, 
+if our intent was to conceal a side effect by reporting the results were not significant, we will inflate the Type II error and {\bf deflate} the power $\beta$ of our test by an after-the-fact choice as 
+
+\begin{equation*}
+	\beta=P(not(W_\alpha \text{and} P_\alpha \text{ and } T_\alpha)|K)\le(P(\text{ not } W_\alpha |K))
+\end{equation*}
+
+This quote from \citep{commonerrstat} is important to remember.
+
+\begin{quote}
+	We are not free to pick and choose among tests; any such conduct is unethical.
+	{\bf Both the comparison and the test statistic must be specified in advance of examining the data.}
+\end{quote}
+\end{frame}
+
+
 \begin{frame}{Multiple Testing}
 	
 	Consider the problem of simultaneously testing $m$ null hypotheses $H_j$, $j=1,\ldots, m$ and denote by $R$ the
@@ -235,7 +290,7 @@ If we choose the following critical region
 \begin{frame}{Multiple Testing (cont)}	
 	The $m$ hypotheses are assumed to be known in advance, while the number $m_0$ and $m_1$ of true and false null hypothesis are unknown parameter, $R$ is an observable random variable, and $S$, $T$, $U$, and $V$ are unobservable random variables. 
 	
-	In general, we want to minimize the number $V$ of false positives, or type I errors, and the number $T$ of false negative or type II errors. The standard approach is to prespecify an acceptable type I error rate $\alpha$ that seek tests that minimize the type II error rate, within the class of tests with type I error rate $\alpha$. 
+	In general, we want to minimize the number $V$ of false positives, or type I errors, and the number $T$ of false negative or type II errors. The standard approach is to pre-specify an acceptable type I error rate $\alpha$ that seek tests that minimize the type II error rate, within the class of tests with type I error rate $\alpha$. 
 	
 
 \end{frame}
