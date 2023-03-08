@@ -136,7 +136,7 @@ The algorithm build iteratively a sequence $(x^n)$ of vectors that will approach
 	
 	If $C(x)$ denotes the cost function ($x\in \mathbb{R}^N$), then the gradient vector $g_t= \nabla C(x(t))$.  Let $G_t$ denote the $N \times N$ matrix
 	\begin{equation*}
-		G_t = \sum_{j=1}^{t} g_i g_i^T
+		G_t = \sum_{i=1}^{t} g_i g_i^T
 	\end{equation*}
 	and consider the update
 	\begin{equation*}
@@ -168,7 +168,7 @@ g_{jN}
 \begin{pmatrix}
 	(g_{j1})^2 & \cdots & \cdots \\
 	\vdots & \ddots & \vdots \\
-	\cdots & \cdots & (g_{jN}+)^2
+	\cdots & \cdots & (g_{jN})^2
 \end{pmatrix}
 \end{equation*}
 \end{frame}
@@ -176,7 +176,7 @@ g_{jN}
 \begin{frame}{RMSProp}
 	 The \textbf{Root Mean Square Propagation} or RMSProp is a variant of the gradient descent method with adaptive learning rate, which is obtained when the gradient is divided by a running average of its magnitude.
 	 
-	 Let $C(x)$ denote the cost function, and $g_t \nabla C(x(t))$ is the gradient evaluated at time step $t$. Then, the running average is defined recursively by
+	 Let $C(x)$ denote the cost function, and $g_t= \nabla C(x(t))$ is the gradient evaluated at time step $t$. Then, the running average is defined recursively by
 	 \begin{equation*}
 	 	v(t)=\gamma v(t-1)+(1-\gamma)g_{t-1}^2,
 	 \end{equation*}
