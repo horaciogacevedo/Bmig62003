@@ -136,8 +136,8 @@ where $d$ is an (intrinsic) distance.
 The procedure is as follows. 
 \begin{enumerate}
 	\item Consider the matrix of the original distances $D=(D_{ij})$ where $D_{ij}= d(x_i,x_j)$. 
-	\item Set $H= I_n - \frac{1}{n} \mathbb{1} \cdot \mathbb{1}^t$, where $\mathbb{1}= (1,1, \ldots, 1)$. Set $Z= -\frac{1}{2} H D H$.
-	\item The function that minimizes $\cal E$ is then given by finding the eigenvectors $v_j$ of $Z$. The $\theta(x_j)$ is specified by normalizing so that $\|v_j\|^2=\lambda_j$.
+	\item Set $H= I_n - \frac{1}{n} \mathbb{1} \cdot \mathbb{1}^t$, where $\mathbb{1}= (1,1, \ldots, 1)$. $H$ is also known as the centering matrix. Set $Z= -\frac{1}{2} H D H$. Here, the multiplication $HDH$ creates a doubly centered matrix whose row and column means are equal to zero.
+	\item The function that minimizes $\cal E$ is then given by finding the eigenvectors $v_j$ of $Z$. The $\theta(x_i)$ is specified by normalizing so that $\|v_j\|^2=\lambda_j$, making a matrix with the eigenvectors $\{v_j\}$ as columns and taking the $ith$ row.
 \end{enumerate}
 \end{frame}
 
