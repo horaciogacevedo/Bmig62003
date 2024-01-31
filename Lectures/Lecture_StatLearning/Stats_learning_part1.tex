@@ -1,5 +1,5 @@
 \documentclass{beamer}
-\usetheme{default}
+\usetheme{CambridgeUS}
 \usepackage{amsmath}
 \usepackage{xcolor} % before tikz or tkz-euclide if necessary
 \usepackage{tkz-euclide} % no need to load TikZ
@@ -14,6 +14,9 @@ url=false,
 doi=true,
 eprint=false
 ]{biblatex}
+
+\definecolor{uamsred}{rgb}{0.6,0.2,0.2}
+\setbeamercolor{mycolor}{fg=white,bg=uamsred}
 \addbibresource{../../Bibliography/main_ML.bib}
 
 \titlegraphic{\includegraphics[width=2cm]{../../Figures/UAMS_RGB.png}
@@ -177,7 +180,7 @@ If the variance of $Z$ also exists, we define the {\bf covariance} of $W$ and $Z
 \begin{equation*}
 	\textrm{Cov}(W,Z)= E(WZ) - E(W)E(Z)
 \end{equation*}
-
+The covariance measures the extent to which $W$ and $Z$ \textit{covary} (i.e., the extent to which a straight line captures the way in which $W$ varies as $Z$ changes)
 \end{frame}
 
 \begin{frame}{Variance and Covariance Properties}
@@ -215,6 +218,7 @@ It can be shown that
 	\item All entries in the matrix are {\bf estimates} of the true variance and covariance.
 	\item The matrix is symmetric.
 \end{itemize} 
+
 \end{frame}
 
 \begin{frame}{Pearson's Correlation Coefficient}
@@ -230,20 +234,31 @@ If $W$ and $Z$ are random variables with existing correlation coefficient, then
 When $\rho(W,Z)$ we say that $W$ and $Z$ are positively correlated. And similarly when $\rho(W,Z) < 0$ we called the variables negatively correlated. 
 
 
+%\begin{beamercolorbox}[wd=\textwidth]{mycolor}
+%
+%\end{beamercolorbox} 
 
 \end{frame}
 
 \begin{frame}{Correlations (Important Notes)}
 
 \begin{itemize}
-	\item Even when the variables $W$ and $Z$ are perfectly correlated (i.e., $\rho(W,Z)= \pm 1$) this statement does not mean anything about {\it causation}. 
+	\item 	If two variables are correlated, either positively or negatively, they are dependent.
+	\item Even when the variables $W$ and $Z$ are perfectly correlated (i.e., $\rho(W,Z)= \pm 1$) this statement does not imply {\it causation} (but are useful for structural causal models). 
 	\item Neither is true that $\rho(W,Z)=0$ implies (statistical) independence of $W$ and $Z$.
 	\item Correlations do not catch non-linear relationships. 
 \end{itemize}
 \begin{figure}
 \centering
-\includegraphics[scale=0.1]{../../Figures/fig_correlations.png}
+\includegraphics[scale=0.08]{../../Figures/fig_correlations.png}
 \end{figure}
+\end{frame}
+
+\begin{frame}{Other correlation measures}
+	\begin{itemize}
+		\item If in a scatter plot you observe that the relationship between $X$ and $Y$ is not linear but monotonic (increasing or decreasing), a better choice is Spearman Rank Correlation. 
+		\item Kendall correlation is often used where there is some subgroup structure. For instance, where same individuals are assessed by different judges.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{The problem of collinearity}
