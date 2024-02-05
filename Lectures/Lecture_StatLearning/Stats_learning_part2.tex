@@ -1,6 +1,5 @@
 \documentclass{beamer}
-\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
-\usetheme{default}
+\usetheme{CambridgeUS}
 \usepackage{amsmath}
 \usepackage{xcolor} % before tikz or tkz-euclide if necessary
 \usepackage{tkz-euclide} % no need to load TikZ
@@ -8,24 +7,37 @@
 
 \usepackage[
 backend=biber,
-style=authoryear-icomp,
+style=numeric,
 sortlocale=de_DE,
 natbib=true,
 url=false, 
 doi=true,
 eprint=false
 ]{biblatex}
+
+\definecolor{uamsred}{rgb}{0.6,0.2,0.2}
+\setbeamercolor{mycolor}{fg=white,bg=uamsred}
 \addbibresource{../../Bibliography/main_ML.bib}
 
 \titlegraphic{\includegraphics[width=2cm]{../../Figures/UAMS_RGB.png}
 }
 
-\title{Statistical Machine Learning\\ Part 2}
+\title{Statistical Machine Learning\\ Linear Discriminant and Performance Metrics}
 \author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics}
 \begin{document}
 	\begin{frame}[plain]
 		\maketitle
 	\end{frame}
+	
+	\begin{frame}{Linear Discrimination Motivation}
+		We regularly use thresholds to label data points. 
+		\begin{figure}
+			\centering
+			\includegraphics{../../Figures/fig_linear_disc.png}
+		\end{figure}	
+		Note that in the 2-dimensional case, we will be looking for a plane (or hyperplane in higher dimensions). One way to simplify finding for a plane is to identify a vector which is normal to the dividing plane. 
+	\end{frame}
+	
 	\begin{frame}{Linear Discriminant Functions}
 		A real-valued  function such as 
 	
@@ -105,7 +117,16 @@ for all of the samples.
 
 \begin{frame}{Gradient Descent Procedures}
 		We need to find a solution to the set of linear inequalities $\mathbf{a}^t\mathbf{y}_i >0$. There may be several solutions, to determine the "best" solution is determined by the minimization of a criterion function $J(\mathbf{a})$.  The minimum (if exists) is called the "solution vector".
-	
+
+Recall that the gradient of a smooth function points towards the minimum for every point on the level surface.
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.35]{../../Figures/fig_gradient.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Gradient Descent Procedures (cont)}	
 	The basic gradient descend goes as follows:
 	
 	\begin{enumerate}
@@ -131,7 +152,7 @@ The {\bf confusion matrix} allows us to summarize this information by putting it
 
 \begin{figure}
 	\centering
-	\includegraphics[scale=0.25]{../../Figures/fig_confusionmatrix.png}
+	\includegraphics[scale=0.2]{../../Figures/fig_confusionmatrix.png}
 \end{figure}
 
 \end{frame}
