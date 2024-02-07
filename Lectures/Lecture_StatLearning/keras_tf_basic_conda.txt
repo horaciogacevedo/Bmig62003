@@ -1,0 +1,8 @@
+git clone git@github.com:horaciogacevedo/BOOK-ADL-Book-2nd-Ed.git
+
+
+conda create -n ml24 python=3.10
+conda activate ml24
+pip install tensorflow
+conda install matplotlib jupyterlab pandas chardet
+
