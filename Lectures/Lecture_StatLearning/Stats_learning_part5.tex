@@ -1,24 +1,25 @@
 \documentclass{beamer}
-\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
-\usetheme{default}
+\usetheme{CambridgeUS}
 \usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{mathbbol}
 \usepackage{xcolor} % before tikz or tkz-euclide if necessary
+\usepackage{tkz-euclide} % no need to load TikZ
+\usepackage{multirow}
 \usepackage{tkz-euclide} % no need to load TikZ
 \usepackage{multirow}
 \usepackage{bm}
 
-
 \usepackage[
 backend=biber,
-style=authoryear-icomp,
+style=numeric,
 sortlocale=de_DE,
 natbib=true,
 url=false, 
 doi=true,
 eprint=false
 ]{biblatex}
+
+\definecolor{uamsred}{rgb}{0.6,0.2,0.2}
+\setbeamercolor{mycolor}{fg=white,bg=uamsred}
 \addbibresource{../../Bibliography/main_ML.bib}
 
 \titlegraphic{\includegraphics[width=2cm]{../../Figures/UAMS_RGB.png}
@@ -117,6 +118,9 @@ Note that in (\ref{eq:bayes2}) the denominator does not depend on $\theta$.  So,
 	\begin{equation*}
 		f(x)= \frac{1}{\sqrt{2\pi}} \exp(-x^2/2)
 	\end{equation*}
+	
+\end{frame}
+\begin{frame}{Density functions (cont)}
 Then, the probability that our random variable lies in the interval  $[a,b]$ is given by
 \begin{equation*}
 		P(a \le X \le b)= \int_a^b f(x)dx = \int_a^b  \frac{1}{\sqrt{2\pi}} \exp(-x^2/2) dx

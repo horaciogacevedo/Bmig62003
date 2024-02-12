@@ -1,22 +1,22 @@
 \documentclass{beamer}
-\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
-\usetheme{default}
+\usetheme{CambridgeUS}
 \usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{mathbbol}
 \usepackage{xcolor} % before tikz or tkz-euclide if necessary
 \usepackage{tkz-euclide} % no need to load TikZ
 \usepackage{multirow}
 
 \usepackage[
 backend=biber,
-style=authoryear-icomp,
+style=numeric,
 sortlocale=de_DE,
 natbib=true,
 url=false, 
 doi=true,
 eprint=false
 ]{biblatex}
+
+\definecolor{uamsred}{rgb}{0.6,0.2,0.2}
+\setbeamercolor{mycolor}{fg=white,bg=uamsred}
 \addbibresource{../../Bibliography/main_ML.bib}
 
 \titlegraphic{\includegraphics[width=2cm]{../../Figures/UAMS_RGB.png}
@@ -91,15 +91,39 @@ For prediction, in the logistic regression model we use $\hat{p}(X)$ as follows
 
 \begin{frame}{Estimating the coefficients}
 	
-	Whereas we can use our training data to estimate the coefficients $\theta_0$ and $\theta_1$ using a least squares approach, this is not normally used. Instead the method of {\bf maximum likelihood} is preferred. 
+	Whereas we can use our training data to estimate the coefficients $\theta_0$ and $\theta_1$ using a least squares approach, this is not used in logistic regression. Instead the method of {\bf maximum likelihood} is applied. 
 	
-	The likelihood function is defined by 
+	The likelihood function is defined as the join probability of the observed data values, given the model parameters. Formally, it is defined as
 	\begin{equation*}
 		\ell (\theta_0,\theta_1)= \prod_{i:y_i=0} p(x_i) \prod_{i':y_i'=1} (1-p(x_{i'}))
-	\end{equation*}
-The estimates $\hat{\theta}_0$ and $\hat{\theta}_1$  are chosen to {\it maximize} this likelihood function. 
-	
-\end{frame}
+	\end{equation*}	
+
+The \textbf{deviance} is defined as 
+\begin{equation*}
+	\text{deviance}=-2 \log \text{likelihood}
+\end{equation*}
+
+The estimates $\hat{\theta}_0$ and $\hat{\theta}_1$  are chosen to {\it maximize} this likelihood function. Equivalently, we can \textit{minimize} the deviance.
+
+
+\end{frame}		
+\begin{frame}{Estimating the coefficients (cont)}
+	The terminology for logistic regression and multiple linear regression is sometimes confusing, but they are describing the same basic principles.\\
+\setlength{\parskip}{10pt}	
+{\small
+	\begin{tabular}{|l|l|}
+		\hline
+		Regression & Logistic Regression \\
+		\hline
+		Degrees of Freedom & Degrees of Freedom \\
+		Sum of squares (SS) & Deviance (D)\\
+		Mean sum of squares (divide by DF) & Mean deviance (divide by DF)\\
+		Fitting by minimizing residual SS & Fitting by minimizing the deviance\\
+		\hline
+	\end{tabular}
+}
+\end{frame}	
+
 
 \begin{frame}{Multiple Logistic Regression}
 	As with multi linear regression, we can expand the model to accommodate more predictors
@@ -196,7 +220,7 @@ Alternatively, a separating hyperplane satisfies the condition
 	
 		\begin{figure}[h]
 		\centering
-		\includegraphics[scale=0.35]{../../Figures/fig_support_vectors.png}
+		\includegraphics[scale=0.3]{../../Figures/fig_support_vectors.png}
 	\end{figure}	
 \end{frame}
 
@@ -231,12 +255,21 @@ where our $n$ training observations are $x_{i}$ and $Y$ is the vector with the c
 	 
 \end{frame}
 \begin{frame}{Support Vector Classifier}
-The variables $\epsilon_i$ are calle {\bf slack variables} that allow individual observations to be on the wrong side of the margin or the hyperplane. More precisely, if $\epsilon_i=0$ the the $i$th observation is on the right side of the margin. If $0< \epsilon_i \le 1$, the $i$th observation is on the wrong side of the margin. If $\epsilon_i>1$ the observation $i$th is on the wrong side of the hyperplane. 
-
-The hyperparameter $C$ limits the tolerance that we allow for the observations to be either on the wrong side of the margin or hyperplane. It controls the bias-variance trade-off. If $C$ is large, the margin is wider and we allow more violations; this amounts to fitting the data less hard and increasing bias but decreasing variance. On the other hand, if $C$ is small, we fit very tightly our model, so a low bias but high variance. 
+The variables $\epsilon_i$ are called {\bf slack variables} that allow individual observations to be on the wrong side of the margin or the hyperplane. More precisely, if $\epsilon_i=0$ the  $i$th observation is on the right side of the margin. If $0< \epsilon_i \le 1$, the $i$th observation is on the wrong side of the margin. If $\epsilon_i>1$ the observation $i$th is on the wrong side of the hyperplane. 
 
 
-Observation that lie directly on the margin, or on the wrong side of the margin for their class, are known as {\bf support vectors}.
+The hyperparameter $C$ limits the tolerance that we allow for the observations to be either on the wrong side of the margin or hyperplane. It controls the bias-variance trade-off. 
+
+\end{frame}
+\begin{frame}{Support Vector Classifier (cont)}
+	
+\begin{itemize}
+	\item If $C$ is large, the margin is wider and we allow more violations; this amounts to fitting the data less hard and increasing bias but decreasing variance. 
+	\item If $C$ is small, we fit very tightly our model, so a low bias but high variance.
+\end{itemize}
+
+
+%Observation that lie directly on the margin, or on the wrong side of the margin for their class, are known as {\bf support vectors}.
 \end{frame}
 
 \begin{frame}{Variable $C$}
@@ -387,7 +420,7 @@ We maximize $L_D$ subject to $0 \le \alpha_i \le \gamma$ and $\sum_{i=1}^N \alph
 \end{frame}
 
 \begin{frame}{References}
-	Materials and some of the pictures are from \citep{James2015}, \citep{hastie01}, \citep{geron2}, and \citep{pestman}.
+	Materials and some of the pictures are from \citep{James2015}, \citep{hastie01}, \citep{geron2}, \citep{maindonald} and \citep{pestman}.
 	\printbibliography 	
 	
 	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
