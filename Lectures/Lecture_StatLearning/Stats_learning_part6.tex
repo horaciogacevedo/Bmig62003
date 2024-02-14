@@ -1,5 +1,6 @@
 \documentclass{beamer}
 \DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
+\usetheme{CambridgeUS}
 \usetheme{default}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -32,20 +33,20 @@ eprint=false
 	\end{frame}
 
 
-\begin{frame}{Resampling Methods for Parameter Estimation}
-	Suppose you have applied your state of the art algorithm, but you don't know what is the distribution of a parameter (hyperparameter). The question is: how do I determine the bias and variance?
+\begin{frame}{Resampling Methods for Parameter Metrics}
+	Suppose you have applied your state-of-the-art algorithm, but you don't know what is the distribution of a parameter (hyperparameter). The question is: how do I determine the bias and variance?
 	
-	The {\bf jackknife} and {\bf bootstrap} are {\it resampling} methodologies that help improving classification.
+	The {\bf jackknife} and {\bf bootstrap} are {\it resampling} methodologies that help us to calculate bias and variance of arbitrary statistics (or hyperparameters), thereby improving our understanding of perfomance during classification or regression.
 	
 	
 	 
 \end{frame}
 
 \begin{frame}{Jacknife}
-	It was introduced by Maurice Quenouille around 1950's.  Let's start with an example as motivation for the use of the jacknife. 
+	It was introduced by Maurice Quenouille around 1950's. 
 	
-	{\bf Example. } Let's suppose that we have 
-	$m$ independent random variables $X_1,\ldots, X_m$ that follow the same distribution. We can define the statistic $\overline{X}$ defined as $\frac{X_1 + \cdots + X_m}{m}$. The question is what is the standard deviation of this statistic given a set of observed values $X_1=x_1,\ldots, X_m=x_m$?
+	{\bf Motivation Example. } Let's suppose that we have 
+	$m$ independent random variables $X_1,\ldots, X_m$ that follow the same distribution (not necessarily normal!). We can define the statistic $\overline{X}$ defined as $\frac{X_1 + \cdots + X_m}{m}$. The question is what is the standard deviation of this statistic given a set of observed values $X_1=x_1,\ldots, X_m=x_m$?
 	
 	Following the definition of variance, we can determine
 	
@@ -97,12 +98,12 @@ where
 	
 	Recall the definition of bias
 	\begin{equation*}
-		bias = \theta - E(\hat{\theta})
+		bias(\theta) = \theta - E(\hat{\theta})
 	\end{equation*} 
 The Jackknife estimate of bias is given by
 
 \begin{equation*}
-	bias_{jack}= (m-1) (\hat{\theta}_{(\bullet)}- \hat{\theta})
+	bias_{jack} (\theta)= (m-1) (\hat{\theta}_{(\bullet)}- \hat{\theta})
 \end{equation*}
 \end{frame}		
 		
@@ -136,14 +137,24 @@ where $\hat{\theta}^{*(b)}$ is the estimate of $\theta$ for the sample $b$ .
 \begin{frame}{Bootstrap bias and variance estimates}
 	The bootstrap estimate of the bias 
 	\begin{equation*}
-		bias_{boot}= \hat{\theta}^{*(\bullet)}- \hat{\theta}
+		bias_{boot}(\theta)= \hat{\theta}^{*(\bullet)}- \hat{\theta}
 	\end{equation*}
 	Whereas the bootstrap estimate of the variance is
 	\begin{equation*}
-		\hat{\sigma}^2 (\theta)= \frac{1}{B}\sum_{b=1}^B \left(  \hat{\theta}^{*(b)} - \hat{\theta}^{*(\bullet)} 
-		\right)
+		\hat{\sigma}^2 (\theta)= \frac{1}{B-1}\sum_{b=1}^B \left(  \hat{\theta}^{*(b)} - \hat{\theta}^{*(\bullet)} 
+		\right)^2
 	\end{equation*}
 \end{frame}
+
+\begin{frame}{Bootstrap Picture}
+
+		
+		\begin{figure}[h]
+			\centering
+			\includegraphics[scale=0.5]{../../Figures/5.11.png}
+		\end{figure}
+\end{frame}
+
 
 \begin{frame}{Subset Selection (Regression)}
 	We have seen than when several predictors are present, it is difficult to determine which ones to keep or discard. 
@@ -201,7 +212,7 @@ Notice that in step 3 we have changed our metric. If we were to proceed with the
 			\item Consider all $p-k$ models that augment the predictors in $\widehat{\cal M}_k$ with one additional predictor.
 			\item Choose the {\it best} among these $p-k$ models and call it $\widehat{\cal M}_{k+1}$. The metric is defined as having the smallest RSS or highest $R^2$.
 		\end{enumerate}
-	\item Select a single best model from among ${\cal M}_0,\widehat{\cal M}_1,\ldots, \widehat{\cal M}_p$ using corss-validated prediction error $C_p$ (AIC), BIC, or adjusted $R^2$.
+	\item Select a single best model from among ${\cal M}_0,\widehat{\cal M}_1,\ldots, \widehat{\cal M}_p$ using cross-validated prediction error $C_p$ (AIC), BIC, or adjusted $R^2$.
 		\end{enumerate}
 	So, instead of comparing $2^p$ models, we will be comparing $1 + \frac{p(p+1)}{2}$ models. 
 	

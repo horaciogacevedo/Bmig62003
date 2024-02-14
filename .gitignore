@@ -1,0 +1,10 @@
+*.bbl
+*.bcf
+*.log
+*.nav
+*.run.xml
+*.syntex.gz
+*.out
+*.toc
+*.aux
+._*
