@@ -1,5 +1,6 @@
 \documentclass{beamer}
 \DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
+\usetheme{CambridgeUS}
 \usetheme{default}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -26,18 +27,66 @@ eprint=false
 
 \title{Statistical Machine Learning\\ Manifold Learning}
 \author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics}
+
 \begin{document}
 	\begin{frame}[plain]
 		\maketitle
 	\end{frame}
-\begin{frame}{Linear Models}
-	Popular methods of data analysis make the assumption that the data lies on a linear $k$-dimensional subspace of $\mathbb{R}^n$ where $k< n$. 
+	
+
+\begin{frame}{PCA}
+	In a general setup, we can think that we have $m$ vectors in $\mathbb{R}^n$, namely $\{x_1, \ldots, x_m\}$. We try to find the "optimal" linear projection $\theta \colon \mathbb{R}^n \to \mathbb{R}^k$ where $k \ll n$ (meaning $k$ much lower than $n$)
+	\begin{enumerate}
+		\item $\tilde{x_j} = x_j -\mu$ where $\mu= \frac{1}{m} \sum x_j$
+		\item We find the variance-covariance matrix 
+		\begin{equation*}
+			C=\frac{1}{m} \sum_{j=1}^m \tilde{x_j} \tilde{x_j}^t
+		\end{equation*}
+		\item We compute the top $k$-eigenvectors $\{v_1, \ldots, v_k\}$ of $C$.
+		\item These eigenvectors span a hyperplane (subspace) of $\mathbb{R}^n$. The projection $\theta \colon \mathbb{R}^n \to \mathbb{R}^k$ is precisely the orthogonal projection onto this plane followed by a choice of identification of the plane with $\mathbb{R}^k$.
+		\item We can think $\theta$ as 
+		\begin{equation*}
+			y_j= \theta(\tilde{x_j})+ \mu
+		\end{equation*}
+		
+	\end{enumerate}
+	
+	
+\end{frame}
+
+\begin{frame}{PCA cont}
+	The process chooses the basis which maximizes the variance captured by the representation; the eigenvector $v_1$ with the largest eigenvalue is the single direction that captures the maximal amount of information about the variance; the plane spanned by $\{v_1,v_2\}$ is the plane with the most variance, etc.
+	
+	Another characterization of PCA is to find a projection that minimizes the error function
+	\begin{equation*}
+		E= \sum_{j=1}^m \| x_j -y_j \|^2, 
+	\end{equation*}
+	where $\| \cdot \|$ denotes some distance. For PCA this means that it produces the points $\{y_i\}$ that minimize the reconstruction error among all projections onto a $k$ dimensional subspace. 
+\end{frame}
+
+	
+\begin{frame}{What we learned from linear models}
+	Popular methods of data analysis make the assumption that  data lies on a linear $k$-dimensional subspace of $\mathbb{R}^n$ where $k< n$. 
 	
 	The general problem reduces to search for a linear transformation $\theta \colon \mathbb{R}^n \to \mathbb{R}^k$ such that $\{\theta(x_i)\}$ retains something about the structure of $\{x_i\}$. 
 	
 	Linear models are ubiquitous in sciences, but the assumption of linearity is often unrealistic. One alternative, is to consider that the data has been sampled from a (compact Riemannian) \textbf{manifold} ${\cal M}\subset \mathbb{R}^n$ of much lower dimension than $n$. 
 
 \end{frame}
+
+\begin{frame}{Manifold Learning (cont))}
+	Suppose that we are given data points $\{x_1, \ldots, x_m\}$ in $\mathbb{R}^n$. We will assume that there is a function (embedding) $\gamma \colon {\cal M} \to \mathbb{R}^n$. 
+	
+	Keep in mind that \textit{distances} in manifolds can be different
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=3cm]{../../Figures/fig_geodesic.jpg}
+	\end{figure}
+	The manifold structure can be reconstructed by considering the "short distances" as reliable indicators of the local (intrinsic) distances and ignoring the "long distances".
+	
+	
+\end{frame}
+
 
 \begin{frame}{What is a manifold?}
 	Roughly speaking, a manifold (of dimension 2) is a surface that locally behaves as a regular space in $\mathbb{R}^2$. In geometry, we refer to local properties as intrinsic. 
@@ -69,6 +118,21 @@ Intuitively, we cannot cover the whole sphere (in a unique way) with only one sh
 	
 \end{frame}
 
+
+
+
+\begin{frame}{The manifold hypothesis}
+	The \textbf{Manifold hypothesis} states the most "naturally occuring" high dimensional dataset lie in a low dimensonal manifold.
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=10cm]{../../Figures/fig_manifold_lawrence.png}
+	\end{figure}		
+	
+	
+	
+\end{frame}
+
 \begin{frame}{Manifold Learning }
 	
 	Loosely speaking, the basic idea of most manifold learning techniques is to take the $k$-nearest neighbors of a point $x$ and use the vectors specified by the line segments from $x$ to its neighbors as an approximation for the tangent plane at $x$. 
@@ -81,35 +145,6 @@ Intuitively, we cannot cover the whole sphere (in a unique way) with only one sh
 \end{frame}
 
 
-\begin{frame}{PCA}
-	In a general setup, we can think that we have $m$ vectors in $\mathbb{R}^n$, namely $\{x_1, \ldots, x_m\}$. We try to find the "optimal" linear projection $\theta \colon \mathbb{R}^n \to \mathbb{R}^k$ where $k \ll n$ (meaning $k$ much lower than $n$)
-	\begin{enumerate}
-	\item $\tilde{x_j} = x_j -\mu$ where $\mu= \frac{1}{m} \sum x_j$
-	\item We find the variance-covariance matrix 
-	\begin{equation*}
-		C=\frac{1}{m} \sum_{j=1}^m \tilde{x_j} \tilde{x_j}^t
-	\end{equation*}
-	\item We compute the top $k$-eigenvectors $\{v_1, \ldots, v_k\}$ of $C$.
-	\item These eigenvectors span a hyperplane (subspace) of $\mathbb{R}^n$. The projection $\theta \colon \mathbb{R}^n \to \mathbb{R}^k$ is precisely the orthogonal projection onto this plane followed by a choice of identification of the plane with $\mathbb{R}^k$.
-	\item We can think $\theta$ as 
-	\begin{equation*}
-		y_j= \theta(\tilde{x_j})+ \mu
-	\end{equation*}
-	
-	\end{enumerate}
-
-
-\end{frame}
-
-\begin{frame}{PCA cont}
-	The process chooses the basis which maximizes the variance captured by the representation; the eigenvector $v_1$ with the largest eigenvalue is the single direction that captures the maximal amount of information about the variance; the plane spanned by $\{v_1,v_2\}$ is the plane with the most variance, etc.
-	
-	Another characterization of PCA is to find a projection that minimizes the error function
-	\begin{equation*}
-		E= \sum_{j=1}^m \| x_j -y_j \|^2, 
-	\end{equation*}
-	where $\| \cdot \|$ denotes some distance. For PCA this means that it produces the points $\{y_i\}$ that minimize the reconstruction error among all projections onto a $k$ dimensional subspace. 
-\end{frame}
 
 \begin{frame}{Multidimensional scaling (MDS)}
 	
@@ -126,43 +161,95 @@ From Lapedes and Farber (2001)
 	
 \end{frame}
 
-\begin{frame}{MDS formally}
+\begin{frame}{MDS (cont)}
+	The MDS tries to find a set of low dimensional vectors $\{ \textbf{z}_i \in \mathbb{R}^k\}_{i=1}^N$ such that the pairwise distances between these vectors is as similar as possible to a set of pairwise dissimilaritites $\textbf{D}=\{d_{ij}\}$ provided by the user. 
 
-In this methodology, we search for a mapping $\theta \colon \mathbb{R}^n \to \mathbb{R}^k$ that minimizes
+Let's considered the centered similarity matrix as follows
+
 \begin{equation*}
-	{\cal E}= \sum_{x_i,x_j} ( d(x_i,x_j) - \|\theta(x_i)-\theta(x_j)\|)^2,
+	\tilde{K}_{ij}= \langle \textbf{x}_i - \overline{\textbf{x}}, \textbf{x}_j - \overline{\textbf{x}} \rangle
 \end{equation*}
-where $d$ is an (intrinsic) distance. 
-The procedure is as follows. 
-\begin{enumerate}
-	\item Consider the matrix of the original distances $D=(D_{ij})$ where $D_{ij}= d(x_i,x_j)$. 
-	\item Set $H= I_n - \frac{1}{n} \mathbb{1} \cdot \mathbb{1}^t$, where $\mathbb{1}= (1,1, \ldots, 1)$. $H$ is also known as the centering matrix. Set $Z= -\frac{1}{2} H D H$. Here, the multiplication $HDH$ creates a doubly centered matrix whose row and column means are equal to zero.
-	\item The function that minimizes $\cal E$ is then given by finding the eigenvectors $v_j$ of $Z$. The $\theta(x_i)$ is specified by normalizing so that $\|v_j\|^2=\lambda_j$, making a matrix with the eigenvectors $\{v_j\}$ as columns and taking the $ith$ row.
-\end{enumerate}
 \end{frame}
+
+\begin{frame}{Digression}
+	Let's consider a matrix $\textbf{X}$ of type $N\times D$. The \textbf{sum of squares matrix}
+	is a $D\times D$ matrix defined by
+	\begin{equation*}
+		\textbf{X}^t \textbf{X}=\sum_{n=1}^{N} \textbf{x}_n \textbf{x}_n^t=\sum_{n=1}^N 
+		\begin{pmatrix}
+			x_{n,1}^2 & \cdots & x_{n,1}x_{n,D}\\
+			\vdots & \ddots & \vdots \\
+			x_{n,D}x_{n,1}&\cdots & x_{n,D}^2
+		\end{pmatrix}
+	\end{equation*} 
+	The \textbf{scatter matrix} is defined by
+	\begin{equation*}
+		\textbf{S}_{\overline{\textbf{x}}}= \sum_{n=1}^{N} 
+		(\textbf{x}_n -\overline{\textbf{x}})
+		(\textbf{x}_n -\overline{\textbf{x}})^t
+	\end{equation*}
+	The last expression means that the sum of squares matrix is applied to mean-centered data.
+\end{frame}
+\begin{frame}{Digression (cont)}
+	
+	The \textbf{centering matrix} is defined by
+	\begin{equation*}
+		\textbf{C}_N = \textbf{I}_N - \frac{1}{N} \textbf{1}_N \textbf{1}_N^t
+	\end{equation*}
+	
+	For instance 
+	\begin{equation*}
+		\textbf{C}_3 = \begin{pmatrix}
+			\frac{2}{3} & -\frac{1}{3} & -\frac{1}{3} \\
+			-\frac{1}{3} & \frac{2}{3} & -\frac{1}{3} \\
+				-\frac{1}{3} & -\frac{1}{3} & \frac{2}{3} \\	
+		\end{pmatrix}
+	\end{equation*}
+	
+	It can be shown that 
+	\begin{equation*}
+		\textbf{S}_{\overline{\textbf{x}}}= \textbf{X}^t\textbf{C}_N\textbf{X}
+	\end{equation*}
+\end{frame}
+
+\begin{frame}{MDS (cont)}
+	Using matrix notation, we have 
+	\begin{equation*}
+		\tilde{\textbf{X}}= \textbf{C}_N \textbf{X} (\textbf{C}_N \textbf{X} )^t
+	\end{equation*}
+	Moreover, if we define $\tilde{\textbf{z}}_i = \textbf{z}_i - \overline{\textbf{z}}$, and $\tilde{Z}_{ij}$ denotes elements of the centered matrix $\tilde{\textbf{Z}}$.
+	
+	The goal will be to minimize 
+	\begin{equation*}
+		{\cal E}= \sum_{i,j} ( \tilde{K}_{ij} - \tilde{Z}_{ij})^2= \| \tilde{\textbf{K}}- \tilde{\textbf{Z}}\tilde{\textbf{Z}}^t \|^2
+	\end{equation*}
+	This process is done using a method called \textbf{singular value decomposition} of $\tilde{\textbf{K}}$. Thus, $\tilde{\textbf{K}}=\textbf{U} \textbf{S} \textbf{U}^t$, and hence $\tilde{\textbf{Z}}= \textbf{U} \textbf{S}^{\frac{1}{2}}$
+\end{frame}
+
+
+%\begin{frame}{MDS formally}
+%
+%In this methodology, we search for a mapping $\theta \colon \mathbb{R}^n \to \mathbb{R}^k$ that minimizes
+%
+%where $d$ is an (intrinsic) distance. 
+%The procedure is as follows. 
+%\begin{enumerate}
+%	\item Consider the matrix of the original distances $D=(D_{ij})$ where $D_{ij}= d(x_i,x_j)$. 
+%	\item Set $H= I_n - \frac{1}{n} \mathbb{1} \cdot \mathbb{1}^t$, where $\mathbb{1}= (1,1, \ldots, 1)$. $H$ is also known as the centering matrix. Set $Z= -\frac{1}{2} H D H$. Here, the multiplication $HDH$ creates a doubly centered matrix whose row and column means are equal to zero.
+%	\item The function that minimizes $\cal E$ is then given by finding the eigenvectors $v_j$ of $Z$. The $\theta(x_i)$ is specified by normalizing so that $\|v_j\|^2=\lambda_j$, making a matrix with the eigenvectors $\{v_j\}$ as columns and taking the $ith$ row.
+%\end{enumerate}
+%\end{frame}
 
 \begin{frame}{MDS (cont)}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=7cm]{../../Figures/fig_mds_manifold.png}
+	\includegraphics[width=6cm]{../../Figures/fig_mds_manifold.png}
 \end{figure}
 
 \begin{theorem}
-	Given $\{x_1, \ldots, x_l\}\subset \mathbb{R}^n$ and $k<$, the results of metric MDS and PCA embedding $\{x_i\}$ into $\mathbb{R}^k$ are isometric.
+	Given $\{x_1, \ldots, x_l\}\subset \mathbb{R}^n$ and $k<n$, the results of metric MDS and PCA embedding $\{x_i\}$ into $\mathbb{R}^k$ are isometric.
 \end{theorem}
-
-\end{frame}
-\begin{frame}{Manifold Learning Main Ideas}
-	Suppose that we are given data points $\{x_1, \ldots, x_m\}$ in $\mathbb{R}^n$. We will assume that there is a function (embedding) $\gamma \colon {\cal M} \to \mathbb{R}^n$. 
-	
-	Keep in mind that \textit{distances} in manifolds can be different
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=3cm]{../../Figures/fig_geodesic.jpg}
-\end{figure}
-	The manifold structure can be reconstructed by considering the "short distances" as reliable indicators of the local (intrinsic) distances and ignoring the "long distances".
-	
 
 \end{frame}
 
@@ -318,10 +405,15 @@ The procedure is as follows.
 
 
 \begin{frame}{References}
-	Some of the pictures are from \citep{docarmoriemann}, and \citep{schutz}, and \citep{geron2}. Main reference for manifold learning \citep{rabadan}.
-	\printbibliography 	
+	Some of the pictures are from \citep{docarmoriemann}, and \citep{schutz}, and \citep{geron2}. Main reference for manifold learning \citep{rabadan}, and \citep{murphyintro}. The cited paper is \citep{lawrenceman}
 	
 	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
+\end{frame}
+\begin{frame}{References (cont)}
+	
+	\printbibliography 	
+	
+	
 	
 \end{frame}
 
