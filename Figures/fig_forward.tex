@@ -1,0 +1,94 @@
+\documentclass[letter,10pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[ansinew]{inputenc}
+
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+
+\usepackage{tikz}
+\begin{document}
+	
+\tikzstyle{state}=[shape=circle,draw=blue!50,fill=blue!20]
+\tikzstyle{nostate} = [shape=circle,draw=red!50]
+\tikzstyle{observation}=[shape=rectangle,draw=orange!50,fill=orange!20]
+\tikzstyle{lightedge}=[<-,dotted]
+\tikzstyle{mainstate}=[state,thick]
+\tikzstyle{mainedge}=[<-,thick]
+
+\begin{figure}[htbp]
+\centering
+		\begin{tikzpicture}[]
+			% 0th column
+			\node at (-2,6) {${\cal M}_0$};
+			\node[mainstate] (s0_1) at (-2,5) {$\theta_0$};
+			% 1st column
+			\node               at (0,6) {$\widehat{\cal M}_1$};
+			\node[nostate] (s1_1) at (0,5) {$\theta_0$};
+			\node[state] (s2_1) at (0,4) {$\theta_1$}
+			edge[lightedge] (s0_1);
+			\node[mainstate] (s3_1) at (0,3) {$\theta_2$}		edge[mainedge] (s0_1);
+			\node[state] (s4_1) at (0,2) {$\theta_3$}
+			edge[lightedge](s0_1);
+			%\node at (0,1) {$y_1$};
+			% 2nd column
+			\node               at (2,6) {$\widehat{\cal M}_2$};
+			\node[nostate] (s1_2) at (2,5) {$\theta_0$}
+			%edge[lightedge] (s1_1)
+			%edge[mainedge] (s2_1);
+			%edge[mainedge] (s3_1)
+			%edge[maintedge] (s4_1)
+			;
+			\node[mainstate] (s2_2) at (2,4) {$\theta_1$}
+			%edge[lightedge] (s1_1)
+			%edge[lightedge] (s2_1)
+			edge[mainedge] (s3_1)
+			%edge[lightedge] (s4_1)
+			;
+			\node[nostate] (s3_2) at (2,3) {$\theta_2$}
+			%edge[lightedge] (s1_1)
+			%edge[lightedge] (s2_1)
+			%edge[lightedge] (s3_1)
+			%edge[lightedge] (s4_1)
+			;
+			\node[state] (s4_2) at (2,2) {$\theta_3$}
+			%edge[lightedge] (s1_1)
+			%edge[lightedge] (s2_1)
+			edge[lightedge] (s3_1)
+			%edge[lightedge] (s4_1)
+			;
+			%\node at (2,1) {$y_2$};
+			% 3rd column
+			\node               at (4,6) {$\widehat{\cal M}_3$};
+			\node[nostate] (s1_3) at (4,5) {$\theta_0$}
+			%edge[mainedge]  (s1_2)
+			%edge[lightedge] (s2_2)
+			%edge[lightedge] (s3_2)
+			%edge[lightedge] (s4_2)
+			;
+			\node[nostate] (s2_3) at (4,4) {$\theta_1$}
+			%edge[lightedge] (s1_2)
+			%edge[lightedge] (s2_2)
+			%edge[lightedge] (s3_2)
+			%edge[mainedge] (s4_2)
+			;
+			\node[nostate] (s3_3) at (4,3) {$\theta_2$}
+			%edge[lightedge] (s1_2)
+			%edge[lightedge] (s2_2)
+			%edge[lightedge] (s3_2)
+			%edge[lightedge] (s4_2)
+			;
+			\node[mainstate] (s4_3) at (4,2) {$\theta_3$}
+			%edge[lightedge] (s1_2)
+			edge[mainedge] (s2_2)
+			%edge[lightedge] (s3_2)
+			%edge[lightedge] (s4_2)
+			;
+			%\node at (4,1) {$y_2$};
+		\end{tikzpicture}
+\end{figure}
+
+\end{document}

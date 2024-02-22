@@ -3,8 +3,10 @@
 *.log
 *.nav
 *.run.xml
-*.syntex.gz
+*.synctex.gz
 *.out
 *.toc
 *.aux
+*.snm
+*.blg
 ._*
