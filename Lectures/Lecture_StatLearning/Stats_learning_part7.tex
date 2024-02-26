@@ -1,6 +1,6 @@
 \documentclass{beamer}
 \DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
-\usetheme{default}
+\usetheme{CambridgeUS}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 %\usepackage{amstex}
@@ -39,6 +39,11 @@ University of Arkansas for Medical Sciences}
 	\begin{frame}{Tree structures}
 		
 		A typical tree is depicted with the root being the top node, and growing down. Decisions are being made at each node until a terminal node or {\it leaf} is reached. Each non-terminal node contains a question on which a split is based. Each leaf contains the label (classification) or the predicted mean value (regression).
+		
+\begin{figure}[h]
+	\centering
+	\includegraphics{../../Figures/fig_tree_terminology.png}
+\end{figure}		
 		 
 		
 		
@@ -66,9 +71,9 @@ We will use the {\bf Hitters} data set as an example for  regression.  After run
 	
 	\begin{figure}[h]
 		\centering
-		\includegraphics[scale=0.5]{../../Figures/fig_hitters_graph.png}
+		\includegraphics[scale=0.4]{../../Figures/fig_hitters_graph.png}
 	\end{figure}
-The regions $R_i$ are the representing the leaves of the tree.  	
+The regions $R_i$ are the representing the tree leaves. 	
 	
 \end{frame}
 
@@ -94,9 +99,11 @@ The regions $R_i$ are the representing the leaves of the tree.
 The previous partition can be described as a tree structure
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.3]{../../Figures/fig_tree_trans.png}
+	\includegraphics{../../Figures/fig_tree_combined.png}
 \end{figure}
+\end{frame}
 
+\begin{frame}{2D Example (cont)}
 The corresponding prediction for $\widehat{Z}(x,y)$ based on given partition of $A$ is defined as 
 \begin{equation*}
 	\widehat{Z}(x,y)= \textrm{Average} \{ Z(x_r,y_r)\colon (x_r ,y_r)\in R_j)\}
@@ -133,17 +140,28 @@ We repeat the process looking for the best predictor and best cut point in order
 
 Once the regions are found, the predicted response for a given test observation is the mean of the training observations in the region to which that test observation belongs.
 
-The recursive binary splitting may produce good predictions on the training set, but it follows to close the data and more likely produce overfit. Thus, a smaller tree with fewer splits might lead to lower variance and better interpretation at the cost of bias.
+The recursive binary splitting may produce good predictions on the training set, but it follows too close the data and more likely produce overfitting. 
+
+Thus, a smaller tree with fewer splits might lead to lower variance and better interpretation at the cost of bias.
 \end{frame}
 
 \begin{frame}{Tree Pruning}
 	
 	
-	One way to address the overfiting problem is to grow a very large tree $T_0$ , and then prune it back to obtain a sub-tree. Ideally, we select a sub-tree that leads to the lowest test error rate using say cross-validation. 
+	One way to address the overfitting problem is to grow a very large tree $T_0$ , and then prune it back to obtain a sub-tree. Ideally, we select a sub-tree that leads to the lowest test error rate using say cross-validation. 
+	\begin{figure}[h]
+		\includegraphics{../../Figures/fig_tree_pruning.png}
+	\end{figure}
 	
-	Once again we faced the  problem that the number of possible sub-trees is computationally intensive.
 	
-	A process known as {\it weakest link pruning} considers a sequence of trees indexed by a non-negative tuning parameter $\alpha$. For each value of $\alpha$ there corresponds a sub-tree $T \subset T_0$ such that the following quantity is as small as possible
+	Once again we are facing a computationally intensive problem since the number of possible sub-trees is very large.
+	
+	
+\end{frame}
+
+\begin{frame}{Tree Pruning (cont)}
+	
+	A process known as {\it weakest link pruning} considers a sequence of trees indexed by a non-negative tuning parameter $\alpha$. For each value of $\alpha$, we find a sub-tree $T \subset T_0$ such that the following quantity is as small as possible
 	
 	\begin{equation}
 		\sum_{m=1}^{|T|} \sum_{i\in R_m} (y_i -\hat{y}_{R_m})^2 + \alpha |T|,
@@ -239,7 +257,7 @@ Note the leave {\tt RestECG<1} . The response is Yes so why do we need to partit
 	\begin{equation}
 		J(s,t_s) = \frac{m_{left}}{m} G_{left}+ \frac{m_{right}}{m} G_{right},
 	\end{equation}
-where $G_{left}$ is the measure of impurity for the {\it left} subset. 
+where $G_{left}$ is the measure of impurity for the {\it left} subset, and $m_{left}$ represents the number of instances. 
 
 The same algorithm has the following cost function for regression 
 
@@ -368,7 +386,7 @@ In \citep{cartbook} is proven that there is a strictly increasing sequence of pa
 \end{frame}
 
 \begin{frame}{Variable Ranking CART}
-	Let $T$ be an optimal subtree selected by the cross-validation or test sample procedure. If the Gini splitting rule has been used, then at each node compute $\Delta(\tilde{s}_m,t)= I(t)-I(t_L)-I(t_R)$.
+	Let $T$ be an optimal subtree selected by the cross-validation or test sample procedure. If the Gini splitting rule has been used, then at each node compute $\Delta I(\tilde{s}_m,t)= I(t)-I(t_L)-I(t_R)$.
 	
 	The \textbf{measure of importance of variable} $x_m$ is defined as
 	\begin{equation*}

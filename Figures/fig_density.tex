@@ -29,10 +29,10 @@
 			
 			\begin{scope}[yshift=-\pgflinewidth]
 				\clip (axis cs:1,0) rectangle (axis cs:2,0.24);
-				\addplot [draw=none,fill=blue] {gauss(x, 3, 1)};
+				\addplot [draw=none,fill=cyan!50] {gauss(x, 3, 1)};
 			\end{scope}
 			
-			\addplot [very thick,cyan!50!black] {gauss(x, 3, 1)};
+			\addplot [very thick,blue!50!black] {gauss(x, 3, 1)};
 			\pgfmathsetmacro\valueB{gauss(1,1,7)}
 			\pgfmathsetmacro\valueA{gauss(1,1,1.65)}
 			\pgfmathsetmacro\valueC{gauss(1,1,1)}
@@ -44,6 +44,7 @@
 			\node[below] at (axis cs:3,0)  {$\mu=0$}; 
 			\node[below] at (axis cs:2,0) {$x=b$};
 			\node[below] at (axis cs:1,0) {$x=a$};
+			\node at (axis cs:1.3,0.25) {$P(a\le x \le b)$};
 		\end{axis}
 	\end{tikzpicture}
 \end{document}
