@@ -1,6 +1,6 @@
 \documentclass{beamer}
 \DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
-\usetheme{default}
+\usetheme{CambridgeUS}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{mathbbol}
@@ -215,7 +215,7 @@ A similar expression is valid for classification, but instead of the average we 
 		\item Suppose you have $\{X_1, \ldots, X_p\}$ variables and fix $X_j$. 
 		\item Consider the bootstrap of the sample ${\cal L}_n^{\Theta_s}$ and the associated $OOB_s$ sample (i.e., all the observations that do not belong to ${\cal L}_n^{\Theta_s}$ )
 		\item Calculate $\text{err}OOB_s$ the error made on $OOB_s$ by the tree build on ${\cal L}_n^{\Theta_s}$. For instance MSE or misclassification rate.
-		\item Randomly permute the values of the variable $X_j$ in the $OOB_s$ sample. This gives a permuted samples, noted as $\widetilde{OOB}_s^j$.
+		\item Randomly permute the values of the variable $X_j$ in the $OOB_s$ sample. This gives permuted samples, noted as $\widetilde{OOB}_s^j$.
 		\item Calculate the $\text{err}\widetilde{OOB}_s^j$, the error made on $\widetilde{OOB}_s^j$ by the tree build on ${\cal L}_n^{\Theta_s}$.
 		\item Repeat these operations for all bootstrap samples. 
 \end{itemize}
@@ -292,20 +292,14 @@ The $\alpha_j$ are computed by the boosting algorithm and weight the contributio
 \begin{frame}{Boosting for Regression Trees}
 	Given a current model, we fit a decision tree to the residuals from the model rather than the outcome $Y$ as the response. And we add these residuals to a new decision tree and update again the residuals. 
 	
-	Boosting has the following tuning parameters:
-	
-	\begin{itemize}
-		\item $B$ that represents the number of trees. Do not take very large values of $B$ as boosting tends to over-fit. We can use cross-validation to determine a good candidate for $B$.
-		\item The shrinkage parameter $\lambda$ controls the learning rate. 
-		\item The number of splits $d$ controls the complexity of the boosted ensemble. Sometimes $d=1$ works well. 
-\end{itemize} \end{frame}
+	 \end{frame}
 
 \begin{frame}{Boosting Algorithm for Regression Trees}
 	\begin{enumerate}
 		\item Set $\hat{f}(x)=0$ and $r_i=y_i$ for all $i$ in the training set. 
 		\item for $b=1,\ldots, B$ repeat:
 		\begin{enumerate}
-			\item Fit a tree $\hat{f}^b$ with $d$ splits to the training data $(X,r)$.
+			\item Fit a tree $\hat{f}^b$ with $d$ splits ($d+1$ terminal nodes) to the training data $(X,r)$.
 			\item Update $\hat{f}$ by adding in a shrunken version of the new tree:
 			\begin{equation*}
 				\hat{f}(x) \leftarrow \hat{f}(x)+ \lambda \hat{f}^b (x)
@@ -322,7 +316,15 @@ The $\alpha_j$ are computed by the boosting algorithm and weight the contributio
 	\end{enumerate}
 \end{frame}
 
-
+\begin{frame}{Hyperparameters for Boosting}
+	Boosting has the following tuning parameters:
+	
+	\begin{itemize}
+		\item $B$ that represents the number of trees. Do not take very large values of $B$ as boosting tends to over-fit. We can use cross-validation to determine a good candidate for $B$.
+		\item The shrinkage parameter $\lambda$ controls the learning rate. 
+		\item The number of splits $d$ controls the complexity of the boosted ensemble. Sometimes $d=1$ works well. 
+	\end{itemize}
+\end{frame}
 
 
 \begin{frame}{Boosting}
