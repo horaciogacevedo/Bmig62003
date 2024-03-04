@@ -1,6 +1,6 @@
 \documentclass{beamer}
 \DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
-\usetheme{default}
+\usetheme{CambridgeUS}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{mathbbol}
@@ -38,9 +38,22 @@ eprint=false
 \begin{frame}{What are activation functions?}
 Recall that in the threshold logic,  once we receive the input, a decision must be made to \textit{fire} or \textit{suppress} the output. 
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{../../Figures/fig_threshold.png}
+\end{figure}
+
+\end{frame}
+\begin{frame}{Activation functions}
+	
+
 
 \textbf{Activation functions} generalize the concept of activation given a specific  input.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{../../Figures/fig_activation.png}
+\end{figure}
 	
 \end{frame}
 
@@ -193,24 +206,46 @@ These types of activation functions have that advantage that they are smooth and
 \end{figure}
 \end{frame}
 
+\begin{frame}{Summary of Activation Functions}
+	We have seen various types of activation function. All these functions have some characteristic in common, more specifically 
+	
+	\begin{itemize}
+		\item they are well defined for every point in the real line,
+		\item they are non-decreasing, 
+		\item they are smooth almost everywhere.
+	\end{itemize}
+\end{frame}
+
 \begin{frame}{Cost Functions}
 	In the learning process, the parameters of a neural network are subject to minimize a certain objective function which represents a measure of proximity between the prediction of the network and the associated target.
 	
 	Note that these functions are also called \textit{error functions} or \textit{loss functions}. 
+	
+	For instance, in multi linear regression we have RSS as the cost function.
 \end{frame}
 
 \begin{frame}{Input, Output and Target}
 	The \textbf{input} of a neural networks is obtained from given data or from sensors that perceive the environment. The input is a variable that is fed into the network. It can be one-dimensional variable $x$, or a vector $\textbf{x} \in \mathbb{R}^n$, a matrix, a tensor, or a random variable $X$. 
 	
 	The network acts as a function and provides an \textbf{output} which can be one-dimensional $y \in \mathbb{R}$, or a vector $\textbf{y} \in \mathbb{R}^n$, a matrix, a tensor, or a random variable $Y$. We normally denote the \textbf{input-output} mapping by $f_{w,b}$. With the previous notations $f_{w,b}(x)=y$, $f_{w,b}(\textbf{x})= \textbf{y}$, and $f_{w,b}(X)=Y$.
-	
+
+\end{frame}
+\begin{frame}{Input, Output, and Target (cont)}
+
+	\begin{figure}[h]
+	\centering
+	\includegraphics{../../Figures/fig_target.png}
+\end{figure}	
 	The \textbf{target function} is the desired relations which the network tries to approximate. This function is independent of the parameters $w$ and will be denoted by $z=\phi(x)$, $\textbf{z}=\phi(\textbf{x})$ or $Z=\phi(X)$.  
 	 
 	
 \end{frame}
 
 \begin{frame}{Goal}
-	The neural network will tune the parameters $(w,b)$ until the output variable $y$ will be in a proximity of the target variable $z$. The proximity will be determined by the cost function $C(w,b)=\text{distance}(y,z)$
+	The neural network will tune the parameters $(w,b)$ until the output variable $y$ will be in a proximity of the target variable $z$. 
+	
+	The proximity will be determined by the cost function $C(w,b)=\text{distance}(y,z)$
+	
 	The optimal parameters of the network are given  by 
 	\begin{equation*}
 		(w^*,b^*)= \text{arg min}_{w,b} C(w,b)
@@ -233,6 +268,13 @@ These types of activation functions have that advantage that they are smooth and
 	\end{equation*}
 \end{frame}
 
+\begin{frame}{Sup Cost Function (cont)}
+		\begin{figure}[h]
+		\centering
+		\includegraphics{../../Figures/fig_supcost.png}
+	\end{figure}	
+\end{frame}
+
 \begin{frame}{$L^2$ Cost Function}
 	Assume the input of the network is $x\in [0,1]$ and that the target function $\phi\colon [0,1] \to \mathbb{R}$ is square integrable. If $f_{w,b}$ is the input-output mapping, the associated cost functions measures the distance in the $L^2$ norm between the output and the target
 	
@@ -245,7 +287,7 @@ These types of activation functions have that advantage that they are smooth and
 	\end{equation*}
 	then this cost function becomes the square of the Euclidean distance in $\mathbb{R}^n$ between $f_{w,b}$ and $z$
 	\begin{equation*}
-		C(w,b)=\sum_{i=1}^n (f_{w,b}(x_i)- z_i)^n= \| f_{w,b}(\textbf{x})-\textbf{z}\|^2
+		C(w,b)=\sum_{i=1}^n (f_{w,b}(x_i)- z_i)^2= \| f_{w,b}(\textbf{x})-\textbf{z}\|^2
 	\end{equation*}
 \end{frame}
 
