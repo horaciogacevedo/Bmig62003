@@ -1,6 +1,6 @@
 \documentclass{beamer}
 \DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
-\usetheme{default}
+\usetheme{CambridgeUS}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{mathbbol}
@@ -32,10 +32,23 @@ eprint=false
 \author{Horacio G\'omez-Acevedo\\ Department of Biomedical Informatics\\
 	University of Arkansas for Medical Sciences}
 \begin{document}
+	
+
 	\begin{frame}[plain]
 		\maketitle
 	\end{frame}
-	
+	\begin{frame}{Optimization}
+		The general goal of several machine learning problems is to find the values for a set of variables $\theta \in \Theta$ that minimizes a scalar-valued \textbf{loss function} ${\cal L} \colon \Theta \to \mathbb{R}$, that is
+		\begin{equation*}
+			\theta^* \in \text{argmin}_{\theta \in \Theta} \cal{L}(\theta)
+		\end{equation*}
+		The optimization problem can be addressed globally or locally. 
+\begin{figure}[h]
+	\centering
+		\includegraphics[scale=0.4]{../../Figures/fig_murphy_81a.png}
+\end{figure}		
+		
+	\end{frame}
 	\begin{frame}{Case $n=1$}
 		Let's suppose we have a real valued function which is smooth $f\colon \mathbb{R}\to \mathbb{R}$. Then, we can approximate the function in a vicinity of $x=c$ by the so-called Taylor expansion
 		\begin{equation*}
@@ -255,7 +268,7 @@ Therefore, the bias-corrected moments are
 
 
 \begin{frame}{References}
-	Materials and some of the pictures are from \citep{calin}.
+	Materials and some of the pictures are from \citep{calin}, and \citep{murphyintro}
 	\printbibliography 	
 	
 	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
