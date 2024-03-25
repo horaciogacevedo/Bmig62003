@@ -144,6 +144,63 @@ The algorithm build iteratively a sequence $(x^n)$ of vectors that will approach
 
 \end{frame}
 
+\begin{frame}{Optimal step size}
+	Since, we saw that keeping the same step size is not a good strategy, we move to find the \textbf{learning rate schedule} that is a sequence of step sizes $\eta_n$.
+	
+	Often times we have a convex cost function, and in such cases the \textbf{line search} method can help us. 
+	Let $d_t=-g_t$ denote the direction of the gradient of the cost function at step $t$. Then, the optimal size is found by this expression
+	\begin{equation*}
+		\eta_t= \text{argmin}_{\eta >0} C(\theta_t +\eta d_t)
+	\end{equation*}
+	In the case of quadratic loss function
+	\begin{equation*}
+		C(\theta)= \frac{1}{2} \theta^T A \theta + b^T \theta
+	\end{equation*}
+	It can be shown that 
+	\begin{equation*}
+		\eta= - \frac{d^T(A\theta +B)}{d^t A d}
+	\end{equation*}
+	
+	
+\end{frame}
+
+\begin{frame}{Stochastic Gradient Descent}
+	The goal in this case is to minimize the average value of a function
+	\begin{equation*}
+		C(\theta)= E_{q(z)}(C(\theta,z))
+	\end{equation*}
+	where $z$ is a random input to the objective with a distribution $q(z)$. The randomness can either come from the environment itself or could be a training example drawn randomly. 
+	
+	If the distribution $q(z)$ is independent of the parameters we are optimizing, we can use 
+	\begin{equation*}
+		g_t= \nabla_{\theta} C(\theta_t)
+	\end{equation*}
+	Then the resulting iteration results into
+	\begin{equation*}
+		\theta_{t+1}=\theta_t - \eta_t g_t
+	\end{equation*}
+	
+\end{frame}
+
+\begin{frame}{SGD example}
+	Let's consider that we want to fit a linear regression model using SGD. 
+	Our objective function is
+	\begin{equation*}
+		C(\theta)= \frac{1}{2N} \sum_{n=1}^{N}(x_n^T \theta -y_n)^2
+	\end{equation*}
+	The gradient is then
+	\begin{equation*}
+		g_t = \frac{1}{N} \sum_{n=1}^{N} (\theta_t^T x_n - y_n )x_n
+	\end{equation*}
+	Now if we consider SGD with a minibatch size $B=1$. The update becomes
+	
+	\begin{equation*}
+		\theta_{t+1}= \theta_t - \eta_t(\theta_t^T x_n -y_n)x_n
+	\end{equation*}
+	where $n=n(t)$ is the index of the example chosen at iteration $t$. 
+\end{frame}
+
+
 \begin{frame}{AdaGrad}
 	In 2011, Duchi et al. described a modified version of the gradient descent called \textbf{Adaptive Gradient}. 
 	
@@ -211,12 +268,23 @@ where $\eta$ is the learning rate.
 One interpretation of $v$ is that it represents an estimation of the (uncentered) variance of the gradient. 
 \end{frame}
 
-\begin{frame}{Adam}
-	The \textbf{Adaptive Moment Estimation} or Adam is another adaptive learning method. 
+\begin{frame}{Momentum methods}
+	Gradient descent can be very slow. A heuristic alternative was know as the \textbf{heavy ball} or \textbf{momentum methods} move faster along direction that were previously good and slow down along directions where the gradient has suddenly changed. 
 	
-	\begin{fact}
-		Recall that for a random variable $X$ the first and second moments are defined as $\mathbb{E}(X)$ and $\mathbb{E}(X^2)$ respectively.
-	\end{fact}
+	Their general form is
+	\begin{align*}
+		m_t&= \beta m_{t-1}+ g_{t-1}\\
+		\theta_t &= \theta_{t-1}-\eta_t m_t
+	\end{align*}
+	where $m_t$ is the momentum (mass times velocity), and $0<\beta <1$ (normally $\beta=0.9$). The value $\beta=0$ represents the classic gradient descent.
+\end{frame}
+
+\begin{frame}{Adam}
+	The \textbf{Adaptive Moment Estimation} or Adam is another adaptive learning method. \\
+	
+\textit{Recall that for a random variable $X$ the first and second moments are defined as $\mathbb{E}(X)$ and $\mathbb{E}(X^2)$ respectively.}
+	
+
 	
 	
 	The objective is to minimize the expectation of the cost function. Namely, we look for the minimum value $x^*$ that satisfies 
@@ -249,16 +317,17 @@ Then, if we assume that the first and second moments are stationary  we get
 		\mathbb{E}(v(t))=(1-\beta_2^t) \mathbb{E}(g_t)^2 \\
 	\end{split}
 \end{equation*}
-Therefore, the bias-corrected moments are
-\begin{equation*}
-	\begin{split}
-			\widehat{m}(t)&= \frac{m(t)}{1-\beta_1^t} \\
-			\widehat{v}(t)&=\frac{v(t)}{1-\beta_2^t} \\
-	\end{split}
-\end{equation*}
 
 \end{frame}
 \begin{frame}{Adam (cont)}
+	Therefore, the bias-corrected moments are
+	\begin{equation*}
+		\begin{split}
+			\widehat{m}(t)&= \frac{m(t)}{1-\beta_1^t} \\
+			\widehat{v}(t)&=\frac{v(t)}{1-\beta_2^t} \\
+		\end{split}
+	\end{equation*}
+	
 	Finally, the recursive formula becomes
 	\begin{equation*}
 		x(t+1)= x(t)- \eta \frac{\widehat{m}(t)}{\sqrt{|\widehat{v}(t)|}+\varepsilon}
