@@ -118,7 +118,7 @@ for all of the samples.
 \begin{frame}{Gradient Descent Procedures}
 		We need to find a solution to the set of linear inequalities $\mathbf{a}^t\mathbf{y}_i >0$. There may be several solutions, to determine the "best" solution is determined by the minimization of a criterion function $J(\mathbf{a})$.  The minimum (if exists) is called the "solution vector".
 
-Recall that the gradient of a smooth function points towards the minimum for every point on the level surface.
+Recall that the gradient of a smooth function points towards the maximum for every point on the level surface. Thus, we need to use the negative of the gradient if we are to find the minimum.
 
 \begin{figure}
 	\centering
@@ -228,6 +228,8 @@ Normally, we calculate the "Area under the ROC curve" (AUROC) to compare our cla
 \end{frame}
 \begin{frame}{Multilabel and Multioutput Classification}
 	In cases where you want to classify instances in multiple classes simultaneously, some classifiers (e.g., KNN) allow you to use that type of classification, and it is named (not surprisingly {\bf multilabel classification}. )
+	
+	Note that the confusion matrix can be extended to multiple classification, whereas some other metrics are for binary classification problems.
 	
 	On the other hand the {\bf multioutput classification} is similar to a multilabel but each of the labels can have more than two possible values (e.g., discrete output)
 \end{frame}
