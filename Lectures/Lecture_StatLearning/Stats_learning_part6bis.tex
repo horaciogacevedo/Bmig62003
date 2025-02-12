@@ -136,6 +136,11 @@ Intuitively, we cannot cover the whole sphere (in a unique way) with only one sh
 \begin{frame}{Manifold Learning }
 	
 	Loosely speaking, the basic idea of most manifold learning techniques is to take the $k$-nearest neighbors of a point $x$ and use the vectors specified by the line segments from $x$ to its neighbors as an approximation for the tangent plane at $x$. 
+
+	\begin{figure}[h]
+	\centering
+	\includegraphics[width=10cm]{../../Figures/fig_manifod_mds.png}
+\end{figure}	
 	
 	Global optimization then sews these local approximations together to produce a low-dimensional representation of the data. 
 	
@@ -213,10 +218,10 @@ Let's considered the centered similarity matrix as follows
 \end{frame}
 
 \begin{frame}{MDS (cont)}
-	Using matrix notation, we have 
-	\begin{equation*}
-		\tilde{\textbf{X}}= \textbf{C}_N \textbf{X} (\textbf{C}_N \textbf{X} )^t
-	\end{equation*}
+%	Using matrix notation, we have 
+%	\begin{equation*}
+%		\tilde{\textbf{X}}= \textbf{C}_N \textbf{X} (\textbf{C}_N \textbf{X} )^t
+%	\end{equation*}
 	Moreover, if we define $\tilde{\textbf{z}}_i = \textbf{z}_i - \overline{\textbf{z}}$, and $\tilde{Z}_{ij}$ denotes elements of the centered matrix $\tilde{\textbf{Z}}$.
 	
 	The goal will be to minimize 
