@@ -206,7 +206,7 @@ Thus, a smaller tree with fewer splits might lead to lower variance and better i
 	\begin{equation*}
 		E= 1- \max_k (\hat{p}_{mk})
 	\end{equation*} 
-	where $\hat{p}_{mk}$ represent the proportion of training observations in the $mt$h region that are from the $k$th class.	
+	where $\hat{p}_{mk}$ represent the proportion of training observations in the $m$th region that are from the $k$th class.	
 	
 
 \end{frame}
@@ -226,7 +226,7 @@ Thus, a smaller tree with fewer splits might lead to lower variance and better i
 	\begin{equation*}
 		D_m = - \sum_{k=1}^K \hat{p}_{mk}\log \hat{p}_{mk}.
 	\end{equation*}	
-	Note that both metrics will take on a small value if the $m$th node is pure. Both the Gini index and the cross-entropy are quite similar numerically. 
+	Note that both metrics will take on a small value if either $\hat{p}_{mk} \sim 1$ or $\hat{p}_{mk} \sim 0$ and that means that the node is pure. Both the Gini index and the cross-entropy are quite similar numerically. 
 \end{itemize}
 	
 \end{frame}
