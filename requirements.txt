@@ -3,3 +3,4 @@ pandas>=2.2
 scikit-learn>=1.6
 scipy>=1.15
 seaborn>=0.13
+pydot>=3.0
