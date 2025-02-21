@@ -10,3 +10,4 @@
 *.snm
 *.blg
 ._*
+.ipynb_checkpoints
