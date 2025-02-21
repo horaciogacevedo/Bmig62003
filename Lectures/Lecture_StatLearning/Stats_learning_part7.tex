@@ -108,7 +108,7 @@ The corresponding prediction for $\widehat{Z}(x,y)$ based on given partition of 
 \begin{equation*}
 	\widehat{Z}(x,y)= \textrm{Average} \{ Z(x_r,y_r)\colon (x_r ,y_r)\in R_j)\}
 \end{equation*}
-where $(x,y) \in R_j$.
+where $(x,y) \in A$.
 
 \end{frame}
 
@@ -148,7 +148,7 @@ Thus, a smaller tree with fewer splits might lead to lower variance and better i
 \begin{frame}{Tree Pruning}
 	
 	
-	One way to address the overfitting problem is to grow a very large tree $T_0$ , and then prune it back to obtain a sub-tree. Ideally, we select a sub-tree that leads to the lowest test error rate using say cross-validation. 
+	One way to address the overfitting problem is to grow a very large tree $T_0$, and then prune it back to obtain a sub-tree. Ideally, we select a sub-tree that leads to the lowest test error rate using say cross-validation. 
 	\begin{figure}[h]
 		\includegraphics{../../Figures/fig_tree_pruning.png}
 	\end{figure}
@@ -204,9 +204,9 @@ Thus, a smaller tree with fewer splits might lead to lower variance and better i
 \begin{frame}{Classification Trees}
 	The idea of the classification trees is very similar to the regression trees. However, in the classification setting we cannot use RSS as an splitting criteria for the binary selection. Instead, we will use the {\bf classification  error rate}, which is the fraction of the training observations in a region that do not belong to the most common class.
 	\begin{equation*}
-		E= 1- \max_k (\hat{p}_{mk})
+		E_m= 1- \max_k (\hat{p}_{mk})
 	\end{equation*} 
-	where $\hat{p}_{mk}$ represent the proportion of training observations in the $m$th region that are from the $k$th class.	
+	where $\hat{p}_{mk}$ represent the proportion of training observations in the $m$th region that are from the $k$th class. 	
 	
 
 \end{frame}
@@ -252,7 +252,7 @@ Note the leave {\tt RestECG<1} . The response is Yes so why do we need to partit
 \end{frame}
 
 \begin{frame}{CART Algorithm}
-	G\'eron's book describes the {\it Classification and Regression Tree}  algorithm. Originally described in the book by Breiman et al. (1984) the idea is similar to (\ref{eq:rbs1}) and (\ref{eq:rbs2}), and the cost function that we want to minimize (for classification)
+	G\'eron's book gives some details of the {\it Classification and Regression Tree}  algorithm. Originally described in the book by Breiman et al. (1984) the idea is similar to (\ref{eq:rbs1}) and (\ref{eq:rbs2}), and the cost function that we want to minimize (for classification)
 	
 	\begin{equation}
 		J(s,t_s) = \frac{m_{left}}{m} G_{left}+ \frac{m_{right}}{m} G_{right},
@@ -329,6 +329,8 @@ In \citep{cartbook} is proven that there is a strictly increasing sequence of pa
 \end{frame}
 
 \begin{frame}{CART details}
+	Intuitively, the minimal cost-complexity pruning works like this: It starts with $T_1$ and finds the weakes-link branch $T_{\overline{t_1}}$ and prunes it to get $T_2$ when $\alpha$ reaches $\alpha_2$, and so on.
+	
 	The choice of the optimal tree can be made directly by minimized the error obtained by cross-validation or by applying the "1 standard error rule".  This rule aims at selecting in the sequence a more compact tree reaching statistically the same error. Thus, it chooses the most compact tree reaching an error lower than the value of the previous minimum augmented by the estimated standard error of this error. 
 	
  	Decision Trees have  more robust libraries in R.  Namely, \textbf{rpart} package is particularly useful.
@@ -351,6 +353,8 @@ In \citep{cartbook} is proven that there is a strictly increasing sequence of pa
 \end{frame}
 
 \begin{frame}{Surrogate Splits CART}
+	A \textbf{split} $s$ on a continuous variable $x$ is of the form $\{ \textrm{is }x \le c ?\}$, then the complementary split is $\{ \textrm{is }x > c ?\}$. For a categorical variable $x$ a split $s$ is of the form $\{ \textrm{is }x \in \{C_1,\ldots, C_k\}?\}$ and its complementary split $\{ \textrm{is }x \notin \{C_1,\ldots, C_k\}?\}$.
+	
 	For any given node $t$, let $s^*$ be the best split of the node into $t_L$ (left node) and $t_R$ (right node), for instance the best univariate split.
 	
 	Take any variable $x_m$ and let $S_m$ be the set of all splits on $x_m$, and $\overline{S}^m$ the set of splits complementary to $S_m$.  For a given split $s_m\in S_m \cup \overline{S}_m$, let  $p(s^*,s_m)$ the probability that $s_m$ predicts $s^*$ correctly.
