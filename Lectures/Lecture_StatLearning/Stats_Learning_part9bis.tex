@@ -35,7 +35,7 @@ eprint=false
 		\maketitle
 	\end{frame}
 	
-	\begin{frame}{Hypothesis test}
+	\begin{frame}{What is a Hypothesis test?}
 		\begin{itemize}
 			\item A \textit{statistical hypothesis} $H$ ia a conjecture about the probability distribution of a population.
 			\item A hypothesis $H$ is said to be \textit{simple} if the distribution of the population is completely specified by $H$. If not, then $H$ is called a \textit{composite} hypothesis.
@@ -244,6 +244,15 @@ If we choose the following critical region
 	\end{equation*}
 \end{frame}
 
+\begin{frame}{$p$-values}
+	We were familiar from basic statistics courses about the normally distributed instances. But from the previous discussion we can see that the same ideas can expand to accomodate
+	
+	\begin{itemize}
+		\item different critical regions,
+		\item different test statistics
+	\end{itemize}
+\end{frame}
+
 \begin{frame}{Cherry Picking Problem}
 	Let's suppose we use the same data set and apply different test statistics at the $\alpha$ level of significance:
 	\begin{itemize}
@@ -319,19 +328,41 @@ number of alternatives dealing
 \begin{frame}{Ajusted $p$-values}
 	To account for multiple hypothesis testing, one may calculate the adjusted $p$-values. Given a test procedure, the adjusted $p$-value correspoinding to the test of a single hypothesis $H_j$ can be defined as the level of the entire test procedure at which $H_j$ would just be rejected, given the values of all test statistics involved.
 	
-	Control of the FWER at level $\alpha$, the Bonferroni procedure rejects any hypothesis $H_j$ with $p$-value less than or equal to $\alpha/m$. 
+	Control of the FWER at level $\alpha$, the Bonferroni procedure rejects any hypothesis $H_j$ with $p$-value less than or equal to $\alpha/m$.
+	
+	Note that we assume that the individual tests are independent of each other.  
+\end{frame}
+
+\begin{frame}{Bonferroni correction}
+	There are some issues with the Bonferroni's correction. 
+	
+	\begin{itemize}
+		\item In genomics, if you have 20,000 gene transcripts results for both controls and a certain disease. The Bonferroni correction a $p$-value would have to be less than 0.05/20000=$2.5\times10^{-6}$. Your results might have a large number of false negatives from transcripts that might have been biologically important.
+		\item Another issue is with the definition of a "family", so if you have a model with certain $n_1$ dietary variables and $n_2$ socioeconomic variables. The critical value should be $0.05/n_1$ or $0.05/(n_1+n_2)$?
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{FDR control}
-	The adjusted $p$-value goes according to this formula
+	The Benjamini and Hocheberg procedure first puts all $p$-values in order from smallest to largest and ranks them. The critical value is defined as
 	\begin{equation*}
-		\tilde{p}_{r_i}= \min_{k=i,\ldots,m} \{ \min(mp_{r_k},1)\}
+		(i/m)Q,
 	\end{equation*}
+	where $i$ is the rank, $m$ is the total number of tests, and $Q$ is the \textbf{False Discovery Rate} that the user picks.
+	
 	This adjustment leads to strong control of the FDR under the additional assumption of independence of the test statistics.
 \end{frame}
 
+\begin{frame}{Correct or not correct that is the question...}
+	Whereas we aim use multiple comparison corrections to reduce the number of false positives, we also increase the number of false negatives! 
+	
+	If false negatives are very costly (not only financially but scientifically), then you may decide not to correct for multiple comparison.
+	
+	For instance, if you have a small animal experiment using transcriptomics for the comparison of a case and control. If your conditions are very stringent for multiple comparison adjustments, you may not be able to find other possible interactions that may be occuring. Sometimes, you cannot even conduct a "pathway analysis" if you have very few hits. 
+	 
+\end{frame}
+
 \begin{frame}{References}
-	Materials and some of the pictures are from \citep{pestman}, and \citep{speed}.
+	Materials and some of the pictures are from \citep{pestman}, \citep{macdonald} and \citep{speed}.
 	\printbibliography 	
 	
 	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
