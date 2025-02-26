@@ -177,10 +177,10 @@ If we choose the following critical region
 	The size $\alpha$ of the critical region $G$ is $\alpha=0.05$, and the power function
 	\begin{equation*}
 		\begin{split}
-			1-\beta(\mu)&= 1-P^\mu_{X_1,X_2}(G^c)= P^\mu_{X_1,X_2}(G)= P((X_1,X_2)\in G)\\
-			&=P(X_1 \le 494.63 \text{ and } X_2 \le 494.63| \mu=\mu, \sigma^2=50) \\
-			&=P(X_1 \le 494.63 | \mu=\mu, \sigma^2=50)\\
-			&\quad  \cdot P(X_2\le 494.63 | \mu=\mu, \sigma^2=50) 
+			1-\beta(\tilde{\mu})&= 1-P^\mu_{X_1,X_2}(G^c)= P^\mu_{X_1,X_2}(G)= P((X_1,X_2)\in G)\\
+			&=P(X_1 \le 494.63 \text{ and } X_2 \le 494.63| \mu=\tilde{\mu}, \sigma^2=50) \\
+			&=P(X_1 \le 494.63 | \mu=\tilde{\mu}, \sigma^2=50)\\
+			&\quad  \cdot P(X_2\le 494.63 | \mu=\tilde{\mu}, \sigma^2=50) 
 		\end{split}
 	\end{equation*}
 \end{frame}
@@ -245,7 +245,7 @@ If we choose the following critical region
 \end{frame}
 
 \begin{frame}{$p$-values}
-	We were familiar from basic statistics courses about the normally distributed instances. But from the previous discussion we can see that the same ideas can expand to accomodate
+	We were familiar from basic statistics courses about the normally distributed instances. But from the previous discussion we can see that the same ideas can expand to accommodate
 	
 	\begin{itemize}
 		\item different critical regions,
@@ -326,7 +326,7 @@ number of alternatives dealing
 
 
 \begin{frame}{Ajusted $p$-values}
-	To account for multiple hypothesis testing, one may calculate the adjusted $p$-values. Given a test procedure, the adjusted $p$-value correspoinding to the test of a single hypothesis $H_j$ can be defined as the level of the entire test procedure at which $H_j$ would just be rejected, given the values of all test statistics involved.
+	To account for multiple hypothesis testing, one may calculate the adjusted $p$-values. Given a test procedure, the adjusted $p$-value corresponding to the test of a single hypothesis $H_j$ can be defined as the level of the entire test procedure at which $H_j$ would just be rejected, given the values of all test statistics involved.
 	
 	Control of the FWER at level $\alpha$, the Bonferroni procedure rejects any hypothesis $H_j$ with $p$-value less than or equal to $\alpha/m$.
 	
@@ -357,7 +357,7 @@ number of alternatives dealing
 	
 	If false negatives are very costly (not only financially but scientifically), then you may decide not to correct for multiple comparison.
 	
-	For instance, if you have a small animal experiment using transcriptomics for the comparison of a case and control. If your conditions are very stringent for multiple comparison adjustments, you may not be able to find other possible interactions that may be occuring. Sometimes, you cannot even conduct a "pathway analysis" if you have very few hits. 
+	For instance, if you have a small animal experiment using transcriptomics for the comparison of a case and control. If your conditions are very stringent for multiple comparison adjustments, you may not be able to find other possible interactions that may be occurring. Sometimes, you cannot even conduct a "pathway analysis" if you have very few hits. 
 	 
 \end{frame}
 
