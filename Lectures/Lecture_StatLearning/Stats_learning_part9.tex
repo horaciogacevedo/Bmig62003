@@ -40,7 +40,7 @@ Recall that in the threshold logic,  once we receive the input, a decision must 
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.8]{../../Figures/fig_threshold.png}
+	\includegraphics[scale=0.4]{../../Figures/fig_threshold.png}
 \end{figure}
 
 \end{frame}
@@ -48,7 +48,7 @@ Recall that in the threshold logic,  once we receive the input, a decision must 
 	
 
 
-\textbf{Activation functions} generalize the concept of activation given a specific  input.
+\textbf{Activation functions} generalize the concept of activation given a specific input.
 
 \begin{figure}[h]
 	\centering
@@ -69,7 +69,7 @@ Pros: It is continuous and differentiable.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.8]{../../Figures/fig_activation_21.png}
+	\includegraphics[scale=0.4]{../../Figures/fig_mactivation1.png}
 \end{figure}
 
 	
@@ -91,9 +91,12 @@ Pros: It is continuous and differentiable.
 	\end{enumerate}
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.5]{../../Figures/fig_activation_22}
+	\includegraphics[scale=0.4]{../../Figures/fig_mactivation2}
 \end{figure}
 
+\end{frame}
+
+\begin{frame}{Step Functions (cont)}
 This function is differentiable except in $x=0$.  Informally, people refers to the Dirac delta function as its \textit{derivative}. 
 \begin{equation*}
 	H'(x)= \delta(x) =\begin{cases}
@@ -120,7 +123,7 @@ This function is differentiable except in $x=0$.  Informally, people refers to t
 	\end{enumerate}
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.8]{../../Figures/fig_activation_22b}
+	\includegraphics[scale=0.4]{../../Figures/fig_mactivation3}
 \end{figure}
 \end{frame}
 
@@ -145,11 +148,11 @@ Pros:
 \begin{frame}{Hockey stick functions}
 	\begin{figure}[h]
 		\centering
-		\includegraphics[scale=0.5]{../../Figures/fig_activation_23a}
+		\includegraphics[scale=0.5]{../../Figures/fig_mactivation4}
 	\end{figure}
 	\begin{enumerate}
 				\setcounter{enumi}{1}
-		\item Parametric Rectified Linear Unit (PReLUI). In this case the activation is piecewise linear, having different firing rates for $x<0$ and $x>0$
+		\item Parametric Rectified Linear Unit (PReLU). In this case the activation is piecewise linear, having different firing rates for $x<0$ and $x>0$
 		\begin{equation*}
 	PReLU(\alpha, x)=  \begin{cases}
 		\alpha x & \text{if } x <0,\\
@@ -158,9 +161,12 @@ Pros:
 \end{equation*}		
 	
 	\end{enumerate}
+\end{frame}
+\begin{frame}{Hockey stick functions (cont)}
+
 	\begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.5]{../../Figures/fig_activation_23b}
+	\includegraphics[scale=0.5]{../../Figures/fig_mactivation5}
 \end{figure}
 \end{frame}
 
@@ -175,7 +181,7 @@ These types of activation functions have that advantage that they are smooth and
 	\end{enumerate}
 	\begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.5]{../../Figures/fig_activation_27b}
+	\includegraphics[scale=0.5]{../../Figures/fig_mactivation6}
 \end{figure}
 \end{frame}
 
@@ -188,7 +194,7 @@ These types of activation functions have that advantage that they are smooth and
 	\end{enumerate}
 	\begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.8]{../../Figures/fig_activation_28b}
+	\includegraphics[scale=0.5]{../../Figures/fig_mactivation7}
 \end{figure}
 \end{frame}
 
@@ -202,7 +208,7 @@ These types of activation functions have that advantage that they are smooth and
 
 	\begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.8]{../../Figures/fig_activation_29a}
+	\includegraphics[scale=0.5]{../../Figures/fig_mactivation8}
 \end{figure}
 \end{frame}
 
@@ -236,7 +242,7 @@ These types of activation functions have that advantage that they are smooth and
 	\centering
 	\includegraphics{../../Figures/fig_target.png}
 \end{figure}	
-	The \textbf{target function} is the desired relations which the network tries to approximate. This function is independent of the parameters $w$ and will be denoted by $z=\phi(x)$, $\textbf{z}=\phi(\textbf{x})$ or $Z=\phi(X)$.  
+	The \textbf{target function} is the desired functional relationship that the network tries to approximate. This function is independent of the parameters $w$ and will be denoted by $z=\phi(x)$, $\textbf{z}=\phi(\textbf{x})$ or $Z=\phi(X)$.  
 	 
 	
 \end{frame}
@@ -244,7 +250,10 @@ These types of activation functions have that advantage that they are smooth and
 \begin{frame}{Goal}
 	The neural network will tune the parameters $(w,b)$ until the output variable $y$ will be in a proximity of the target variable $z$. 
 	
-	The proximity will be determined by the cost function $C(w,b)=\text{distance}(y,z)$
+	The proximity will be determined by the cost function 
+	\begin{equation*}
+		C(w,b)=\text{distance}(y,z)
+	\end{equation*}
 	
 	The optimal parameters of the network are given  by 
 	\begin{equation*}
@@ -310,11 +319,25 @@ These types of activation functions have that advantage that they are smooth and
 	\begin{equation*}
 		S(p,q)= - \int_{-\infty}^{\infty} p(x) \ln q(x) dx
 	\end{equation*}
-	This represents the information given by $q(x)$ assessed from the point of view of the distribution $p(x)$.
+	This represents the information given by $q(x)$ assessed from the point of view of the distribution $p(x)$.\\
+	
+\end{frame}
+
+\begin{frame}{Cross-entropy (cont)}
+For example let $p(x)= \exp(-x^2/2)/\sqrt{2\pi}$ be the density of the $N(0,1)$, and $q(x)=\exp(-x^2/50)/(5*\sqrt{2\pi})$ be the corresponding density for $N(0,5)$. 
+\begin{equation*}
+	S(p,q)= 13.4189 \textrm{ whereas } S(q,p)=2.54838
+\end{equation*}
+
 	The \textbf{Shannon entropy} is defined by 
 	\begin{equation*}
 		H(p)= - \int_{-\infty}^{\infty} p(x) \ln p(x) dx
 	\end{equation*}
+	With the same notation we have 
+		\begin{equation*}
+		H(p)= 1.41894 \textrm{ whereas } H(q)=3.02838
+	\end{equation*}
+	
 \end{frame}
 
 \begin{frame}{Kullback-Leibler Divergence}
@@ -330,7 +353,7 @@ These types of activation functions have that advantage that they are smooth and
 	Materials and some of the pictures are from \citep{calin}.
 	\printbibliography 	
 	
-	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX
+	I have used some of the graphs by hacking TiKz code from StakExchange, Inkscape for more aesthetic plots and other old tricks of \TeX. The entropy calculations were done in Mathematica.
 	
 \end{frame}
 
