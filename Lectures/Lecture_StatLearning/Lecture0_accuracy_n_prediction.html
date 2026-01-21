@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Horacio Gomez-Acevedo">
+
+<title>Accuracy and Prediction</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Lecture0_accuracy_n_prediction_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Lecture0_accuracy_n_prediction_files/libs/quarto-html/quarto.js"></script>
+<script src="Lecture0_accuracy_n_prediction_files/libs/quarto-html/popper.min.js"></script>
+<script src="Lecture0_accuracy_n_prediction_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Lecture0_accuracy_n_prediction_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Lecture0_accuracy_n_prediction_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Lecture0_accuracy_n_prediction_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Lecture0_accuracy_n_prediction_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Lecture0_accuracy_n_prediction_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Lecture0_accuracy_n_prediction_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Accuracy and Prediction</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Horacio Gomez-Acevedo </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="main-reference" class="level2">
+<h2 class="anchored" data-anchor-id="main-reference">Main reference</h2>
+<p>Some of the figures and material in this presentation are taken from <cite id="2cs47">(Gareth, James et al., 2015)</cite> with permission from the authors: G. James, D. Witten, T. Hastie and R. Tibshirani</p>
+</section>
+<section id="basic-setup" class="level2">
+<h2 class="anchored" data-anchor-id="basic-setup">Basic Setup</h2>
+<p>Let’s suppose we observe a quatitative response <span class="math inline">\(Y\)</span> and <span class="math inline">\(p\)</span> different predictors <span class="math inline">\(X_1,\ldots, X_p\)</span>, which can be written in the form <span class="math display">\[
+Y= f(X) + \varepsilon
+\]</span> We assume that the function <span class="math inline">\(f\)</span> is <strong>fixed but unknown</strong>, and <span class="math inline">\(\varepsilon\)</span> is a <strong>random error term</strong>, which is independent of <span class="math inline">\(X\)</span> and has mean zero (i.e.&nbsp;its expected value <span class="math inline">\(E (\varepsilon) =0\)</span>).</p>
+<p><strong>Statistical Learning</strong> refers to a set of approaches for estimating <span class="math inline">\(f\)</span>, for the purpose of either predict future responses or make inferences about inner relationships within the model predictors.</p>
+<section id="prediction" class="level3">
+<h3 class="anchored" data-anchor-id="prediction">Prediction</h3>
+<p>Let’s suppose that a set of input (predictors) is readily available, but for some financial or practical constrains we cannot estimate the output <span class="math inline">\(Y\)</span>. We can predict <span class="math inline">\(Y\)</span> using <span class="math display">\[
+    \hat{Y} = \hat{f}(X),
+\]</span> where <span class="math inline">\(\hat{f}\)</span> represents an estimate for <span class="math inline">\(f\)</span> and <span class="math inline">\(\hat{Y}\)</span> represent the resulting prediction for <span class="math inline">\(Y\)</span>.</p>
+<blockquote class="blockquote">
+<p>Note that this is a very general setting, for instance in (multi)linear regression, we cannot make predictions outside certain regions.</p>
+</blockquote>
+<section id="how-accurate-is-haty" class="level4">
+<h4 class="anchored" data-anchor-id="how-accurate-is-haty">How accurate is <span class="math inline">\(\hat{Y}\)</span>?</h4>
+<p>The accuracy of <span class="math inline">\(\hat{Y}\)</span> as a prediction for <span class="math inline">\(Y\)</span> depends on two quantities + reducible error + irreducible error</p>
+<p>The reducible error reflects the leverage that modeler has to pick a <em>better</em> statistical technique for estimation. Even in the case when we have a perfect estimate of <span class="math inline">\(f\)</span> (i.e.&nbsp;<span class="math inline">\(\hat{Y}=f(X)\)</span>), we will have <span class="math display">\[
+|\hat{Y}-Y| = \varepsilon
+\]</span> since <span class="math inline">\(\varepsilon\)</span> does not depend on <span class="math inline">\(X\)</span>. Thus, we cannot reduce the error introduced by <span class="math inline">\(\varepsilon\)</span> no matter how well our estimates are.</p>
+<p>Recall that if you have a random variable <span class="math inline">\(Z\)</span> (with <span class="math inline">\(E(|Z|)&lt;\infty\)</span> and <span class="math inline">\(\mathrm{Var}(Z)&lt;\infty\)</span>), the following relationships hold <span class="math display">\[E(Z^2)= \mathrm{Var}(Z) + (E(Z))^2\]</span> and <span class="math display">\[\mathrm{Var}(aZ+b)= a^2\mathrm{Var}(Z)\]</span></p>
+<p>Now if we consider for a moment that both <span class="math inline">\(\hat{f}\)</span> and <span class="math inline">\(X\)</span> are fixed (<span class="math inline">\(f\)</span> was already fix but unknown), we have that the average (expected value) of the squared difference is</p>
+<p><span class="math display">\[
+\begin{align}
+E(Y-\hat{Y})^2&amp;= E(f(X)+ \varepsilon -\hat{f}(X))^2= \mathrm{Var}(f(X)-\hat{f}(X)+ \varepsilon ) + \left(E(f(X)-\hat{f}(X)+\varepsilon) \right)^2 \\
+&amp;= \mathrm{Var}(\varepsilon) + \mathrm{Var}(f(X)-\hat{f}(X))+ \left( E(f(X)-\hat{f}(X)) + E(\varepsilon) \right)^2\\
+&amp;= \color{red}{\mathrm{Var}(\varepsilon)}+\color{blue}{E\left( f(X)-\hat{f}(X)\right)^2}
+\end{align}
+\]</span> The reducible error is colored in blue and the irreducible error is in red.</p>
+<p>Thus, the accuracy will be (lower) bounded by <span class="math inline">\(\mathrm{Var}(\varepsilon)\)</span>, but this bound is almost never known in practice.</p>
+</section>
+</section>
+<section id="inference" class="level3">
+<h3 class="anchored" data-anchor-id="inference">Inference</h3>
+<p>In this case we are mainly interested in determined the way that <span class="math inline">\(Y\)</span> is affected by changing <span class="math inline">\(X_1,\ldots,X_p\)</span>. This means trying to understand the relationship between the output and the predictors. For instance we try to answer questions like</p>
+<ul>
+<li>Which predictors are more important?</li>
+<li>What relationship exist between the response and each of the predictors?</li>
+<li>Is the relationship between <span class="math inline">\(Y\)</span> and predictor <span class="math inline">\(X_i\)</span> linear, or should it be nonlinear?</li>
+</ul>
+</section>
+</section>
+<section id="estimation-of-f" class="level2">
+<h2 class="anchored" data-anchor-id="estimation-of-f">Estimation of <span class="math inline">\(f\)</span></h2>
+<p>The observations at hand are called <strong>training data</strong>, because we will use those observations to find an estimate <span class="math inline">\(\hat{f}\)</span>. Let <span class="math inline">\(x_{ij}\)</span> represents the value of the predictor <span class="math inline">\(j\)</span> for the <span class="math inline">\(i\)</span>th observation (<span class="math inline">\(i\in \{1,\ldots,n\}, j\in \{1,\ldots,p\}\)</span>, and the response variable <span class="math inline">\(y_i\)</span> for the <span class="math inline">\(i\)</span>th observation. Our dataset looks something like this</p>
+<p><span class="math display">\[
+\left\{
+\left(
+\left(
+\begin{matrix}
+x_{11}\\
+x_{12}\\
+\vdots \\
+x_{1p}
+\end{matrix}\right),
+y_1 \right),
+\left(
+\left(
+\begin{matrix}
+x_{21}\\
+x_{22}\\
+\vdots \\
+x_{2p}
+\end{matrix}\right),
+y_2 \right),
+\ldots,
+\left(
+\left(
+\begin{matrix}
+x_{n1}\\
+x_{n2}\\
+\vdots \\
+x_{np}
+\end{matrix}\right),
+y_n
+\right)
+\right\}
+\]</span></p>
+<section id="example." class="level4">
+<h4 class="anchored" data-anchor-id="example.">Example.</h4>
+<p>We will consider the data set <em>income2.csv</em> that consists of <span class="math inline">\(n=30\)</span> data points about seniority, income and level of education. We will apply a statistical learning method to find a function <span class="math inline">\(\hat{f}\)</span> that approximates that approximates <span class="math inline">\(Y\)</span> (i.e., <span class="math inline">\(Y \sim f(\hat{X})\)</span> for any observation <span class="math inline">\((X,Y)\)</span>).</p>
+<section id="parametric-method" class="level5">
+<h5 class="anchored" data-anchor-id="parametric-method">Parametric Method</h5>
+<p>Parametric methods are those methods in which we need to find certain parameters for the estimation of <span class="math inline">\(f\)</span>.</p>
+<ul>
+<li>We need to select the functional form of <span class="math inline">\(f\)</span>.</li>
+</ul>
+<p>Traditionally, we apply the condition that <span class="math inline">\(f\)</span> is linear</p>
+<p><span class="math display">\[
+f(X) = \beta_0+ \beta_1 X_1 + \cdots+ \beta_p X_p
+\]</span></p>
+<ul>
+<li>We need to use a procedure that uses the training data to <strong>fit</strong> or <strong>train</strong> the model</li>
+</ul>
+<p>In the previous setup, this would mean to find values for the parameters <span class="math inline">\(\beta_0, \beta_1,\ldots,\beta_p\)</span> such that</p>
+<p><span class="math display">\[
+Y \sim \beta_0+ \beta_1 X_1 + \cdots+ \beta_p X_p
+\]</span></p>
+<p>One procedure that can be used is <strong>(ordinary) least squares</strong>.</p>
+<p>If we apply (ordinary) least squares, we have to fit a linear model of the form</p>
+<p><span class="math display">\[
+\mathrm{income} \approx \beta_0 + \beta_1 \times\mathrm{education} + \beta_2 \times \mathrm{seniority}  
+\]</span></p>
+<p>And the linear model fit look like</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Figures/2.4.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:519mm"></p>
+</figure>
+</div>
+<p>Note that <span class="math inline">\(\hat{f}\)</span> does not match the unknown function <span class="math inline">\(f\)</span>, and we may think is other models that <em>look more like</em> <span class="math inline">\(f\)</span> by adding certain complexity (e.g., adding quadratic terms). More complex models tend to <strong>overfit</strong> the data (i.e., they follow too close the errors and performed poorly when predicting unseen data).</p>
+</section>
+</section>
+<section id="non-parametric-methods" class="level4">
+<h4 class="anchored" data-anchor-id="non-parametric-methods">Non-parametric methods</h4>
+<p>These methods do not make the assumption about the form of the function <span class="math inline">\(f\)</span>. Instead they look for an estimate of <span class="math inline">\(f\)</span> that gets as close to the points as possible and looking at their distribution.</p>
+<p>One of this methodologies for instance is the <em>thin plate splines</em> that tries to adjust a surface so that <em>bending energy</em> of the points is optimized.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Figures/2.6.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:519mm"></p>
+</figure>
+</div>
+<p>One methodology that are worth mentioning for non-parametric test are</p>
+<ul>
+<li><em>loess</em> (local regression) where a parameter determines the size of the window in which the local regression will be applied.</li>
+</ul>
+</section>
+<section id="model-interpretability-or-prediction-accuracy" class="level3">
+<h3 class="anchored" data-anchor-id="model-interpretability-or-prediction-accuracy">Model interpretability or prediction accuracy</h3>
+<p>Whereas models with larger number of parameters tend to improve accuracy it comes at the expense of model interpretability.</p>
+</section>
+</section>
+<section id="model-accuracy" class="level2">
+<h2 class="anchored" data-anchor-id="model-accuracy">Model Accuracy</h2>
+<p>First, there is not a single statistical method that can be accurate under all the circumstances.</p>
+<p>One way to check accuracy is by measuring the <strong>quality of fit</strong>, which means to determine how well the predictions match the observed data.</p>
+<p>In (multi)linear regression, one commonly-used measure is the <strong>MEAN SQUARED ERROR (MSE)</strong></p>
+<p><span class="math display">\[
+\mathrm{MSE}= \frac{1}{n}\sum_{i=1}^n (y_i -\hat{f}(x_i))^2 = \frac{1}{n} \sum_{i=1}^n e_i^2,
+%\label{eq:mse}
+\]</span></p>
+<p>where <span class="math inline">\(e_i\)</span> are called the residuals.</p>
+<blockquote class="blockquote">
+<p>Note. MSE formula sometimes changes shape (mostly the denominator)</p>
+</blockquote>
+<p>For instance, in an Analysis of Variance with <span class="math inline">\(p\)</span> levels with <span class="math inline">\(n\)</span> samples each the MSE is expressed as</p>
+<p><span class="math display">\[
+\mathrm{MSE}= \frac{1}{p(n-1)} \sum_{i,j}(X_{ij}-\mu_i)^2
+\]</span></p>
+<p>Also, in the case of the linear regression with one predictor variable <span class="math inline">\(Y=\beta_0+ \beta_1 X + \varepsilon\)</span>, where <span class="math inline">\(\mathrm{Var}(\varepsilon)=\sigma^2\)</span>, we have that <span class="math inline">\(\frac{1}{n-2} \sum_{i=1}^n e_i^2\)</span> is an unbiassed estimator of <span class="math inline">\(\sigma^2\)</span>.</p>
+<section id="training-and-test-mse" class="level3">
+<h3 class="anchored" data-anchor-id="training-and-test-mse">Training and test MSE</h3>
+<p>We will refer to the MSE obtained from the observations as the <strong>training MSE</strong>. Thus, if we have our <em>training observations</em> <span class="math inline">\(\{ (x_1,y_1),\ldots,(x_n,y_n) \}\)</span>, we obtain the estimate <span class="math inline">\(\hat{f}\)</span> by using say multlinear regression. Then, the training MSE is suppose to be small for <span class="math inline">\(\hat{f}\)</span>, but can still use another more sophisticated model and get smaller MSE (say by restricted cubic splines).</p>
+<p>However, if we would prefer to know <em>how well the model perfoms for a set of previously unseen observations</em> we need to quantify the <strong>test MSE</strong>. Let’s suppose that we have <em>new</em> observations <span class="math inline">\(\{ (\tilde{x_1},\tilde{y_1}),\ldots,(\tilde{x_m},\tilde{y_m})\}\)</span>, then we would like to select the method that minimizes equation <span class="math inline">\(\ref{eq:mse}\)</span> when applied for our new set of observations.</p>
+<p>If we consider a plot comparing the MSE with model flexibility (technically called <em>degrees of freedom</em>), we observe two fundamental properties</p>
+<ul>
+<li>test MSE has a U-shape</li>
+<li>training MSE is monotonically decreases as the model complexity increases.</li>
+</ul>
+<p>The simulated data from <span class="math inline">\(f\)</span> and three estimates are given (red linear regression and blue and green smoothing splines). The training MSE is shown in gray, and test MSE in red. The squares represent the values for each of those estimates.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Figures/2.9.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:635mm"></p>
+</figure>
+</div>
+<p>In practice, an estimation of test MSE is much more difficult, but there are approaches that can be used to determine (namely, <strong>cross-validation</strong>).</p>
+</section>
+</section>
+<section id="bias-variance-trade-off" class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-trade-off">Bias-Variance trade-off</h2>
+<p>Let’s suppose we have a given value <span class="math inline">\(x_0\)</span>, then the expected value of the test MSE can be decomposed into:</p>
+<ul>
+<li>variance of <span class="math inline">\(\hat{f}(x_0)\)</span>,</li>
+<li>squared bias of <span class="math inline">\(\hat{f}(x_0)\)</span>,</li>
+<li>variance of the error terms <span class="math inline">\(\varepsilon\)</span>.</li>
+</ul>
+<p>Recall that the <strong>bias</strong> of the estimator <span class="math inline">\(\hat{\Theta}\)</span> of the random variable <span class="math inline">\(\Theta\)</span> is defined as</p>
+<p><span class="math display">\[
+\mathrm{Bias}(\hat{\Theta})= E(\hat{\Theta}) - \Theta
+\]</span></p>
+<p>The estimator <span class="math inline">\(\hat{\Theta}\)</span> is called unbiassed when <span class="math inline">\(\mathrm{Bias}(\hat{\Theta})=0\)</span>.</p>
+<p>In mathematical terms, test MSE is defined as an average (expected value) of square differences between the new values and their estimates, that is <span class="math inline">\(E[(y_0-\hat{f}(x_0))^2]\)</span>.</p>
+<p>Note that <span class="math inline">\(f\)</span> is <em>fixed</em> and theoretically known, so even when we have a new dataset <span class="math inline">\((x_0,y_0)\)</span>, their values are known without any error, thus <span class="math inline">\(E(f(x_0))=f(x_0)\)</span> and <span class="math inline">\(\mathrm{Var}(f(x_0))=0\)</span>.</p>
+<p><span class="math display">\[
+\begin{split}
+E\left[ (y_0- \hat{f}(x_0))^2 \right] &amp;= E[ (f(x_0)+ \varepsilon - \hat{f}(x_0))^2 ]\\
+&amp;= \mathrm{Var}(f(x_0) + \varepsilon - \hat{f}(x_0)) + \left[ E(f(x_0)+\varepsilon -\hat{f}(x_0))\right]^2 \\
+&amp;= \mathrm{Var}(f(x_0))+ \mathrm{Var}(\hat{f}(x_0)) + \mathrm{Var}(\varepsilon) +
+\left[ E(f(x_0)-\hat{f}(x_0))+ E(\varepsilon)\right]^2\\
+&amp;= \mathrm{Var}(\hat{f}(x_0)) +\mathrm{Var}(\varepsilon) + \left[ E(f(x_0)-\hat{f}(x_0))\right]^2\\
+&amp;= \mathrm{Var}(\hat{f}(x_0)) +\mathrm{Var}(\varepsilon) + \left[ f(x_0) - E(\hat{f}(x_0))\right]^2\\
+&amp;= \mathrm{Var}(\hat{f}(x_0)) +\mathrm{Var}(\varepsilon) + \left[\mathrm{Bias}(\hat{f}(x_0)) \right]^2
+\end{split}
+\]</span></p>
+<p>What does it mean?</p>
+<p>The <em>variance</em> refers to the amount by which <span class="math inline">\(\hat{f}\)</span> would change if we estimated it using a different training set. Intuitively, if our model is simple (say linear regression) changing our training dataset won’t change the line that much, but if we have a model that follows closely the training set, replacing a point will increase the variance significantly.</p>
+<p>On the other hand, <em>bias</em> refers to the error that is introduced by approximating a real-life problem (say highly non-linear) with a simpler model say a linear one.</p>
+<div id="eef20c50" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(__doc__)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Author: Mathieu Blondel</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         Jake Vanderplas</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># License: BSD 3 clause</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Ridge</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(x):</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">""" function to approximate by polynomial interpolation"""</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x <span class="op">*</span> np.sin(x)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># generate points used to plot</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>x_plot <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># generate points and keep a subset of them</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.RandomState(<span class="dv">0</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>rng.shuffle(x)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.sort(x[:<span class="dv">20</span>])</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> f(x)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># create matrix versions of these arrays</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> x[:, np.newaxis]</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>X_plot <span class="op">=</span> x_plot[:, np.newaxis]</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'red'</span>,<span class="st">'teal'</span>, <span class="st">'yellowgreen'</span>, <span class="st">'gold'</span>]</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>lw <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>plt.plot(x_plot, f(x_plot), color<span class="op">=</span><span class="st">'cornflowerblue'</span>, linewidth<span class="op">=</span>lw,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>         label<span class="op">=</span><span class="st">"ground truth"</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, y, color<span class="op">=</span><span class="st">'navy'</span>, s<span class="op">=</span><span class="dv">30</span>, marker<span class="op">=</span><span class="st">'o'</span>, label<span class="op">=</span><span class="st">"training points"</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> count, degree <span class="kw">in</span> <span class="bu">enumerate</span>([<span class="dv">1</span>,<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]):</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> make_pipeline(PolynomialFeatures(degree), Ridge())</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    model.fit(X, y)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    y_plot <span class="op">=</span> model.predict(X_plot)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    plt.plot(x_plot, y_plot, color<span class="op">=</span>colors[count], linewidth<span class="op">=</span>lw,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>             label<span class="op">=</span><span class="st">"degree </span><span class="sc">%d</span><span class="st">"</span> <span class="op">%</span> degree)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'lower left'</span>)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Built-in functions, types, exceptions, and other objects.
+
+This module provides direct access to all 'built-in'
+identifiers of Python; for example, builtins.len is
+the full name for the built-in function len().
+
+This module is not normally accessed explicitly by most
+applications, but can be useful in modules that provide
+objects with the same name as a built-in value, but in
+which the built-in of that name is also needed.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture0_accuracy_n_prediction_files/figure-html/cell-2-output-2.png" width="578" height="411" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Note that the number of parameters to be estimated increases + For degree 1, <span class="math inline">\(f(x)=a_1x+a_0\)</span> + For degree 2, <span class="math inline">\(f(x)= a_2x^2+a_1x+a_0\)</span>, etc.</p>
+</section>
+<section id="classification" class="level2">
+<h2 class="anchored" data-anchor-id="classification">Classification</h2>
+<p>When we have <em>categorical responses</em> (e.g., “high”, “low”,“medium”) the our prediction problem become a <strong>classification problem</strong>. Let’s suppose that we are looking for a estimate <span class="math inline">\(f\)</span> basis of the <em>training</em> observations <span class="math inline">\(\{ (x_1,y_1), \ldots, (x_n,y_n)\}\)</span> where <span class="math inline">\(y_i\)</span> is a member of one given class <span class="math inline">\(C_k\)</span> (<span class="math inline">\(k\in \{1,\ldots,r\}\)</span>.</p>
+<p>One common approach to quantify the quality of the estimate <span class="math inline">\(\hat{f}\)</span> is the <strong>training error rate</strong>, that is the proportion of classification errors that we incurred during if we apply our estimate <span class="math inline">\(\hat{f}\)</span>.</p>
+<p><span class="math display">\[
+\frac{1}{n} \sum_{i=1}^n I_{y_i \ne \hat{y}_i}
+\]</span></p>
+<p>where <span class="math inline">\(\hat{y}_i\)</span> is our prediction for the observation <span class="math inline">\(i\)</span> by the estimate <span class="math inline">\(\hat{f}\)</span>, and <span class="math inline">\(I_{y_i \ne \hat{y}_i}\)</span> is the <em>indicator function</em> which is equal to 1 if the condition is true (i.e.&nbsp;<span class="math inline">\(y_i \ne \hat{y}_i\)</span>) and zero elsewhere. Thus the expression on the right is measuring the fraction of incorrect classifications.</p>
+<p>As we did before, we can define the <strong>test error rate</strong> associated with a set of previously unseen observations <span class="math inline">\((x_0,y_0)\)</span> as</p>
+<p><span class="math display">\[
+\mathrm{Average}(I_{y_0 \ne \hat{y}_0})
+\]</span></p>
+<section id="bayes-classifier" class="level3">
+<h3 class="anchored" data-anchor-id="bayes-classifier">Bayes classifier</h3>
+<p>The test error rate given in (<span class="math inline">\(\ref{eq:classtesterror}\)</span>) can be minimized (on average) by a simple classifier that assigns <em>each observation the most likely class, given its predictor values</em>). So, for the test observation with predictor vector <span class="math inline">\(x_0\)</span> will belong to the class <span class="math inline">\(j\)</span> for which</p>
+<p><span class="math display">\[
+\mathrm{Pr}(Y=j | X=x_0)
+\]</span></p>
+<p>is largest. This classifier is refered to as <strong>Bayes classifier</strong>.</p>
+<p>The Bayes classifier produces the lowest possible test error rate, calles the <strong>Bayes error rate</strong>. In general the overall Bayes error rate is given by</p>
+<p><span class="math display">\[
+1 - E \left( \max_{j} \mathrm{Pr}(Y=j|X) \right)
+\]</span></p>
+</section>
+<section id="k-nearest-neighbors" class="level3">
+<h3 class="anchored" data-anchor-id="k-nearest-neighbors">K-Nearest Neighbors</h3>
+<p>One of the problems with the Bayes classifier is that we normally don’t know the conditional distribution <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span>. Thus, it becomes a <em>theoretical gold standard</em> which is unattainable.</p>
+<p><span class="math inline">\(K\)</span>-nearest neighbors (KNN) in which given a positive integer <span class="math inline">\(K\)</span> and a test observation <span class="math inline">\(x_0\)</span>, the <em>KNN</em> classifier first identifies the <span class="math inline">\(K\)</span> points in the training data that are the closest to <span class="math inline">\(x_0\)</span>, represented by <span class="math inline">\(\cal{N}_0\)</span>. It then estimates the conditional probability for class <span class="math inline">\(j\)</span> as the fraction of points in <span class="math inline">\(\cal{N}_0\)</span> whose response values equal <span class="math inline">\(j\)</span>:</p>
+<p><span class="math display">\[
+\mathrm{Pr}(Y=j | X=x_0) = \frac{1}{K} \sum_{i \in {\cal N}_0} I_{y_i=j}
+\]</span></p>
+<p>Finally, KNN applies Bayes rule and classifies the test observation to <span class="math inline">\(x_0\)</span> to the class with the largest probability.</p>
+</section>
+<section id="example" class="level3">
+<h3 class="anchored" data-anchor-id="example">Example</h3>
+<p>Let’s suppose we have two classes <span class="math inline">\(\circ\)</span> of two colors and <span class="math inline">\(\times\)</span> represents the center of an unseen new point <span class="math inline">\(x_0\)</span>. And let’s pick <span class="math inline">\(K=3\)</span>. So the closest three points are inside or in the boundary of the green circle. This circle has 2 blue and 1 orange point. Thus, resulting in estimated probabilities of <span class="math inline">\(2/3\)</span> for the blue and <span class="math inline">\(1/3\)</span> for the orange class.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Figures/knn_2d.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:519mm"></p>
+</figure>
+</div>
+<p>Then, the <span class="math inline">\(\times\)</span> point belongs to the blue class. When the same procedure is applied to a sufficient number of points in the plane, we get something like this</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Figures/knn_2dbis.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:519mm"></p>
+</figure>
+</div>
+</section>
+<section id="effect-of-k" class="level3">
+<h3 class="anchored" data-anchor-id="effect-of-k">Effect of <span class="math inline">\(K\)</span></h3>
+<p>The choice of <span class="math inline">\(K\)</span> has a significant impact on the KNN classifier.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Figures/knn_k_comparison.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:519mm"></p>
+</figure>
+</div>
+<p>From this picture, we can see that when <span class="math inline">\(K=1\)</span>, the <em>decision boundary</em> is overly flexible (i.e.&nbsp;almost classifies the dataset “perfectly”). This case we expect that the classifier has low bias but very high variance. On the other hand, when we have a high <span class="math inline">\(K\)</span> (in the picture <span class="math inline">\(K=100\)</span>) we get almost linear classification, where low variance and high bias is expected.</p>
+<p>Just as we did with the other classifiers, we consider the variable <span class="math inline">\(1/K\)</span> as <em>flexibility</em></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Figures/knn_flexibility.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:519mm"></p>
+</figure>
+</div>
+<p>Thus, we observe the same <span class="math inline">\(U\)</span> shape for the <em>test error rate</em> and decreasing <em>training error rate</em> as the model tends to overfit data. The dotted line represents the Bayes error rate.</p>
+<p>For the case of <span class="math inline">\(K=10\)</span> we have</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Figures/knn_k_optimal.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:519mm"></p>
+</figure>
+</div>
+<div id="11c94880" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> ListedColormap</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> neighbors, datasets</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>n_neighbors <span class="op">=</span> <span class="dv">15</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># import some data to play with</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris()</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># we only take the first two features. We could avoid this ugly</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># slicing by using a two-dim dataset</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> iris.data[:, :<span class="dv">2</span>]</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> iris.target</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> <span class="fl">.02</span>  <span class="co"># step size in the mesh</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Create color maps</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>cmap_light <span class="op">=</span> ListedColormap([<span class="st">'orange'</span>, <span class="st">'cyan'</span>, <span class="st">'cornflowerblue'</span>])</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>cmap_bold <span class="op">=</span> ListedColormap([<span class="st">'darkorange'</span>, <span class="st">'c'</span>, <span class="st">'darkblue'</span>])</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> weights <span class="kw">in</span> [<span class="st">'uniform'</span>, <span class="st">'distance'</span>]:</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># we create an instance of Neighbours Classifier and fit the data.</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> neighbors.KNeighborsClassifier(n_neighbors, weights<span class="op">=</span>weights)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    clf.fit(X, y)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot the decision boundary. For that, we will assign a color to each</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># point in the mesh [x_min, x_max]x[y_min, y_max].</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    x_min, x_max <span class="op">=</span> X[:, <span class="dv">0</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="dv">1</span>, X[:, <span class="dv">0</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    y_min, y_max <span class="op">=</span> X[:, <span class="dv">1</span>].<span class="bu">min</span>() <span class="op">-</span> <span class="dv">1</span>, X[:, <span class="dv">1</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    xx, yy <span class="op">=</span> np.meshgrid(np.arange(x_min, x_max, h),</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>                         np.arange(y_min, y_max, h))</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> clf.predict(np.c_[xx.ravel(), yy.ravel()])</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Put the result into a color plot</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> Z.reshape(xx.shape)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    plt.figure()</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    plt.pcolormesh(xx, yy, Z, cmap<span class="op">=</span>cmap_light)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plot also the training points</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span>y, cmap<span class="op">=</span>cmap_bold,</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>                edgecolor<span class="op">=</span><span class="st">'k'</span>, s<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    plt.xlim(xx.<span class="bu">min</span>(), xx.<span class="bu">max</span>())</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    plt.ylim(yy.<span class="bu">min</span>(), yy.<span class="bu">max</span>())</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"3-Class classification (k = </span><span class="sc">%i</span><span class="st">, weights = '</span><span class="sc">%s</span><span class="st">')"</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>              <span class="op">%</span> (n_neighbors, weights))</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture0_accuracy_n_prediction_files/figure-html/cell-3-output-1.png" width="571" height="431" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Lecture0_accuracy_n_prediction_files/figure-html/cell-3-output-2.png" width="571" height="431" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

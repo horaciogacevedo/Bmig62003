@@ -11,3 +11,4 @@
 *.blg
 ._*
 *.ipynb_checkpoints
+.Rproj.user
