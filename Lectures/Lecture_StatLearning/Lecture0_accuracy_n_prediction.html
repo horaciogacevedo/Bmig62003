@@ -138,7 +138,7 @@ window.Quarto = {
 </section>
 <section id="basic-setup" class="level2">
 <h2 class="anchored" data-anchor-id="basic-setup">Basic Setup</h2>
-<p>Let’s suppose we observe a quatitative response <span class="math inline">\(Y\)</span> and <span class="math inline">\(p\)</span> different predictors <span class="math inline">\(X_1,\ldots, X_p\)</span>, which can be written in the form <span class="math display">\[
+<p>Let’s suppose we observe a quantitative response <span class="math inline">\(Y\)</span> and <span class="math inline">\(p\)</span> different predictors <span class="math inline">\(X_1,\ldots, X_p\)</span>, which can be written in the form <span class="math display">\[
 Y= f(X) + \varepsilon
 \]</span> We assume that the function <span class="math inline">\(f\)</span> is <strong>fixed but unknown</strong>, and <span class="math inline">\(\varepsilon\)</span> is a <strong>random error term</strong>, which is independent of <span class="math inline">\(X\)</span> and has mean zero (i.e.&nbsp;its expected value <span class="math inline">\(E (\varepsilon) =0\)</span>).</p>
 <p><strong>Statistical Learning</strong> refers to a set of approaches for estimating <span class="math inline">\(f\)</span>, for the purpose of either predict future responses or make inferences about inner relationships within the model predictors.</p>
@@ -332,7 +332,7 @@ E\left[ (y_0- \hat{f}(x_0))^2 \right] &amp;= E[ (f(x_0)+ \varepsilon - \hat{f}(x
 <p>What does it mean?</p>
 <p>The <em>variance</em> refers to the amount by which <span class="math inline">\(\hat{f}\)</span> would change if we estimated it using a different training set. Intuitively, if our model is simple (say linear regression) changing our training dataset won’t change the line that much, but if we have a model that follows closely the training set, replacing a point will increase the variance significantly.</p>
 <p>On the other hand, <em>bias</em> refers to the error that is introduced by approximating a real-life problem (say highly non-linear) with a simpler model say a linear one.</p>
-<div id="2adf32ce" class="cell" data-execution_count="1">
+<div id="bac583c7" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(__doc__)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Author: Mathieu Blondel</span></span>
@@ -402,6 +402,16 @@ which the built-in of that name is also needed.</code></pre>
 </div>
 </div>
 <p>Note that the number of parameters to be estimated increases + For degree 1, <span class="math inline">\(f(x)=a_1x+a_0\)</span> + For degree 2, <span class="math inline">\(f(x)= a_2x^2+a_1x+a_0\)</span>, etc.</p>
+<section id="modern-dilemma-with-deep-learning" class="level3">
+<h3 class="anchored" data-anchor-id="modern-dilemma-with-deep-learning">Modern dilemma with Deep Learning</h3>
+<p>New deep learning methods have changed the traditional perspective of testing vs.&nbsp;training errors.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/fig_gitta_news.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:220mm"></p>
+</figure>
+</div>
+<p>A very interesting reading from a mathematician Gitta Kutyniok <a href="https://www.siam.org/publications/siam-news/articles/the-mathematics-of-reliable-artificial-intelligence/">SIAM news</a></p>
+</section>
 </section>
 <section id="classification" class="level2">
 <h2 class="anchored" data-anchor-id="classification">Classification</h2>
@@ -473,7 +483,7 @@ which the built-in of that name is also needed.</code></pre>
 <p><img src="../../Figures/knn_k_optimal.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:519mm"></p>
 </figure>
 </div>
-<div id="3b6cff79" class="cell" data-execution_count="2">
+<div id="10868840" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> ListedColormap</span>

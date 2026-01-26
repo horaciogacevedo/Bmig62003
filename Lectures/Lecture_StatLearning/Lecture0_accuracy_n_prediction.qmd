@@ -12,7 +12,7 @@ Some of the figures and material in this presentation are taken from <cite id="2
 
 ## Basic Setup
 
-Let's suppose we observe a quatitative response $Y$ and $p$ different predictors $X_1,\ldots, X_p$, which can be written in the form $$
+Let's suppose we observe a quantitative response $Y$ and $p$ different predictors $X_1,\ldots, X_p$, which can be written in the form $$
 Y= f(X) + \varepsilon
 $$ We assume that the function $f$ is **fixed but unknown**, and $\varepsilon$ is a **random error term**, which is independent of $X$ and has mean zero (i.e. its expected value $E (\varepsilon) =0$).
 
@@ -280,6 +280,14 @@ plt.show()
 ```
 
 Note that the number of parameters to be estimated increases + For degree 1, $f(x)=a_1x+a_0$ + For degree 2, $f(x)= a_2x^2+a_1x+a_0$, etc.
+
+### Modern dilemma with Deep Learning
+
+New deep learning methods have changed the traditional perspective of testing vs. training errors.
+
+![](images/fig_gitta_news.jpg){fig-align="center" width="220mm"}
+
+A very interesting reading from a mathematician Gitta Kutyniok [SIAM news](https://www.siam.org/publications/siam-news/articles/the-mathematics-of-reliable-artificial-intelligence/)
 
 ## Classification
 
