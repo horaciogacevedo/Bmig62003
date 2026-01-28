@@ -37,20 +37,27 @@ eprint=false
 	\begin{equation*}
 		p(X=x)= Pr(Y=1 | X=x)
 	\end{equation*}
- Thus, if $p(X=x)>0.5$ we can say that $X=x$ belongs to the class 1. 
+
+\begin{alertblock}{Logistic regression and classification}
+Logistic regression provides a probability model, using it for classification  means that you know something about the outcome beyond your data.
+\end{alertblock}
+
+ Thus, if $p(X=x)>0.5$ we can say that $X=x$ belongs to the class 1. However, the cutoff used is something that requires justification. 
+
+\end{frame}
+
+\begin{frame}{Logistic Regression (cont)}
+
  Our first attempt may be to use linear regression as follows:
  \begin{equation*}
  	p(X)= \theta_0+ \theta_1 X
  \end{equation*}
 However, when we use such a model we may encounter negative probabilities!
 
-\end{frame}
-
-\begin{frame}{Logistic Regression (cont)}
 	
 		\begin{figure}[h]
 		\centering
-		\includegraphics[scale=0.5]{../../Figures/fig_logreg.png}
+		\includegraphics[scale=0.3]{../../Figures/fig_logreg.png}
 	\end{figure}
 \end{frame}
 

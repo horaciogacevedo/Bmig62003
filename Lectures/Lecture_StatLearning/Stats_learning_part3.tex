@@ -1,6 +1,6 @@
 \documentclass{beamer}
 \DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
-\usetheme{default}
+\usetheme{CambridgeUS}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{mathbbol}
@@ -18,7 +18,8 @@ doi=true,
 eprint=false
 ]{biblatex}
 \addbibresource{../../Bibliography/main_ML.bib}
-
+\definecolor{uamsred}{rgb}{0.6,0.2,0.2}
+\setbeamercolor{mycolor}{fg=white,bg=uamsred}
 \titlegraphic{\includegraphics[width=2cm]{../../Figures/UAMS_RGB.png}
 }
 
@@ -119,14 +120,17 @@ This last equation is called the {\bf normal form}
 
 \begin{frame}{Computational Complexity}
 	The solution of the linear regression problem using the normal equation (\ref{eq:normeq}), requires significant amount of computation resources as $n$ tend to increase.
-	
+ The complexity of matrix inversion is between $O(n^{2.4})$ and $O(n^3)$, depending on the algorithm.	
+
+\textbf{What does it mean?}
+ 
 	Let $f,g \colon \mathbb{N} \to \mathbb{R}^+$ two non-negative functions. We say that $f(n)= O(g(n))$ (big O) if there are two non-negative integers $n_0$ and $c$ such that for every $n\ge n_0$
 	\begin{equation*}
 		f(n) \le c \cdot  g(n)
 	\end{equation*}
-  {\bf Example.} Let $f(n)=5n^3+3n^2+1000n +10000$. In this case $f(n)=O(n^3)$ since when $n$ is very large, $f(n)$ behaves like the polynomial $5n^3$.
+  {\bf Example.} Let $f(n)=5n^3+3n^2+1000n +10000$. In this case $f(n)=O(n^3)$ since when $n$ is very large, $f(n)$ behaves like the polynomial $n^3$.
   
-  The complexity of matrix inversion is between $O(n^{2.4})$ and $O(n^3)$, depending on the algorithm.
+ 
 \end{frame}			
 
 \begin{frame}{Gradient Descent Revisited}
