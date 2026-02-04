@@ -7,7 +7,7 @@ editor: visual
 
 ## Variable selection problems
 
-Even though it is a very common practice to reduce the number of covariates using step-wise selection, it is in general not a good practice.
+Even though it is a very common practice to reduce the number of covariates using step-wise selection, it is in general not a good practice. The main issue lies on the fact that standard errors and $t$-statistics are ignoring the effects of the selection process itself and gives overly-optimistic errors, and $p$-values.
 
 The following simulations are based on Dr. Harrell's notes <https://hbiostat.org/rmsc/multivar>
 
