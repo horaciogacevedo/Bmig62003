@@ -1,13 +1,13 @@
 ---
-title: "Problems with Forward Selection"
+title: "Problems with Forward/Backward Variable Selection"
 author: "Horacio Gomez-Acevedo"
 format: pdf
 editor: visual
 ---
 
-## Forward selection problems
+## Variable selection problems
 
-Even though it is a very common practice to reduce the number of covariates using forward step-wise selection, it is in general not a good practice.
+Even though it is a very common practice to reduce the number of covariates using step-wise selection, it is in general not a good practice.
 
 The following simulations are based on Dr. Harrell's notes <https://hbiostat.org/rmsc/multivar>
 
@@ -17,13 +17,13 @@ $$
 l_p=  x_1 +  x_2 + 0.5 x_3 + 0.4 x_7 + \varepsilon \, \text{ where } \varepsilon = {\cal N}(0,\sigma^2)
 $$
 
-The standard deviation is set to 2.5 by default but it can be change by the user. The model in R is written as
+The standard deviation is set to 2.5 by default but it can be changed by the user. The model in R is written as
 
 $$
 y \sim x_1 + x_2 + x_3 + x_4 + x_5 + x_6 +x_7 + x_8
 $$
 
-Note that we omit the coefficients in the formula. Then, we use Akaike's information criteria to carry on variable reduction.
+Note that we omit the coefficients in the formula and we are also considering the $y$-intercept $\beta_0$ . Also, the Akaike's information criteria is used to carry on with variable reduction.
 
 ```{r}
 require(MASS)    # provides stepAIC function
@@ -108,11 +108,34 @@ rsim <- function(B, n, method=c('stepaic', 'leaps')) {
 }
 ```
 
-You can add options to executable code like this
+Then, we will run some simulations
 
 ```{r}
-#| echo: false
-2 * 2
+uncorrelated <- TRUE
+sim(50000, prcor=TRUE)
+set.seed(11)
+m <- 'leaps'             # all possible regressions stopping on R2adj
+rsim(100, 20, method=m)  # actual model found twice out of 100
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+Then, what happens when $n$ increases
+
+```{r}
+rsim(100, 200, method=m)
+```
+
+One more, with a large vector size
+
+```{r}
+rsim(100,2000,method=m)
+```
+
+What if we increase the number of simulations?
+
+```{r}
+rsim(1000,200,method=m)
+```
+
+## Conclusion
+
+Even when you consider that you have a *good model* it is necessary to run some simulations to see if your model is stable.
