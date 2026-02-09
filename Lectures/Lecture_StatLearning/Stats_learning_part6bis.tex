@@ -166,6 +166,11 @@ From Lapedes and Farber (2001)
 	
 \end{frame}
 
+\begin{frame}{MDS}
+	content...
+\end{frame}
+
+
 \begin{frame}{MDS (cont)}
 	The MDS tries to find a set of low dimensional vectors $\{ \textbf{z}_i \in \mathbb{R}^k\}_{i=1}^N$ such that the pairwise distances between these vectors is as similar as possible to a set of pairwise dissimilaritites $\textbf{D}=\{d_{ij}\}$ provided by the user. 
 
@@ -174,6 +179,11 @@ Let's considered the centered similarity matrix as follows
 \begin{equation*}
 	\tilde{K}_{ij}= \langle \textbf{x}_i - \overline{\textbf{x}}, \textbf{x}_j - \overline{\textbf{x}} \rangle
 \end{equation*}
+
+	\begin{figure}[h]
+	\centering
+	\includegraphics[width=10cm]{../../Figures/fig_manifold_basic_idea.jpg}
+\end{figure}	
 \end{frame}
 
 \begin{frame}{Digression}
@@ -217,18 +227,25 @@ Let's considered the centered similarity matrix as follows
 	\end{equation*}
 \end{frame}
 
-\begin{frame}{MDS (cont)}
+\begin{frame}{MDS solution}
 %	Using matrix notation, we have 
 %	\begin{equation*}
 %		\tilde{\textbf{X}}= \textbf{C}_N \textbf{X} (\textbf{C}_N \textbf{X} )^t
 %	\end{equation*}
-	Moreover, if we define $\tilde{\textbf{z}}_i = \textbf{z}_i - \overline{\textbf{z}}$, and $\tilde{Z}_{ij}$ denotes elements of the centered matrix $\tilde{\textbf{Z}}$.
-	
-	The goal will be to minimize 
+	If we were able to identify a centered matrix $\tilde{\textbf{Z}}=\{\tilde{Z}_{ij}\}$
+%	Moreover, if we define $\tilde{\textbf{z}}_i = \textbf{z}_i - \overline{\textbf{z}}$, and $\tilde{Z}_{ij}$ denotes elements of the centered matrix $\tilde{\textbf{Z}}$.
+such that the cost function $\cal{E}$ is minimized
 	\begin{equation*}
-		{\cal E}= \sum_{i,j} ( \tilde{K}_{ij} - \tilde{Z}_{ij})^2= \| \tilde{\textbf{K}}- \tilde{\textbf{Z}}\tilde{\textbf{Z}}^t \|^2
+		{\cal E}=\| \tilde{\textbf{K}}- \tilde{\textbf{Z}} \|^2=\sum_{i,j} ( \tilde{K}_{ij} - \tilde{Z}_{ij})^2 
 	\end{equation*}
-	This process is done using a method called \textbf{singular value decomposition} of $\tilde{\textbf{K}}$. Thus, $\tilde{\textbf{K}}=\textbf{U} \textbf{S} \textbf{U}^t$, and hence $\tilde{\textbf{Z}}= \textbf{U} \textbf{S}^{\frac{1}{2}}$
+	
+	How to find such a matrix $\tilde{Z}$? 
+	
+	If we apply the \textbf{singular value decomposition} of $\tilde{\textbf{K}}$. Thus, $\tilde{\textbf{K}}=\textbf{U} \textbf{S} \textbf{V}^t$ and $S=\text{diag}(s_1,\ldots,s_D)$ and all of them are non negative and ordered in descending value.
+	Thus, instead of using the whole matrix $\textbf{S}$, we just take the first two components $(s_1,s_2)$, we take their square roots and generate
+\begin{equation*}
+\tilde{\textbf{Z}}= \textbf{U} \text{diag}(\sqrt{s_1},\sqrt{s_2},0,\cdots,0)
+\end{equation*}
 \end{frame}
 
 
