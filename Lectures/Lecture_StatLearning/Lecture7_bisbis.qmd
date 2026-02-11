@@ -1,0 +1,98 @@
+---
+title: "Variable Selection Part 2"
+author: "Horacio Gomez-Acevedo"
+format: pdf
+bibliography: ../../Bibliography/main_ML.bib
+editor: visual
+---
+
+## How may covariates can I include?
+
+It is fairly common in Biomedical data that we have many covariates, and we need to ask whether our model
+can hold its predictive value given the number of cases that we have at hand. 
+Thus we need to know how to calculate a suitable sample size ($n$) relative to the number of covariates $p$ for a reliable prediction.
+
+In this lecture we will revise the multivariate prediction models for continuous outcomes.
+
+## Ad hoc solution
+
+The following guidelines are presented by @harrell. 
+
+In the text, it is claimed that according to several studies validated on independent data sets and it was concluded that a fitted regression model is likely to be reliable when the number of predictors $p$ is less than $m/10$ or $m/20$ where $m$ is the **limiting sample size**.
+
+| Type of Response Variable | Limiting sample size $m$ |
+|------------------------------------|------------------------------------|
+| Continuous | $n$ (total sample size) |
+| Binary | $\min (n_1,n_2)$ where $n_i$ represents the size of each category. |
+| Ordinal ($k$ categories) | $n- \frac{1}{n^2}\sum_{i=1}^k  n_i^3$ |
+
+Note that $p$ represents all the variables screened for association with the response, including nonlinear terms and interactions.
+
+### Example.
+
+Let's suppose that we have a continuous output variable and our number of covariates is $p=30$, and all of them are continuous. We modeled our data with no interactions or quadratic terms. In this case, the limiting sample size is the total number of *rows* in our data set, thus we need at least 300 to 600 to possibly avoid overfitting. If we include interactions that number can expand quickly, say if we consider all interactions ${p\choose 2}=435$, plus the number of original variables $p=30$, the number of rows that we need are at least 4650 if we are conservative in our estimates.
+
+
+## More recent estimates
+
+We need to revise some concepts.
+
+**Calibration plot** represents the observed response against predicted responses. Thus, ideally when you have a very good model the slope is closer to 1. The *slope* of the calibration curve is called the **shrinkage factor** ($S$).
+
+A heuristic shrinkage estimate 
+
+$$
+\hat{S}= \frac{\text{model } \chi^2 - p}{\text{model }\chi^2}
+$$
+where $p$ is the number of degrees of freedom. 
+
+## Multilinear regression setup
+
+We will follow the @riley18a paper. First, we consider the model
+
+$$
+E(Y_i)= \alpha+\sum_{i}\hat{\beta_{i}}X_i
+$$
+and to adjust for overfitting, we use 
+
+$$
+E(Y_i)= \alpha^*+ S \left(\sum_{i}\hat{\beta_{i}}X_i\right)
+$$
+where $\alpha^*$ is the revised intercept (re-estimated to ensure that the overall predicted mean agrees with the observed mean) and we include the estimate for the shrinkage $S$.
+
+There is an alternative expression to shrinkage, the so-called Copas closed-form $S_C$
+
+$$
+S_C=1 + \frac{p-2}{n\ln\left( 1 - \left( \frac{R^2_{adj} (n-p-1)+p}{n-1}\right)\right)}
+$$
+
+This formula has some advantages, since we can establish setup values for the shrinkage and the $R^2_{adj}$, so we can obtain $n$ as a function of $p$. 
+
+> A shrinkage of 0.9 is considered to be the minimum necessary to avoid overfitting.
+
+
+## Variance explained by the new model
+
+In the paper, there are more technical conditions for the selection of the number of predictors.
+
+The estimation of the $R^2_{app}$ which is the **apparent** estimate of the prediction model $R^2$ in the dataset used to develop the model. A second criteria that considers that the difference $\delta$ between $R^2_{app}$ and $R^2_{adj}$ is small to account for the optimism in the developed model's apparent proportion of variance explained is small.
+
+$$
+\delta = \frac{p \left( 1-R^2_{adj}\right)}{n-1} 
+$$
+Thus
+$$
+n\ge 1 + \frac{p\left( 1 -R^2_{adj}\right)}{\delta}
+$$
+
+This may be known from the literature $R^2_{app}$ and if we hope to have an $R^2_{adj}$ not far off more than 10\%, we can estimate the number of cases needed. 
+
+## More desiderata
+
+Riley et al. has a couple of criteria that are important from the statistical perspective
+
++ Precise estimate of the residual standard deviation. 
+
++ Precise estimate of the model intercept. 
+
+## References
