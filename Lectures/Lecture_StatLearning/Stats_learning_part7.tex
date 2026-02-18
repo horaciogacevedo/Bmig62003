@@ -202,7 +202,7 @@ Thus, a smaller tree with fewer splits might lead to lower variance and better i
 \end{frame}
 
 \begin{frame}{Classification Trees}
-	The idea of the classification trees is very similar to the regression trees. However, in the classification setting we cannot use RSS as an splitting criteria for the binary selection. Instead, we will use the {\bf classification  error rate}, which is the fraction of the training observations in a region that do not belong to the most common class.
+	The idea of classification trees is very similar to the regression trees. However, in the classification setting we cannot use RSS as an splitting criteria for the binary selection. Instead, we will use the {\bf classification  error rate}, which is the fraction of the training observations in a region that do not belong to the most common class.
 	\begin{equation*}
 		E_m= 1- \max_k (\hat{p}_{mk})
 	\end{equation*} 
@@ -349,7 +349,9 @@ In \citep{cartbook} is proven that there is a strictly increasing sequence of pa
 \end{frame}
 
 \begin{frame}{Normalized Penalty CP parameter}
-	For the \textbf{rpart} library the so-called CP (normalized complexity-penalty parameter), the value by default is $cp=0.01$, the tree provided corresponds to the one obtained by slecting the one corresponding to $\alpha=0.01* \overline{\text{err}}(T_n)$
+	For the \textbf{rpart} library the so-called CP (normalized complexity-penalty parameter), the value by default is $cp=0.01$, the tree provided corresponds to the one obtained by slecting the one corresponding to $\alpha=0.01* \overline{\text{err}}(T_n)$.
+	
+	In Python (Scikit-Learn) has a cost complexity pruning parameter labeled as \textbf{cpp\_alpha}.
 \end{frame}
 
 \begin{frame}{Surrogate Splits CART}
@@ -373,7 +375,7 @@ In \citep{cartbook} is proven that there is a strictly increasing sequence of pa
 	\begin{equation*}
 		\lambda(s^*| \tilde{s}_m)= \frac{\min(p_L,p_R)-(1-p(s^*,\tilde{s}_m))}{\min(p_L,p_R)}
 	\end{equation*}
-	This measure is the relative reduction in error gotten by using $\tilde{s}_m$ to predict $s^*$ as compared with the $\max (p_L,p_R)$. If $\lambda(s^*| \tilde{s}_m)\le 0$, $\tilde{s}_m$ is no help in predicting $s^*$ and is discarded as a surrogate split. 
+	This measure is the relative reduction in error obtained by using $\tilde{s}_m$ to predict $s^*$ as compared with the $\max (p_L,p_R)$. If $\lambda(s^*| \tilde{s}_m)\le 0$, $\tilde{s}_m$ is no help in predicting $s^*$ and is discarded as a surrogate split. 
 	
 	Why do we need surrogate splits? For missing data and to determine the variables of importance!
 	
@@ -390,7 +392,7 @@ In \citep{cartbook} is proven that there is a strictly increasing sequence of pa
 \end{frame}
 
 \begin{frame}{Variable Ranking CART}
-	Let $T$ be an optimal subtree selected by the cross-validation or test sample procedure. If the Gini splitting rule has been used, then at each node compute $\Delta I(\tilde{s}_m,t)= I(t)-I(t_L)-I(t_R)$.
+	Let $T$ be an optimal subtree selected by the cross-validation or test sample procedure. If the Gini splitting rule has been used, then at each node compute $\Delta I(\tilde{s}_m,t)= I(t)-I(t_L)-I(t_R)$, where $I$ is the impurity function.
 	
 	The \textbf{measure of importance of variable} $x_m$ is defined as
 	\begin{equation*}
