@@ -9,6 +9,7 @@
 \usepackage{multirow}
 \usepackage{lmodern}
 \usepackage{bm}
+\usepackage{hyperref}
 
 \usepackage[
 backend=biber,
@@ -244,6 +245,7 @@ Note that there are several representations of the VI expression (at least in R)
 	
 	
  Boosting does not require bootstrap sampling as each tree is fit on a modified version of the original data set.
+ Moreover, this methodology is regarded as a \textit{slow learning process}. 
  
  
 	
@@ -290,7 +292,12 @@ The $\alpha_j$ are computed by the boosting algorithm and weight the contributio
 \end{frame}
 
 \begin{frame}{Boosting for Regression Trees}
-	Given a current model, we fit a decision tree to the residuals from the model rather than the outcome $Y$ as the response. And we add these residuals to a new decision tree and update again the residuals. 
+	Given a current model, we fit a decision tree to the residuals from the model rather than the outcome $Y$ as the response. And we add these residuals to a new decision tree and update again the residuals.  We will be slowly improving $\hat{f}$ in areas where performance is poor.
+	
+	Also it is important to note that the construction of each tree depends strongly on the trees that have been already grown. This is the sequential nature of boosting!
+	
+	A very nice tutorial 
+	\href{https://xgboost.readthedocs.io/en/latest/tutorials/model.html}{xgboost library}
 	
 	 \end{frame}
 
@@ -321,7 +328,7 @@ The $\alpha_j$ are computed by the boosting algorithm and weight the contributio
 	
 	\begin{itemize}
 		\item $B$ that represents the number of trees. Do not take very large values of $B$ as boosting tends to over-fit. We can use cross-validation to determine a good candidate for $B$.
-		\item The shrinkage parameter $\lambda$ controls the learning rate. 
+		\item The shrinkage parameter $\lambda$ controls the learning rate. Typically with values between 0.01 and 0.001 and it is problem-dependent.
 		\item The number of splits $d$ controls the complexity of the boosted ensemble. Sometimes $d=1$ works well. 
 	\end{itemize}
 \end{frame}
