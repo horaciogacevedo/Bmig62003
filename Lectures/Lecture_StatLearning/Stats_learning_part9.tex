@@ -52,7 +52,7 @@ Recall that in the threshold logic,  once we receive the input, a decision must 
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.8]{../../Figures/fig_activation.png}
+	\includegraphics[scale=0.8]{../../Figures/fig_keras_linear_reg.jpg}
 \end{figure}
 	
 \end{frame}
@@ -238,10 +238,7 @@ These types of activation functions have that advantage that they are smooth and
 \end{frame}
 \begin{frame}{Input, Output, and Target (cont)}
 
-	\begin{figure}[h]
-	\centering
-	\includegraphics{../../Figures/fig_target.png}
-\end{figure}	
+
 	The \textbf{target function} is the desired functional relationship that the network tries to approximate. This function is independent of the parameters $w$ and will be denoted by $z=\phi(x)$, $\textbf{z}=\phi(\textbf{x})$ or $Z=\phi(X)$.  
 	 
 	
@@ -347,6 +344,16 @@ For example let $p(x)= \exp(-x^2/2)/\sqrt{2\pi}$ be the density of the $N(0,1)$,
 	\end{equation*}
 
 	Note that KL-divergence is not a distance, but both cross-entropy and KL-divergence can be used as cost functions for neural networks.
+\end{frame}
+
+\begin{frame}{Mutual Information}
+As we said, the KL divergence gives us a mechanism to measure how similar two distributions are. The \textbf{mutual information} between two random distributions gives us an idea of how dependant two random variables are.
+
+
+\begin{equation*}
+I(p;q)= D_{KL}(p(x,y),p(x)p(y))=H(p)-H(p|q)=H(q)-H(q|p)
+\end{equation*}
+The value will be zero when $p(x,y)=p(x)p(y)$ that means that the variables are independent.
 \end{frame}
 
 \begin{frame}{References}
